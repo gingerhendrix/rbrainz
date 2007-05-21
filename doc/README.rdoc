@@ -1,0 +1,66 @@
+=RBrainz - Ruby MusicBrainz library
+RBrainz is a Ruby client library to access the MusicBrainz XML webservice,
+which can be used to query the MusicBrainz database.
+
+RBrainz is written in pure Ruby and follows the design of
+PythonMusicBrainz2[http://musicbrainz.org/doc/PythonMusicBrainz2],
+the reference implementation for a MusicBrainz client library. Developers
+used to PythonMusicBrainz2 should already know most of RBrainz' interface.
+However, RBrainz differs from PythonMusicBrainz2 wherever it makes the
+library more Ruby like or easier to use.
+
+RBrainz supports the MusicBrainz XML Metadata Version 1.1, including support
+for labels and extended release events.
+
+==Installation
+===Installing with RubyGems
+The easiest way to install the latest release of RBrainz is using
+RubyGems[http://rubygems.org] by executing the following command:
+ gem install rbrainz
+ 
+===Manual installation
+Not supported, yet.
+
+==Basic usage
+The most important classes in this library are the model classes
+MusicBrainz::Model::Artist, MusicBrainz::Model::Release,
+MusicBrainz::Model::Track and MusicBrainz::Model::Label
+together with MusicBrainz::Webservice::Query. The Query class
+provides an easy to use interface to query the MusicBrainz webservice.
+It will always return one of the model classes above or an
+array of those classes. The example below should make the usage clear:
+
+ require 'rbrainz'
+ include MusicBrainz
+ 
+ # Create an MBID object which represents a MusicBrainz artist ID.
+ mbid = Model::MBID.from_uuid(:artist, 'c0b2500e-0cef-4130-869d-732b23ed9df5')
+
+ # With the ArtistInclude object we can control what kind of information
+ # the MusicBrainz server will include in its answer.
+ artist_includes = Webservice::ArtistIncludes.new(
+   :aliases      => true,
+   :releases     => ['Album', 'Official'],
+   :artist_rels  => true,
+   :release_rels => true,
+   :track_rels   => true,
+   :label_rels   => true,
+   :url_rels     => true
+ )
+ 
+ # Query the webservice for the artist with the above ID
+ # The result will contain all the information specified
+ # in artist_includes.
+ q = Webservice::Query.new
+ artist = q.get_artist_by_id(mbid, artist_includes)
+
+==The MusicBrainz webservice
+For more information about the MusicBrainz webservice visit the
+following resources:
+- MusicBrainzXMLWebService[http://musicbrainz.org/doc/XMLWebService]
+- MusicBrainzXMLMetaData[http://musicbrainz.org/doc/MusicBrainzXMLMetaData]
+
+==License
+RBrainz is Copyright (c) 2007 Philipp Wolfer.
+It is free softare distributed under a BSD style license. See
+LICENSE[link:files/LICENSE.html] for details.

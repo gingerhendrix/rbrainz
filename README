@@ -1,0 +1,11 @@
+RBrainz - Ruby MusicBrainz library
+
+See doc/README.rdoc for details about RBrainz.
+
+To generate the complete RBrainz documentation run
+ rake rdoc
+ 
+The documentation will be stored in doc/api.
+
+Copyright (c) 2007, Philipp Wolfer
+Licensing information can be found in the file LICENSE.

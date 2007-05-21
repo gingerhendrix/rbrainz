@@ -1,0 +1,9 @@
+=TODO
+==Longer term tasks
+* Support for the offset parameter for queries on collections
+  to retrieve results below the 100 results limit.
+* Full text search (lucene search queries).
+* Calculation of disc IDs
+* User authentication
+* PUID submission
+* Querying of user information
