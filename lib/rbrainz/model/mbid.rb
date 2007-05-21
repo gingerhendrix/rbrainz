@@ -58,9 +58,7 @@ module MusicBrainz
       end
       
       # Initialize the UUID given the entity type and an UUID.
-      # 
-      # :notnew:
-      def initialize(entity, uuid)
+      def initialize(entity, uuid) # :notnew:
         @entity = entity
         @uuid = uuid
       end
