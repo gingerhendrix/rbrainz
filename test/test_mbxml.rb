@@ -65,21 +65,42 @@ class TestMBXML < Test::Unit::TestCase
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tchaikovsky-1.xml')
     artist = mbxml.get_entity(:artist)
     
-    assert false, 'Test not implemented'
+    assert_equal '9ddd7abc-9e1b-471d-8031-583bc6bc8be9', artist.id.uuid
+    assert_equal Model::Artist::TYPES[:Person], artist.type
+    assert_equal 'Пётр Ильич Чайковский', artist.name
+    assert_equal 'Tchaikovsky, Pyotr Ilyich', artist.sort_name
+    assert_equal '1840-05-07', artist.begin_date.to_s
+    assert_equal '1893-11-06', artist.end_date.to_s
+    assert_equal 80, artist.aliases.size
   end
   
   def test_artist_tori_amos_1
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_1.xml')
     artist = mbxml.get_entity(:artist)
     
-    assert false, 'Test not implemented'
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist.id.uuid
+    assert_equal Model::Artist::TYPES[:Person], artist.type
+    assert_equal 'Tori Amos', artist.name
+    assert_equal 'Amos, Tori', artist.sort_name
+    assert_equal '1963-08-22', artist.begin_date.to_s
   end
 
   def test_artist_tori_amos_2
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_2.xml')
     artist = mbxml.get_entity(:artist)
     
-    assert false, 'Test not implemented'
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist.id.uuid
+    assert_equal Model::Artist::TYPES[:Person], artist.type
+    assert_equal 'Tori Amos', artist.name
+    assert_equal 'Amos, Tori', artist.sort_name
+    assert_equal '1963-08-22', artist.begin_date.to_s
+    assert_equal 3, artist.releases.size
+    assert_equal 'a7ccb022-f437-4492-8eee-8f85d85cdb96', artist.releases[0].id.uuid
+    assert_equal artist, artist.releases[0].artist
+    assert_equal '9cbf7040-dbdc-403c-940f-7562d9712514', artist.releases[1].id.uuid
+    assert_equal artist, artist.releases[1].artist
+    assert_equal '290e10c5-7efc-4f60-ba2c-0dfc0208fbf5', artist.releases[2].id.uuid
+    assert_equal artist, artist.releases[2].artist
   end
 
   def test_artist_tori_amos_3
@@ -93,14 +114,34 @@ class TestMBXML < Test::Unit::TestCase
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_4.xml')
     artist = mbxml.get_entity(:artist)
     
-    assert false, 'Test not implemented'
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist.id.uuid
+    assert_equal Model::Artist::TYPES[:Person], artist.type
+    assert_equal 'Tori Amos', artist.name
+    assert_equal 'Amos, Tori', artist.sort_name
+    assert_equal '1963-08-22', artist.begin_date.to_s
+    assert_equal 3, artist.aliases.size
+    assert_equal 'Myra Ellen Amos', artist.aliases[0].name
+    assert_equal 'Latn', artist.aliases[0].script
+    assert_equal 'Myra Amos', artist.aliases[1].name
+    assert_equal 'Torie Amos', artist.aliases[2].name
+    assert_equal 'Latn', artist.aliases[2].script
+    assert_equal 'Misspelling', artist.aliases[2].type
   end
 
   def test_artist_tori_amos_5
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_5.xml')
     artist = mbxml.get_entity(:artist)
     
-    assert false, 'Test not implemented'
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist.id.uuid
+    assert_equal Model::Artist::TYPES[:Person], artist.type
+    assert_equal 'Tori Amos', artist.name
+    assert_equal 'Amos, Tori', artist.sort_name
+    assert_equal '1963-08-22', artist.begin_date.to_s
+    assert_equal 1, artist.releases.size
+    assert_equal 'a7ccb022-f437-4492-8eee-8f85d85cdb96', artist.releases[0].id.uuid
+    assert_equal 'Strange Little Girls', artist.releases[0].title
+    assert artist.releases[0].type_list.include?('Album')
+    assert artist.releases[0].type_list.include?('Official')
   end
 
   def test_release_search
