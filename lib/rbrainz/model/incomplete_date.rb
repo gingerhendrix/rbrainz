@@ -3,6 +3,8 @@
 # All rights reserved.
 # See LICENSE for permissions.
 
+require 'date'
+
 module MusicBrainz
   module Model
 

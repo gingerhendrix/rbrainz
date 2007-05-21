@@ -27,7 +27,7 @@ module MusicBrainz
         date = IncompleteDate.new date unless date.is_a? IncompleteDate
         @date = date
       end
-     
+      
     end
     
   end    
