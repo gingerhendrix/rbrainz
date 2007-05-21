@@ -22,7 +22,7 @@ module MusicBrainz
       attr_reader :entity, :uuid
       
       ENTITY_URI = 'http://musicbrainz.org/%s/%s'
-      ENTITY_URI_REGEXP = /^http:\/\/musicbrainz.org\/(artist|release|track|label)\/([a-z0-9]{8}(-[a-z0-9]{4}){3}-[a-z0-9]{12})\/?$/
+      ENTITY_URI_REGEXP = /^http:\/\/musicbrainz.org\/(artist|release|track|label)\/([a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12})\/?$/
       
       # We make new private. Use from_uri or from_uuid instead.
       private_class_method :new

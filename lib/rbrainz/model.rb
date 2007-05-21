@@ -7,7 +7,7 @@ module MusicBrainz
   module Model
 
     # Defines the format of an UUID (Universally Unique Identifier)
-    UUID_REGEXP = /^[a-z0-9]{8}(-[a-z0-9]{4}){3}-[a-z0-9]{12}$/
+    UUID_REGEXP = /^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$/
     
     # The format of a MusicBrainz identifier was wrong.
     class InvalidMBIDError < Exception

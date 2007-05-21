@@ -18,7 +18,8 @@ class TestMBID < Test::Unit::TestCase
                      'http://musicbrainz.org/label/727ad90b-7ef4-48d2-8f16-c34016544822?']
     @invalid_entities = [nil, '', 'entity', :entity, 1]
     @invalid_uuids = [nil, '', 1, '727ad90b7ef448d28f16c34016544822',
-                      '727ad90b-7ef4-48d2-8f16-c34016544822.html']
+                      '727ad90b-7ef4-48d2-8f16-c34016544822.html',
+                      '9g30e408-1559-448b-b491-2f8de1583ccf']
   end
 
   def teardown
