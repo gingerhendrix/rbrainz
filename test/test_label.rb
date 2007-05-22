@@ -106,7 +106,7 @@ class TestLabel < Test::Unit::TestCase
   
   # Many releases can be added
   def test_add_and_remove_releases
-    label = Model::Track.new
+    label = Model::Label.new
     assert_equal 0, label.releases.size
     assert_nothing_raised {label.releases << @releases[0]}
     assert_equal 1, label.releases.size
@@ -121,9 +121,7 @@ class TestLabel < Test::Unit::TestCase
     assert_equal 0, label.releases.size
   end
   
-  # You can pass an array of PUIDs to add them all.
-  # But you should not be able to pass anything else
-  # or invalid PUIDs
+  # You can pass an array of releases to add them all.
   def test_add_several_releases_at_once
     label = Model::Label.new
     assert_nothing_raised {label.releases = @releases}
