@@ -14,16 +14,20 @@ module MusicBrainz
     # See http://musicbrainz.org/doc/Label.
     class Label < Entity
     
-      TYPE_DISTRIBUTOR         = 'http://musicbrainz.org/ns/mmd-1.0#Distributor'
-      TYPE_HOLDING             = 'http://musicbrainz.org/ns/mmd-1.0#Holding'
-      TYPE_ORIGINAL_PRODUCTION = 'http://musicbrainz.org/ns/mmd-1.0#OriginalProduction'
-      TYPE_BOOTLEG_PRODUCTION  = 'http://musicbrainz.org/ns/mmd-1.0#BootlegProduction'
-      TYPE_REISSUE_PRODUCTION  = 'http://musicbrainz.org/ns/mmd-1.0#ReissueProduction'
+      TYPE_DISTRIBUTOR         = NS_MMD_1 + 'Distributor'
+      TYPE_HOLDING             = NS_MMD_1 + 'Holding'
+      TYPE_ORIGINAL_PRODUCTION = NS_MMD_1 + 'OriginalProduction'
+      TYPE_BOOTLEG_PRODUCTION  = NS_MMD_1 + 'BootlegProduction'
+      TYPE_REISSUE_PRODUCTION  = NS_MMD_1 + 'ReissueProduction'
       
       attr_accessor :name, :sort_name, :disambiguation,
                     :code, :country, :type, :releases
       
       attr_reader :founding_date, :dissolving_date
+      
+      def initialize
+        @releases = Array.new
+      end
       
       # Set the founding date of the label.
       # 

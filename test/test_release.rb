@@ -79,19 +79,16 @@ class TestRelease < Test::Unit::TestCase
     }
     
     # Adding all those types should be possible.
-    # Adding them a second time shouldn't add a duplicate.
-    2.times do
-      types.each {|type|
-        assert_nothing_raised {release.types << type}
-      }
-      assert_equal 16, artist.types.size
-    end
+    types.each {|type|
+      assert_nothing_raised {release.types << type}
+    }
+    assert_equal 16, release.types.size
     
     # Removing the types again
     types.each {|type|
       assert_nothing_raised {release.types.delete type}
     }
-    assert_equal 16, artist.types.size
+    assert_equal 0, release.types.size
   end
 
   # Many tracks can be added
@@ -102,9 +99,7 @@ class TestRelease < Test::Unit::TestCase
     assert_equal 1, release.tracks.size
     assert_nothing_raised {release.tracks << @tracks[1]}
     assert_equal 2, release.tracks.size
-    # Re-adding an already existing track should not lead to duplicates
-    assert_nothing_raised {release.tracks << @tracks[1]}
-    assert_equal 2, release.tracks.size
+    
     assert_nothing_raised {release.tracks.delete @tracks[1]}
     assert_equal 1, release.tracks.size
     assert_nothing_raised {release.tracks.delete @tracks[0]}
@@ -126,9 +121,7 @@ class TestRelease < Test::Unit::TestCase
     assert_equal 1, release.release_events.size
     assert_nothing_raised {release.release_events << @release_events[1]}
     assert_equal 2, release.release_events.size
-    # Re-adding an already existing release event should not lead to duplicates
-    assert_nothing_raised {release.release_events << @release_events[1]}
-    assert_equal 2, release.release_events.size
+    
     assert_nothing_raised {release.release_events.delete @release_events[1]}
     assert_equal 1, release.release_events.size
     assert_nothing_raised {release.release_events.delete @release_events[0]}

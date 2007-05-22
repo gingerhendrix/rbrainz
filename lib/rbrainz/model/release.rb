@@ -5,7 +5,6 @@
 
 require 'rbrainz/model/entity'
 require 'rbrainz/model/release_event'
-require 'set'
 
 module MusicBrainz
   module Model
@@ -13,20 +12,34 @@ module MusicBrainz
     # A release in the MusicBrainz DB.
     # 
     # See http://musicbrainz.org/doc/Release.
-    #
-    # TODO: Define constants for the release types
-    # TODO: implement type list
-    # TODO: implement language information
     class Release < Entity
     
-      attr_accessor :title, :type_list, :language_information,
-                    :asin, :artist
+      TYPE_ALBUM          = NS_MMD_1 + 'Album' 
+      TYPE_AUDIOBOOK      = NS_MMD_1 + 'Audiobook' 
+      TYPE_BOOTLEG        = NS_MMD_1 + 'Bootleg' 
+      TYPE_COMPILATION    = NS_MMD_1 + 'Compilation' 
+      TYPE_EP             = NS_MMD_1 + 'EP' 
+      TYPE_INTERVIEW      = NS_MMD_1 + 'Interview' 
+      TYPE_LIVE           = NS_MMD_1 + 'Live' 
+      TYPE_NONE           = NS_MMD_1 + 'None' 
+      TYPE_OFFICIAL       = NS_MMD_1 + 'Official' 
+      TYPE_OTHER          = NS_MMD_1 + 'Other' 
+      TYPE_PROMOTION      = NS_MMD_1 + 'Promotion' 
+      TYPE_PSEUDO_RELEASE = NS_MMD_1 + 'Pseudo-Release' 
+      TYPE_REMIX          = NS_MMD_1 + 'Remix' 
+      TYPE_SINGLE         = NS_MMD_1 + 'Single' 
+      TYPE_SOUNDTRACK     = NS_MMD_1 + 'Soundtrack' 
+      TYPE_SPOKENWORD     = NS_MMD_1 + 'Spokenword' 
+      
+      attr_accessor :title, :types, :asin, :artist,
+                    :text_language, :text_script
                     
       attr_accessor :tracks, :release_events
       
       def initialize
-        @tracks = Set.new
-        @release_events = Set.new
+        @tracks = Array.new
+        @release_events = Array.new
+        @types = Array.new
       end
       
     end

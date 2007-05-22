@@ -112,9 +112,7 @@ class TestLabel < Test::Unit::TestCase
     assert_equal 1, label.releases.size
     assert_nothing_raised {label.releases << @releases[1]}
     assert_equal 2, label.releases.size
-    # Re-adding an already existing release should not lead to duplicates
-    assert_nothing_raised {label.releases << @releases[1]}
-    assert_equal 2, label.releases.size
+    
     assert_nothing_raised {label.releases.delete @releases[1]}
     assert_equal 1, label.releases.size
     assert_nothing_raised {label.releases.delete @releases[0]}

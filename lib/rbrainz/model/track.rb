@@ -4,7 +4,6 @@
 # See LICENSE for permissions.
 
 require 'rbrainz/model/entity'
-require 'set'
 
 module MusicBrainz
   module Model
@@ -18,8 +17,8 @@ module MusicBrainz
                     :puids, :releases
       
       def initialize
-        @puids = Set.new
-        @releases = Set.new
+        @puids = Array.new
+        @releases = Array.new
       end
       
     end

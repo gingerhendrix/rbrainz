@@ -93,9 +93,7 @@ class TestArtist < Test::Unit::TestCase
     assert_equal 1, artist.releases.size
     assert_nothing_raised {artist.releases << @releases[1]}
     assert_equal 2, artist.releases.size
-    # Re-adding an already existing release should not lead to duplicates
-    assert_nothing_raised {artist.releases << @releases[1]}
-    assert_equal 2, artist.releases.size
+    
     assert_nothing_raised {artist.releases.delete @releases[1]}
     assert_equal 1, artist.releases.size
     assert_nothing_raised {artist.releases.delete @releases[0]}
@@ -110,16 +108,14 @@ class TestArtist < Test::Unit::TestCase
   end
  
   # Many aliases can be added
-  def test_add_and_remove_releases
+  def test_add_and_remove_aliases
     artist = Model::Artist.new
     assert_equal 0, artist.aliases.size
     assert_nothing_raised {artist.aliases << @aliases[0]}
     assert_equal 1, artist.aliases.size
     assert_nothing_raised {artist.aliases << @aliases[1]}
     assert_equal 2, artist.aliases.size
-    # Re-adding an already existing alias should not lead to duplicates
-    assert_nothing_raised {artist.aliases << @aliases[1]}
-    assert_equal 2, artist.aliases.size
+    
     assert_nothing_raised {artist.aliases.delete @aliases[1]}
     assert_equal 1, artist.aliases.size
     assert_nothing_raised {artist.aliases.delete @aliases[0]}
@@ -127,7 +123,7 @@ class TestArtist < Test::Unit::TestCase
   end
   
   # You can pass an array of aliases to add them all.
-  def test_add_several_releases_at_once
+  def test_add_several_aliases_at_once
     artist = Model::Artist.new
     assert_nothing_raised {artist.aliases = @aliases}
     assert_equal @aliases, artist.aliases

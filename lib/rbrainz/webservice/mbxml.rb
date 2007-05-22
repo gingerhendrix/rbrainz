@@ -116,7 +116,7 @@ module MusicBrainz
         
         # Read all defined data fields
         artist.id = node.attributes['id']
-        artist.type = Model::Artist::TYPES[node.attributes['type'].to_sym] if node.attributes['type']
+        artist.type = MBXML.add_metadata_namespace(node.attributes['type']) if node.attributes['type']
         
         artist.name = node.elements['name'].text if node.elements['name']
         artist.sort_name = node.elements['sort-name'].text if node.elements['sort-name']
@@ -158,7 +158,6 @@ module MusicBrainz
       end
       
       # Create a +Release+ object from the given release node.
-      # TODO: attributes['type']
       # TODO: attributes['text-representation']
       # TODO: disc list
       # TODO: PUID list
@@ -170,7 +169,7 @@ module MusicBrainz
         release.id     = node.attributes['id']
         release.title  = node.elements['title'].text if node.elements['title']
         release.asin   = node.elements['asin'].text if node.elements['asin']
-        release.artist = create_artist[node.elements['artist']] if node.elements['artist']
+        release.artist = create_artist(node.elements['artist']) if node.elements['artist']
         
         # Read the track list
         if node.elements['track-list']
@@ -187,6 +186,10 @@ module MusicBrainz
             release.release_event << event
           }
         end
+        
+        node.attributes['type'].split(' ').each {|type|
+          release.types << MBXML.add_metadata_namespace(type)
+        } if node.attributes['type']
         
         return release
       end
@@ -209,8 +212,8 @@ module MusicBrainz
         # Read all defined data fields
         track.id       = node.attributes['id']
         track.title    = node.elements['title'].text if node.elements['title']
-        track.duration = node.elements['duration'].text if node.elements['duration']
-        track.artist   = create_artist[node.elements['artist']] if node.elements['artist']
+        track.duration = node.elements['duration'].text.to_i if node.elements['duration']
+        track.artist   = create_artist(node.elements['artist']) if node.elements['artist']
         
         # Read the release list
         if node.elements['release-list']
@@ -276,6 +279,19 @@ module MusicBrainz
         event.label   = create_label[node.elements['label']] if node.elements['label']
         
         return event
+      end
+      
+      # Helper method which will return the given property
+      # extended by the metadata namespace. If the property
+      # already includes the namespace it will be returned
+      # unchanged.
+      def self.add_metadata_namespace(metadata_property)
+        regex = Regexp.new("/#{Model::NS_MMD_1}[a-z-]/i")
+        unless regex.match metadata_property
+          return Model::NS_MMD_1 + metadata_property
+        else
+          return metadata_property
+        end
       end
       
     end

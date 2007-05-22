@@ -63,9 +63,7 @@ class TestTrack < Test::Unit::TestCase
     assert_equal 1, track.puids.size
     assert_nothing_raised {track.puids << @valid_puids[1]}
     assert_equal 2, track.puids.size
-    # Re-adding an already existing PUID should not lead to duplicates
-    assert_nothing_raised {track.puids << @valid_puids[1]}
-    assert_equal 2, track.puids.size
+    
     assert_nothing_raised {track.puids.delete @valid_puids[1]}
     assert_equal 1, track.puids.size
     assert_nothing_raised {track.puids.delete @valid_puids[0]}
@@ -87,9 +85,7 @@ class TestTrack < Test::Unit::TestCase
     assert_equal 1, track.releases.size
     assert_nothing_raised {track.releases << @releases[1]}
     assert_equal 2, track.releases.size
-    # Re-adding an already existing release should not lead to duplicates
-    assert_nothing_raised {track.releases << @releases[1]}
-    assert_equal 2, track.releases.size
+    
     assert_nothing_raised {track.releases.delete @releases[1]}
     assert_equal 1, track.releases.size
     assert_nothing_raised {track.releases.delete @releases[0]}

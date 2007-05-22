@@ -6,6 +6,15 @@
 module MusicBrainz
   module Model
 
+    # Namespace for all MusicBrainz metadata.
+    NS_MMD_1 = 'http://musicbrainz.org/ns/mmd-1.0#'
+    
+    # Namespace for MusicBrainz relations.
+    NS_REL_1 = 'http://musicbrainz.org/ns/rel-1.0#'
+    
+    # Namespace for MusicBrainz extensions.
+    NS_EXT_1 = 'http://musicbrainz.org/ns/ext-1.0#'
+
     # Defines the format of an UUID (Universally Unique Identifier)
     UUID_REGEXP = /^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$/
     
@@ -24,11 +33,6 @@ module MusicBrainz
     
     # The entity type of a MBID didn't match the type of the entity.
     class EntityTypeNotMatchingError < Exception
-    end
-    
-    # An unknown artist type was encountered.
-    # See Model::Artist::TYPES for a list of valid artist types.
-    class UnknownArtistTypeError < Exception
     end
     
   end 

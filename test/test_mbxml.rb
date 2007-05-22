@@ -140,8 +140,8 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 1, artist.releases.size
     assert_equal 'a7ccb022-f437-4492-8eee-8f85d85cdb96', artist.releases[0].id.uuid
     assert_equal 'Strange Little Girls', artist.releases[0].title
-    assert artist.releases[0].type_list.include?('Album')
-    assert artist.releases[0].type_list.include?('Official')
+    assert artist.releases[0].types.include?(Model::Release::TYPE_ALBUM)
+    assert artist.releases[0].types.include?(Model::Release::TYPE_OFFICIAL)
   end
 
   def test_release_search
@@ -205,11 +205,11 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity(:label)
 
     track_list = mbxml.get_entity_list(:track)
-    assert_equal 3, label_list.size, label_list.inspect
+    assert_equal 3, track_list.size, track_list.inspect
     assert_equal '748f2b79-8c50-4581-adb1-7708118a48fc', track_list[0].id.uuid
     assert_equal 'Little Earthquakes', track_list[0].title
     assert_equal 457760, track_list[0].duration
-    assert_equal '748f2b79-8c50-4581-adb1-7708118a48fc', track_list[0].artist.id.uuid
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', track_list[0].artist.id.uuid
     assert_equal 1, track_list[0].releases.size
     assert_equal '93264fe5-dff2-47ab-9ca8-1c865733aad9', track_list[0].releases[0].id.uuid
   end
