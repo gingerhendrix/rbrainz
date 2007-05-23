@@ -211,11 +211,25 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 301186, release.tracks[0].duration
   end
 
+  # This is a various artist release.
   def test_release_mission_impossible_2
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Mission_Impossible_2.xml')
     release = mbxml.get_entity(:release)
     
-    assert false, 'Test not implemented'
+    assert_equal '81683d13-e014-4d35-9774-6f536f4ef557', release.id.uuid
+    assert release.types.include?(Model::Release::TYPE_SOUNDTRACK)
+    assert release.types.include?(Model::Release::TYPE_OFFICIAL)
+    assert_equal 'Mission: Impossible 2', release.title
+    assert_equal 'ENG', release.text_language
+    assert_equal 'Latn', release.text_script
+    assert_equal '89ad4ac3-39f7-470e-963a-56509c546377', release.artist.id.uuid
+    assert_equal 1, release.release_events.size
+    assert_equal Model::IncompleteDate.new('2000'), release.release_events[0].date
+    assert_equal 'EU', release.release_events[0].country
+    assert_equal 16, release.tracks.size
+    release.tracks.each {|track|
+      assert_not_equal release.artist, track.artist
+    }
   end
 
   def test_release_under_the_pink_1
