@@ -13,6 +13,7 @@ class TestRelease < Test::Unit::TestCase
     @invalid_entity_types = [:artist, :track, :label]
     @tracks = [Model::Track.new, Model::Track.new]
     @release_events = [Model::ReleaseEvent.new, Model::ReleaseEvent.new]
+    @discs = [Model::Disc.new, Model::Disc.new]
   end
 
   def teardown

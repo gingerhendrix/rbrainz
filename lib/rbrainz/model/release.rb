@@ -5,6 +5,7 @@
 
 require 'rbrainz/model/entity'
 require 'rbrainz/model/release_event'
+require 'rbrainz/model/disc'
 
 module MusicBrainz
   module Model
@@ -34,11 +35,12 @@ module MusicBrainz
       attr_accessor :title, :types, :asin, :artist,
                     :text_language, :text_script
                     
-      attr_accessor :tracks, :release_events
+      attr_accessor :tracks, :release_events, :discs
       
       def initialize
         @tracks = Array.new
         @release_events = Array.new
+        @discs = Array.new
         @types = Array.new
       end
       

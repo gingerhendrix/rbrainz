@@ -30,6 +30,8 @@ module MusicBrainz
         # If this already is an instance of MBID store it directly.
         if mbid.is_a? MBID
           @id = mbid
+        elsif mbid.nil?
+          @id = nil
         else
           # Try to create an MBID from URI
           begin
@@ -41,7 +43,7 @@ module MusicBrainz
         end
         
         # Check if the entity type of @id matches that of the current object.
-        unless @id.entity == self.entity_type
+        unless @id.nil? or @id.entity == self.entity_type
           exception = EntityTypeNotMatchingError.new(@id.entity.to_s)
           @id = nil
           raise exception

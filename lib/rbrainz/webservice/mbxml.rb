@@ -30,7 +30,7 @@ module MusicBrainz
         # Search for the first occuring node of type entity which is a child node
         # of the metadata element.
         entity = @document.elements["//[local-name()='metadata' and namespace-uri()='%s']/%s[1]" %
-                 [NS_MMD_1, entity_type]]
+                 [Model::NS_MMD_1, entity_type]]
         
         unless entity.nil? or entity.is_a? REXML::Text
           case entity.name
@@ -58,7 +58,7 @@ module MusicBrainz
         # Search for the first occuring node of type entity which is a child node
         # of the metadata element.
         entity_list = @document.elements["//[local-name()='metadata' and namespace-uri()='%s']/%s-list[1]" %
-                      [NS_MMD_1, entity_type]]
+                      [Model::NS_MMD_1, entity_type]]
         
         unless entity_list.nil? or entity_list.is_a? REXML::Text
           list = Array.new
@@ -98,8 +98,11 @@ module MusicBrainz
         return nil
       end
       
+      private
+      
       # Iterate over a list of artists.
-      # The node must be of the type +artist-list+.
+      # 
+      # The node must be of the type <em>artist-list</em>.
       def read_artist_list(node)
         node.elements.each('artist') {|child|
           yield create_artist(child)
@@ -107,6 +110,7 @@ module MusicBrainz
       end
       
       # Create an +Artist+ object from the given artist node.
+      # 
       # TODO: relation list
       def create_artist(node)
         artist = Model::Artist.new
@@ -147,7 +151,8 @@ module MusicBrainz
       end
       
       # Iterate over a list of releases.
-      # The node must be of the type +release-list+.
+      # 
+      # The node must be of the type <em>release-list</em>.
       def read_release_list(node)
         node.elements.each('release') {|child|
           yield create_release(child)
@@ -155,8 +160,7 @@ module MusicBrainz
       end
       
       # Create a +Release+ object from the given release node.
-      # TODO: attributes['text-representation']
-      # TODO: disc list
+      # 
       # TODO: PUID list
       # TODO: relation list
       def create_release(node)
@@ -167,6 +171,17 @@ module MusicBrainz
         release.title  = node.elements['title'].text if node.elements['title']
         release.asin   = node.elements['asin'].text if node.elements['asin']
         release.artist = create_artist(node.elements['artist']) if node.elements['artist']
+        
+        # Read the types
+        node.attributes['type'].split(' ').each {|type|
+          release.types << MBXML.add_metadata_namespace(type)
+        } if node.attributes['type']
+        
+        # Read the text representation information.
+        if text_representation = node.elements['text-representation']
+          release.text_language = text_representation.attributes['language']
+          release.text_script = text_representation.attributes['script']
+        end
         
         # Read the track list
         if node.elements['track-list']
@@ -179,20 +194,24 @@ module MusicBrainz
         
         # Read the release event list
         if node.elements['release-event-list']
-          read_track_list(node.elements['release-event-list']) {|event|
-            release.release_event << event
+          read_release_event_list(node.elements['release-event-list']) {|event|
+            release.release_events << event
           }
         end
         
-        node.attributes['type'].split(' ').each {|type|
-          release.types << MBXML.add_metadata_namespace(type)
-        } if node.attributes['type']
+        # Read the disc list
+        if node.elements['disc-list']
+          read_disc_list(node.elements['disc-list']) {|disc|
+            release.discs << disc
+          }
+        end
         
         return release
       end
       
       # Iterate over a list of tracks.
-      # The node must be of the type +track-list+.
+      # 
+      # The node must be of the type <em>track-list</em>.
       def read_track_list(node)
         node.elements.each('track') {|child|
           yield create_track(child)
@@ -200,8 +219,7 @@ module MusicBrainz
       end
       
       # Create a +Track+ object from the given track node.
-      # TODO: release list
-      # TODO: PUID list
+      # 
       # TODO: relation list
       def create_track(node)
         track = Model::Track.new
@@ -220,11 +238,19 @@ module MusicBrainz
           }
         end
         
+        # Read the PUID list
+        if node.elements['puid-list']
+          read_puid_list(node.elements['puid-list']) {|puid|
+            track.puids << puid
+          }
+        end
+        
         return track
       end
       
       # Iterate over a list of labels.
-      # The node must be of the type +label-list+.
+      # 
+      # The node must be of the type <em>label-list</em>.
       def read_label_list(node)
         node.elements.each('label') {|child|
           yield create_label(child)
@@ -232,13 +258,43 @@ module MusicBrainz
       end
       
       # Create a +Label+ object from the given label node.
-      # TODO: implement
+      # 
+      # TODO: Relations
       def create_label(node)
-        raise Exception.new('Not implemented yet!')
+        label = Model::Label.new
+        
+        # Read all defined data fields
+        label.id = node.attributes['id']
+        label.type = MBXML.add_metadata_namespace(node.attributes['type']) if node.attributes['type']
+        
+        label.name = node.elements['name'].text if node.elements['name']
+        label.sort_name = node.elements['sort-name'].text if node.elements['sort-name']
+        label.code = node.elements['label-code'].text if node.elements['label-code']
+        label.disambiguation = node.elements['disambiguation'].text if node.elements['disambiguation']
+        label.country = node.elements['country'].text if node.elements['country']
+        
+        if life_span = node.elements['life-span']
+          if life_span.attributes['begin']
+            label.founding_date = Model::IncompleteDate.new life_span.attributes['begin']
+          end
+          if life_span.attributes['end']
+            label.dissolving_date = Model::IncompleteDate.new life_span.attributes['end']
+          end
+        end
+        
+        # Read the alias list
+        if node.elements['release-list']
+          read_release_list(node.elements['release-list']) {|release|
+            label.releases << release
+          }
+        end
+      
+        return label  
       end
       
       # Iterate over a list of aliases.
-      # The node must be of the type +alias-list+.
+      # 
+      # The node must be of the type <em>alias-list</em>.
       def read_alias_list(node)
         node.elements.each('alias') {|child|
           yield create_alias(child)
@@ -255,7 +311,8 @@ module MusicBrainz
       end
       
       # Iterate over a list of release events.
-      # The node must be of the type +release-event-list+.
+      # 
+      # The node must be of the type <em>release-event-list</em>.
       def read_release_event_list(node)
         node.elements.each('event') {|child|
           yield create_release_event(child)
@@ -273,9 +330,30 @@ module MusicBrainz
         event.country = node.attributes['country']
         event.catalog_number = node.attributes['catalog-number']
         event.barcode = node.attributes['barcode']
-        event.label   = create_label[node.elements['label']] if node.elements['label']
+        event.label   = create_label(node.elements['label']) if node.elements['label']
         
         return event
+      end
+      
+      # Iterate over a list of PUIDs.
+      # 
+      # The node must be of the type <em>puid-list</em>.
+      def read_puid_list(node)
+        node.elements.each('puid') {|child|
+          yield child.attributes['id']
+        }
+      end
+      
+      # Iterate over a list of discs.
+      # 
+      # The node must be of the type <em>disc-list</em>.
+      def read_disc_list(node)
+        node.elements.each('disc') {|child|
+          disc = Model::Disc.new
+          disc.id = child.attributes['id']
+          disc.sectors = child.attributes['sectors'].to_i
+          yield disc
+        }
       end
       
       # Helper method which will return the given property

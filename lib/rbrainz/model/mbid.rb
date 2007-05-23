@@ -34,7 +34,7 @@ module MusicBrainz
           entity = match[1]
           uuid = match[2]
         else
-          raise InvalidMBIDError.new(uri)
+          raise InvalidMBIDError.new(uri.inspect)
         end
         from_uuid(entity, uuid)
       end
@@ -52,7 +52,7 @@ module MusicBrainz
           raise UnknownEntityError.new(entity.to_s)
         end
         unless uuid.is_a? String and  UUID_REGEXP.match(uuid)
-          raise InvalidUUIDError.new(uuid)
+          raise InvalidUUIDError.new(uuid.inspect)
         end
         new(entity.to_sym, uuid)
       end

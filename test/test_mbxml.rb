@@ -158,6 +158,7 @@ class TestMBXML < Test::Unit::TestCase
     assert release_list[0].types.include?(Model::Release::TYPE_OFFICIAL)
     assert_equal 'Under the Pink', release_list[0].title
     assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release_list[0].artist.id.uuid
+    assert_equal 1, release_list[0].release_events.size
     assert_equal Model::IncompleteDate.new('1994-01-28'), release_list[0].release_events[0].date
   end
   
@@ -172,17 +173,17 @@ class TestMBXML < Test::Unit::TestCase
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Little_Earthquakes_1.xml')
     release = mbxml.get_entity(:release)
     
-    assert_euqal '02232360-337e-4a3f-ad20-6cdd4c34288c', release.id.uuid
+    assert_equal '02232360-337e-4a3f-ad20-6cdd4c34288c', release.id.uuid
     assert release.types.include?(Model::Release::TYPE_ALBUM)
     assert release.types.include?(Model::Release::TYPE_OFFICIAL)
-    assert_euqal 'Little Earthquakes', release.title
-    assert_euqal 'ENG', release.text_language
-    assert_euqal 'Latn', release.text_script
-    assert_euqal 'B000002IT2', release.asin
-    assert_euqal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release.artist.id
-    assert_euqal 3, release.release_events.size
-    assert_euqal Model::IncompleteDate('1992-01-13'), release.release_events[0].date
-    assert_euqal 'GB', release.release_events[0].country
+    assert_equal 'Little Earthquakes', release.title
+    assert_equal 'ENG', release.text_language
+    assert_equal 'Latn', release.text_script
+    assert_equal 'B000002IT2', release.asin
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release.artist.id.uuid
+    assert_equal 3, release.release_events.size
+    assert_equal Model::IncompleteDate.new('1992-01-13'), release.release_events[0].date
+    assert_equal 'GB', release.release_events[0].country
     assert_equal 3, release.discs.size
     assert_equal 'ILKp3.bZmvoMO7wSrq1cw7WatfA-', release.discs[0].id
   end
@@ -191,17 +192,17 @@ class TestMBXML < Test::Unit::TestCase
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Little_Earthquakes_2.xml')
     release = mbxml.get_entity(:release)
     
-    assert_euqal '02232360-337e-4a3f-ad20-6cdd4c34288c', release.id.uuid
+    assert_equal '02232360-337e-4a3f-ad20-6cdd4c34288c', release.id.uuid
     assert release.types.include?(Model::Release::TYPE_ALBUM)
     assert release.types.include?(Model::Release::TYPE_OFFICIAL)
-    assert_euqal 'Little Earthquakes', release.title
-    assert_euqal 'ENG', release.text_language
-    assert_euqal 'Latn', release.text_script
-    assert_euqal 'B000002IT2', release.asin
-    assert_euqal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release.artist.id
-    assert_euqal 3, release.release_events.size
-    assert_euqal Model::IncompleteDate('1992-01-13'), release.release_events[0].date
-    assert_euqal 'GB', release.release_events[0].country
+    assert_equal 'Little Earthquakes', release.title
+    assert_equal 'ENG', release.text_language
+    assert_equal 'Latn', release.text_script
+    assert_equal 'B000002IT2', release.asin
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release.artist.id.uuid
+    assert_equal 3, release.release_events.size
+    assert_equal Model::IncompleteDate.new('1992-01-13'), release.release_events[0].date
+    assert_equal 'GB', release.release_events[0].country
     assert_equal 3, release.discs.size
     assert_equal 'ILKp3.bZmvoMO7wSrq1cw7WatfA-', release.discs[0].id
     assert_equal 12, release.tracks.size
@@ -279,8 +280,8 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'Silent All These Years', track.title
     assert_equal 253466, track.duration
     assert_equal 7, track.puids.size
-    assert_equal 'c2a2cee5-a8ca-4f89-a092-c3e1e65ab7e6', track.puids[0].id.uuid
-    assert_equal '42ab76ea-5d42-4259-85d7-e7f2c69e4485', track.puids[6].id.uuid
+    assert_equal 'c2a2cee5-a8ca-4f89-a092-c3e1e65ab7e6', track.puids[0]
+    assert_equal '42ab76ea-5d42-4259-85d7-e7f2c69e4485', track.puids[6]
   end
 
   def test_track_silent_all_these_years_4
@@ -294,8 +295,8 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 1, track.releases.size
     assert_equal '02232360-337e-4a3f-ad20-6cdd4c34288c', track.releases[0].id.uuid
     assert_equal 7, track.puids.size
-    assert_equal 'c2a2cee5-a8ca-4f89-a092-c3e1e65ab7e6', track.puids[0].id.uuid
-    assert_equal '42ab76ea-5d42-4259-85d7-e7f2c69e4485', track.puids[6].id.uuid
+    assert_equal 'c2a2cee5-a8ca-4f89-a092-c3e1e65ab7e6', track.puids[0]
+    assert_equal '42ab76ea-5d42-4259-85d7-e7f2c69e4485', track.puids[6]
   end
 
   def test_track_silent_all_these_years_5
@@ -342,7 +343,7 @@ class TestMBXML < Test::Unit::TestCase
     
     assert_equal Model::Label::TYPE_DISTRIBUTOR, label.type
     assert_equal 'Atlantic Records', label.name
-    assert_equal 'AR SortName', label.name
+    assert_equal 'AR SortName', label.sort_name
     assert_equal '121', label.code
     assert_equal 'fake', label.disambiguation
     assert_equal 'US', label.country
