@@ -19,9 +19,27 @@ class TestIncompleteDate < Test::Unit::TestCase
   def teardown
   end
   
-  # Invalid dates shouldn't be accepted.
-  def test_date_validation
-    assert false
+  def test_new
+    date = nil
+    assert_nothing_raised {date = Model::IncompleteDate.new('1969-01-05')}
+    assert_equal 1969, date.year
+    assert_equal 1, date.month
+    assert_equal 5, date.day
+    assert_nothing_raised {date = Model::IncompleteDate.new(1980)}
+    assert_equal 1980, date.year
+    assert_nothing_raised {date = Model::IncompleteDate.new(Date.parse('1969-01-05'))}
+    assert_equal 1969, date.year
+    assert_equal 1, date.month
+    assert_equal 5, date.day
+    assert_nothing_raised {date = Model::IncompleteDate.new(nil)}
+    assert_equal nil, date.year
+  end
+  
+  def test_invalid_format
+    assert_raise(ArgumentError) {date = Model::IncompleteDate.new('69-01-05')}
+    assert_raise(ArgumentError) {date = Model::IncompleteDate.new(69)}
+    assert_raise(ArgumentError) {date = Model::IncompleteDate.new('1969/01/05')}
+    assert_raise(ArgumentError) {date = Model::IncompleteDate.new('01-05-1969')}
   end
   
   def test_to_string

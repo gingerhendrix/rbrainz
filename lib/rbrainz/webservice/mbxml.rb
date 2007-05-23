@@ -20,6 +20,15 @@ module MusicBrainz
     
       def initialize(xml)
         @document = Document.new(xml)
+        
+        # Already loaded artists, releases, tracks
+        # and labels will get cached in these variables
+        # to link to them if they occure multiple times
+        # inside the same document.
+        @artists  = Hash.new
+        @releases = Hash.new
+        @tracks   = Hash.new
+        @labels   = Hash.new
       end
       
       # Read the XML string and create an entity model
@@ -113,7 +122,12 @@ module MusicBrainz
       # 
       # TODO: relation list
       def create_artist(node)
-        artist = Model::Artist.new
+        if node.attributes['id'] and @artists[node.attributes['id']]
+          artist = @artists[node.attributes['id']]
+        else
+          artist = Model::Artist.new
+          @artists[node.attributes['id']] = artist
+        end
         
         # Read all defined data fields
         artist.id = node.attributes['id']
@@ -164,7 +178,12 @@ module MusicBrainz
       # TODO: PUID list
       # TODO: relation list
       def create_release(node)
-        release = Model::Release.new
+        if node.attributes['id'] and @releases[node.attributes['id']]
+          release = @releases[node.attributes['id']]
+        else
+          release = Model::Release.new
+          @releases[node.attributes['id']] = release
+        end
         
         # Read all defined data fields
         release.id     = node.attributes['id']
@@ -222,7 +241,12 @@ module MusicBrainz
       # 
       # TODO: relation list
       def create_track(node)
-        track = Model::Track.new
+        if node.attributes['id'] and @tracks[node.attributes['id']]
+          track = @tracks[node.attributes['id']]
+        else
+          track = Model::Track.new
+          @tracks[node.attributes['id']] = track
+        end
         
         # Read all defined data fields
         track.id       = node.attributes['id']
@@ -261,7 +285,12 @@ module MusicBrainz
       # 
       # TODO: Relations
       def create_label(node)
-        label = Model::Label.new
+        if node.attributes['id'] and @labels[node.attributes['id']]
+          label = @labels[node.attributes['id']]
+        else
+          label = Model::Label.new
+          @labels[node.attributes['id']] = label
+        end
         
         # Read all defined data fields
         label.id = node.attributes['id']
@@ -362,7 +391,7 @@ module MusicBrainz
       # unchanged.
       def self.add_metadata_namespace(metadata_property)
         regex = Regexp.new("/#{Model::NS_MMD_1}[a-z-]/i")
-        unless regex.match metadata_property
+        unless metadata_property =~ regex
           return Model::NS_MMD_1 + metadata_property
         else
           return metadata_property

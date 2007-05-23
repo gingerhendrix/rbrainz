@@ -50,8 +50,9 @@ module TestEntity
     assert_equal nil, entity.id
   end
 
-  def test_relations
-    assert false, 'Unit test for ' + self.class.name + ' not implemented!'
-  end
+  # Relations will get implemented in version 0.1.1
+  #def test_relations
+  #  assert false, 'Unit test for ' + self.class.name + ' not implemented!'
+  #end
   
 end

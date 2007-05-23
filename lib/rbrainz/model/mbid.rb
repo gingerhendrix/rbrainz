@@ -51,7 +51,7 @@ module MusicBrainz
            not [:artist, :release, :track, :label].include? entity.to_sym
           raise UnknownEntityError.new(entity.to_s)
         end
-        unless uuid.is_a? String and  UUID_REGEXP.match(uuid)
+        unless uuid.is_a? String and uuid =~ UUID_REGEXP
           raise InvalidUUIDError.new(uuid.inspect)
         end
         new(entity.to_sym, uuid)

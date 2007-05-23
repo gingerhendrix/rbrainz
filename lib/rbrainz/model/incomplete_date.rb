@@ -22,15 +22,15 @@ module MusicBrainz
       
       # TODO: Validation of the date
       def initialize(date)
-        @year, @month, @day = nil
-        if date.is_a? String
-          @year = date[0..3].to_i
+        @year = nil
+        @month = nil
+        @day = nil
+        if date = date.to_s and date =~ /^\d{4}(-\d{2}){0,2}$/
+          @year = date[0..3].to_i if date.size >= 4
           @month = date[5..6].to_i if date.size >= 7
           @day = date[8..9].to_i if date.size == 10
-        elsif date.is_a? Date
-          @year = date.year
-          @month = date.month
-          @day = date.day
+        elsif not date.empty?
+          raise ArgumentError
         end
       end
       
