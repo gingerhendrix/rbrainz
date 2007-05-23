@@ -1,9 +1,23 @@
 =TODO
-==Longer term tasks
+
+==Short term tasks
+* Support relationships (0.1.1)
+* Support for the score parameter in search result. Could be implemented
+  a little bit like in PythonMusicBrainz2, but more flexible. Maybe a result
+  object over which one can iterate to retrieve all results witch the
+  corresponding score. (0.2.0)
+   result.each {|entity, score|
+     ...
+   }
 * Support for the offset parameter for queries on collections
-  to retrieve results below the 100 results limit.
-* Full text search (lucene search queries).
-* Calculation of disc IDs
-* User authentication
+  to retrieve results below the 100 results limit. Could be easily integrated
+  into the result object (see previous point). (0.2.0)
+* Make it easier to create MBID objects or allow usage of ID strings
+  where it makes life easier.
+
+==Longer term tasks
+* Calculation of disc IDs (0.3.0)
+* User authentication (0.4.0)
+* Querying of user information (0.4.0)
 * PUID submission
-* Querying of user information
+* Full text search (lucene search queries).
