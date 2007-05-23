@@ -16,8 +16,23 @@ class TestDisc < Test::Unit::TestCase
   def teardown
   end
   
-  def test_not_implemented
-    assert false, 'Unit test for ' + self.class.name + ' not implemented!'
+  def test_new_disc
+    disc = nil
+    assert_nothing_raised {disc = Model::Disc.new}
+  end
+  
+  def test_id
+    disc = Model::Disc.new
+    assert disc.id.nil?
+    assert_nothing_raised {disc.id = 'Tit3F0Do_sZ_7NbfM_1vlEbF0wo-'}
+    assert_equal 'Tit3F0Do_sZ_7NbfM_1vlEbF0wo-', disc.id
+  end
+
+  def test_sectors
+    disc = Model::Disc.new
+    assert disc.sectors.nil?
+    assert_nothing_raised {disc.sectors = 264432}
+    assert_equal 264432, disc.sectors
   end
   
 end

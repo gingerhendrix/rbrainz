@@ -145,7 +145,20 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_release_search
-    assert false, 'Test not implemented'
+    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/search_result_1.xml')
+    assert_equal nil, mbxml.get_entity(:artist)
+    assert_equal nil, mbxml.get_entity(:release)
+    assert_equal nil, mbxml.get_entity(:track)
+    assert_equal nil, mbxml.get_entity(:label)
+
+    release_list = mbxml.get_entity_list(:release)
+    assert_equal 2, release_list.size, release_list.inspect
+    assert_equal '290e10c5-7efc-4f60-ba2c-0dfc0208fbf5', release_list[0].id.uuid
+    assert release_list[0].types.include?(Model::Release::TYPE_ALBUM)
+    assert release_list[0].types.include?(Model::Release::TYPE_OFFICIAL)
+    assert_equal 'Under the Pink', release_list[0].title
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release_list[0].artist.id.uuid
+    assert_equal Model::IncompleteDate.new('1994-01-28'), release_list[0].release_events[0].date
   end
   
   def test_release_highway_61_revisited_1
@@ -159,14 +172,42 @@ class TestMBXML < Test::Unit::TestCase
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Little_Earthquakes_1.xml')
     release = mbxml.get_entity(:release)
     
-    assert false, 'Test not implemented'
+    assert_euqal '02232360-337e-4a3f-ad20-6cdd4c34288c', release.id.uuid
+    assert release.types.include?(Model::Release::TYPE_ALBUM)
+    assert release.types.include?(Model::Release::TYPE_OFFICIAL)
+    assert_euqal 'Little Earthquakes', release.title
+    assert_euqal 'ENG', release.text_language
+    assert_euqal 'Latn', release.text_script
+    assert_euqal 'B000002IT2', release.asin
+    assert_euqal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release.artist.id
+    assert_euqal 3, release.release_events.size
+    assert_euqal Model::IncompleteDate('1992-01-13'), release.release_events[0].date
+    assert_euqal 'GB', release.release_events[0].country
+    assert_equal 3, release.discs.size
+    assert_equal 'ILKp3.bZmvoMO7wSrq1cw7WatfA-', release.discs[0].id
   end
 
   def test_release_little_earthquakes_2
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Little_Earthquakes_2.xml')
     release = mbxml.get_entity(:release)
     
-    assert false, 'Test not implemented'
+    assert_euqal '02232360-337e-4a3f-ad20-6cdd4c34288c', release.id.uuid
+    assert release.types.include?(Model::Release::TYPE_ALBUM)
+    assert release.types.include?(Model::Release::TYPE_OFFICIAL)
+    assert_euqal 'Little Earthquakes', release.title
+    assert_euqal 'ENG', release.text_language
+    assert_euqal 'Latn', release.text_script
+    assert_euqal 'B000002IT2', release.asin
+    assert_euqal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release.artist.id
+    assert_euqal 3, release.release_events.size
+    assert_euqal Model::IncompleteDate('1992-01-13'), release.release_events[0].date
+    assert_euqal 'GB', release.release_events[0].country
+    assert_equal 3, release.discs.size
+    assert_equal 'ILKp3.bZmvoMO7wSrq1cw7WatfA-', release.discs[0].id
+    assert_equal 12, release.tracks.size
+    assert_equal '6e71c125-3cb5-4a19-a1f0-66779c9ae9f4', release.tracks[0].id.uuid
+    assert_equal 'Crucify', release.tracks[0].title
+    assert_equal 301186, release.tracks[0].duration
   end
 
   def test_release_mission_impossible_2

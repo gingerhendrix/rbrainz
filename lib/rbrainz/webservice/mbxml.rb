@@ -18,9 +18,6 @@ module MusicBrainz
     # information on the MusicBrainz XML Metadata schema.
     class MBXML
     
-      # The namespace used by the MusicBrainz XML Metadata schema.
-      NAMESPACE = 'http://musicbrainz.org/ns/mmd-1.0#'
-      
       def initialize(xml)
         @document = Document.new(xml)
       end
@@ -33,7 +30,7 @@ module MusicBrainz
         # Search for the first occuring node of type entity which is a child node
         # of the metadata element.
         entity = @document.elements["//[local-name()='metadata' and namespace-uri()='%s']/%s[1]" %
-                 [NAMESPACE, entity_type]]
+                 [NS_MMD_1, entity_type]]
         
         unless entity.nil? or entity.is_a? REXML::Text
           case entity.name
@@ -61,7 +58,7 @@ module MusicBrainz
         # Search for the first occuring node of type entity which is a child node
         # of the metadata element.
         entity_list = @document.elements["//[local-name()='metadata' and namespace-uri()='%s']/%s-list[1]" %
-                      [NAMESPACE, entity_type]]
+                      [NS_MMD_1, entity_type]]
         
         unless entity_list.nil? or entity_list.is_a? REXML::Text
           list = Array.new

@@ -129,10 +129,32 @@ class TestRelease < Test::Unit::TestCase
   end
   
   # You can pass an array of aliases to add them all.
-  def test_add_several_tracks_at_once
+  def test_add_several_release_events_at_once
     release = Model::Release.new
     assert_nothing_raised {release.release_events = @release_events}
     assert_equal @release_events, release.release_events
+  end
+  
+  # Many discs can be added
+  def test_add_and_remove_disc
+    release = Model::Release.new
+    assert_equal 0, release.discs.size
+    assert_nothing_raised {release.discs << @discs[0]}
+    assert_equal 1, release.discs.size
+    assert_nothing_raised {release.discs << @discs[1]}
+    assert_equal 2, release.discs.size
+    
+    assert_nothing_raised {release.discs.delete @discs[1]}
+    assert_equal 1, release.discs.size
+    assert_nothing_raised {release.discs.delete @discs[0]}
+    assert_equal 0, release.discs.size
+  end
+  
+  # You can pass an array of discs to add them all.
+  def test_add_several_discs_at_once
+    release = Model::Release.new
+    assert_nothing_raised {release.discs = @discs}
+    assert_equal @discs, release.discs
   end
 
 end
