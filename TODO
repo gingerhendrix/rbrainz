@@ -2,16 +2,17 @@
 
 ==Short term tasks
 * Support relationships (0.1.1)
+* Query collections (0.1.2)
 * Support for the score parameter in search result. Could be implemented
   a little bit like in PythonMusicBrainz2, but more flexible. Maybe a result
   object over which one can iterate to retrieve all results witch the
-  corresponding score. (0.2.0)
+  corresponding score. (0.1.2)
    result.each {|entity, score|
      ...
    }
 * Support for the offset parameter for queries on collections
   to retrieve results below the 100 results limit. Could be easily integrated
-  into the result object (see previous point). (0.2.0)
+  into the result object (see previous point). (0.1.2)
 * Make it easier to create MBID objects or allow usage of ID strings
   where it makes life easier.
 
