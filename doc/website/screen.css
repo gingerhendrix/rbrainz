@@ -1,0 +1,71 @@
+* {padding: 0; margin: 0;}
+
+body {
+	font-size: 100.01%;
+	font-family: sans-serif;
+	width: 52em;
+	margin: 0 auto;
+}
+
+p, ul {
+	margin: .6em 0;
+	line-height: 1.2em;
+}
+
+strong { font-weight: bold; }
+em     { font-style: italic; }
+kbd    { font-family: monospace; }
+
+kbd.command {
+	display: block;
+	font-size: 1.1em;
+	color: black;
+	background-color: rgb(235, 235, 235);
+	border: .1em dashed rgb(255, 180, 15);
+	padding: .2em;
+}
+
+h1, h2 {
+	font-family: Georgia, serif;
+}
+
+h1 { font-size: 2.1em; margin: .4em 0 .2em; }
+h2 { font-size: 1.5em; margin: .8em 0 .1em; }
+
+a, a:link, a:visited {
+	color: rgb(47, 84, 255);
+}
+
+a:focus, a:hover, a:active {
+	color: rgb(255, 180, 15);
+}
+
+#content {
+	width: 40em;
+}
+
+#navigation {
+	float: right;
+	width: 10em;
+	margin-left: 2em;
+}
+
+#navigation li {
+	list-style: none;
+	color: rgb(47, 84, 255);
+	background-color: rgb(230, 230, 230);
+	margin-bottom: .2em;
+	padding: .2em;
+}
+
+#navigation li:hover {
+	color: rgb(47, 84, 255);
+	background-color: rgb(255, 180, 15);
+}
+
+#navigation li a:link, #navigation li a:visited,
+#navigation li a:focus, #navigation li a:hover,
+#navigation li a:active {
+	color: rgb(47, 84, 255);
+	text-decoration: none;
+}
