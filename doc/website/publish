@@ -1,0 +1,3 @@
+#!/bin/sh
+
+scp index.html screen.css phw@rubyforge.org:/var/www/gforge-projects/rbrainz
