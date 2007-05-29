@@ -22,7 +22,7 @@ module MusicBrainz
       # Must be implemented by the concrete webservices.
       # TODO: Specify and implement in Webservice.
       def post
-        raise Exception.new('Called abstract method.')
+        raise NotImplementedError.new('Called abstract method.')
       end
       
     end
@@ -31,24 +31,54 @@ module MusicBrainz
     # TODO: Implement authorization.
     class Webservice < IWebservice
     
+      # Timeouts for opening and reading connections (in seconds)
+      attr_accessor :open_timeout, :read_timeout
+    
       def initialize(options = {:host => nil, :port => nil, :path_prefix => nil})
         @host = options[:host] ? options[:host] : 'musicbrainz.org'
         @port = options[:port] ? options[:port] : 80
         @path_prefix = options[:path_prefix] ? options[:path_prefix] : '/ws'
+        @open_timeout = nil
+        @read_timeout = nil
       end
     
       # Query the Webservice with HTTP GET.
-      # TODO: Exception handling.
+      # 
+      # Raises: +RequestError+, +ResourceNotFoundError+, +AuthenticationError+,
+      # +ConnectionError+ 
       def get(entity, id, options = {:include => nil, :filter => nil, :version => 1})
         url = URI.parse(create_uri(entity, id, options))
-        req = Net::HTTP::Get.new(url.request_uri)
-        res = Net::HTTP.start(url.host, url.port) {|http|
-          http.request(req)
-        }
-        return res.body
+        request = Net::HTTP::Get.new(url.request_uri)
+        connection = Net::HTTP.new(url.host, url.port)
+        
+        # Set timeouts
+        connection.open_timeout = @open_timeout if @open_timeout
+        connection.read_timeout = @read_timeout if @read_timeout
+        
+        # Make the request
+        begin
+          response = connection.start {|http|
+            http.request(request)
+          }
+        rescue Timeout::Error, Errno::ETIMEDOUT
+          raise ConnectionError.new('%s timed out' % url.to_s)
+        end
+        
+        # Handle response errors.
+        if response.is_a? Net::HTTPBadRequest # 400
+          raise RequestError.new(url.to_s)
+        elsif response.is_a? Net::HTTPUnauthorized # 401
+          raise AuthenticationError.new(url.to_s)
+        elsif response.is_a? Net::HTTPNotFound # 404
+          raise ResourceNotFoundError.new(url.to_s)
+        elsif not response.is_a? Net::HTTPSuccess
+          raise ConnectionError.new(response.class.name)
+        end
+        
+        return response.body
       end
       
-      private
+      private # ----------------------------------------------------------------
       
       # Builds a request URI for querying the webservice.
       def create_uri(entity, id, options = {:include => nil, :filter => nil, :version => 1})

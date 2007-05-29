@@ -14,6 +14,7 @@ module MusicBrainz
     # webservice and create the corresponding model classes.
     # The class understands the MusicBrainz XML Metadata Version 1.0
     # schema.
+    # 
     # See http://musicbrainz.org/doc/MusicBrainzXMLMetaData for more
     # information on the MusicBrainz XML Metadata schema.
     class MBXML
@@ -107,7 +108,7 @@ module MusicBrainz
         return nil
       end
       
-      private
+      private # ----------------------------------------------------------------
       
       # Iterate over a list of artists.
       # 
