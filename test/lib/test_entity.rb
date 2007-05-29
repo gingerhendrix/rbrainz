@@ -50,9 +50,61 @@ module TestEntity
     assert_equal nil, entity.id
   end
 
-  # Relations will get implemented in version 0.1.1
-  #def test_relations
-  #  assert false, 'Unit test for ' + self.class.name + ' not implemented!'
-  #end
+  def test_relations
+    entity = @tested_class.new
+    
+    # Create some test relations
+    artist_rel = Model::Relation.new
+    artist_rel.target = Model::Artist.new
+    artist_rel.type = Model::NS_REL_1 + 'Vocal'
+    artist_rel.direction = Model::Relation::DIR_BACKWARD
+    artist_rel.attributes << 'Lead'
+    assert_nothing_raised {entity.add_relation artist_rel}
+    
+    track_rel = Model::Relation.new
+    track_rel.target = Model::Track.new
+    track_rel.type = Model::NS_REL_1 + 'Vocal'
+    track_rel.direction = Model::Relation::DIR_FORWARD
+    track_rel.attributes << 'Lead'
+    track_rel.attributes << 'Guest'
+    assert_nothing_raised {entity.add_relation track_rel}
+    
+    url_rel = Model::Relation.new
+    url_rel.target = 'http://www.example.com'
+    url_rel.type = Model::NS_REL_1 + 'OfficialHomepage'
+    assert_nothing_raised {entity.add_relation url_rel}
+    
+    # Get all relations
+    assert_nothing_raised {rel_list = entity.getRelations()}
+    assert_equal 3, rel_list.size
+    assert rel_list.include?(artist_rel)
+    assert rel_list.include?(track_rel)
+    assert rel_list.include?(url_rel)
+  
+    # Get only artist relation by target type
+    assert_nothing_raised {rel_list = entity.getRelations(
+                             :target_type => Model::Relation::TO_ARTIST)}
+    assert_equal 1, rel_list.size
+    assert rel_list.include?(artist_rel)
+    
+    # Get only url relation type
+    assert_nothing_raised {rel_list = entity.getRelations(
+                             :relation_type => Model::NS_REL_1 + 'OfficialHomepage')}
+    assert_equal 1, rel_list.size
+    assert rel_list.include?(url_rel)
+    
+    # Get only artist and track relation by attribute
+    assert_nothing_raised {rel_list = entity.getRelations(
+                             :required_attributes => ['lead'])}
+    assert_equal 2, rel_list.size
+    assert rel_list.include?(artist_rel)
+    assert rel_list.include?(track_rel)
+    
+    # Get only artist relation by target type
+    assert_nothing_raised {rel_list = entity.getRelations(
+                             :direction => Model::Relation::DIR_BACKWARD)}
+    assert_equal 1, rel_list.size
+    assert rel_list.include?(artist_rel)
+  end
   
 end
