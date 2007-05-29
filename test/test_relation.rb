@@ -103,9 +103,9 @@ class TestRelation < Test::Unit::TestCase
   def test_attributes
     relation = Model::Relation.new
     assert_equal 0, relation.attributes.size
-    assert_nothing_raised {relation.attributes << 'Lead'}
+    assert_nothing_raised {relation.attributes << Model::NS_REL_1 + 'Lead'}
     assert_equal 1, relation.attributes.size
-    assert_nothing_raised {relation.attributes.delete 'Lead'}
+    assert_nothing_raised {relation.attributes.delete(Model::NS_REL_1 + 'Lead')}
     assert_equal 0, relation.attributes.size
   end
   

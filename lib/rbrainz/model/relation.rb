@@ -13,11 +13,11 @@ module MusicBrainz
       DIR_FORWARD  = :forward
       DIR_BOTH     = :both
       
-      TO_ARTIST  = 'http://musicbrainz.org/ns/rel-1.0#Artist'
-      TO_RELEASE = 'http://musicbrainz.org/ns/rel-1.0#Release'
-      TO_TRACK   = 'http://musicbrainz.org/ns/rel-1.0#Track'
-      TO_LABEL   = 'http://musicbrainz.org/ns/rel-1.0#Label'
-      TO_URL     = 'http://musicbrainz.org/ns/rel-1.0#Url'
+      TO_ARTIST  = NS_REL_1 + 'Artist'
+      TO_RELEASE = NS_REL_1 + 'Release'
+      TO_TRACK   = NS_REL_1 + 'Track'
+      TO_LABEL   = NS_REL_1 + 'Label'
+      TO_URL     = NS_REL_1 + 'Url'
       
       attr_accessor :type, :direction
       

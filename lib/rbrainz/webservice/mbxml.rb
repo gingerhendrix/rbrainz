@@ -119,8 +119,6 @@ module MusicBrainz
       end
       
       # Create an +Artist+ object from the given artist node.
-      # 
-      # TODO: relation list
       def create_artist(node)
         if node.attributes['id'] and @artists[node.attributes['id']]
           artist = @artists[node.attributes['id']]
@@ -131,7 +129,9 @@ module MusicBrainz
         
         # Read all defined data fields
         artist.id = node.attributes['id']
-        artist.type = MBXML.add_metadata_namespace(node.attributes['type']) if node.attributes['type']
+        if node.attributes['type']
+          artist.type = MBXML.add_namespace(node.attributes['type'], Model::NS_MMD_1)
+        end
         
         artist.name = node.elements['name'].text if node.elements['name']
         artist.sort_name = node.elements['sort-name'].text if node.elements['sort-name']
@@ -161,6 +161,15 @@ module MusicBrainz
           }
         end
         
+        # Read the relation list
+        if node.elements['relation-list']
+          node.elements.each('relation-list') {|relation_node|
+            read_relation_list(relation_node) {|relation|
+              artist.add_relation relation
+            }
+          }
+        end
+        
         return artist
       end
       
@@ -176,7 +185,6 @@ module MusicBrainz
       # Create a +Release+ object from the given release node.
       # 
       # TODO: PUID list
-      # TODO: relation list
       def create_release(node)
         if node.attributes['id'] and @releases[node.attributes['id']]
           release = @releases[node.attributes['id']]
@@ -193,7 +201,7 @@ module MusicBrainz
         
         # Read the types
         node.attributes['type'].split(' ').each {|type|
-          release.types << MBXML.add_metadata_namespace(type)
+          release.types << MBXML.add_namespace(type, Model::NS_MMD_1)
         } if node.attributes['type']
         
         # Read the text representation information.
@@ -225,6 +233,15 @@ module MusicBrainz
           }
         end
         
+        # Read the relation list
+        if node.elements['relation-list']
+          node.elements.each('relation-list') {|relation_node|
+            read_relation_list(relation_node) {|relation|
+              release.add_relation relation
+            }
+          }
+        end
+        
         return release
       end
       
@@ -238,8 +255,6 @@ module MusicBrainz
       end
       
       # Create a +Track+ object from the given track node.
-      # 
-      # TODO: relation list
       def create_track(node)
         if node.attributes['id'] and @tracks[node.attributes['id']]
           track = @tracks[node.attributes['id']]
@@ -269,6 +284,15 @@ module MusicBrainz
           }
         end
         
+        # Read the relation list
+        if node.elements['relation-list']
+          node.elements.each('relation-list') {|relation_node|
+            read_relation_list(relation_node) {|relation|
+              track.add_relation relation
+            }
+          }
+        end
+        
         return track
       end
       
@@ -282,8 +306,6 @@ module MusicBrainz
       end
       
       # Create a +Label+ object from the given label node.
-      # 
-      # TODO: Relations
       def create_label(node)
         if node.attributes['id'] and @labels[node.attributes['id']]
           label = @labels[node.attributes['id']]
@@ -294,7 +316,9 @@ module MusicBrainz
         
         # Read all defined data fields
         label.id = node.attributes['id']
-        label.type = MBXML.add_metadata_namespace(node.attributes['type']) if node.attributes['type']
+        if node.attributes['type']
+          label.type = MBXML.add_namespace(node.attributes['type'], Model::NS_MMD_1)
+        end
         
         label.name = node.elements['name'].text if node.elements['name']
         label.sort_name = node.elements['sort-name'].text if node.elements['sort-name']
@@ -318,6 +342,15 @@ module MusicBrainz
           }
         end
       
+        # Read the relation list
+        if node.elements['relation-list']
+          node.elements.each('relation-list') {|relation_node|
+            read_relation_list(relation_node) {|relation|
+              label.add_relation relation
+            }
+          }
+        end
+        
         return label  
       end
       
@@ -385,16 +418,94 @@ module MusicBrainz
         }
       end
       
+      # Iterate over a list of relations.
+      # 
+      # The node must be of the type <em>relation-list</em>.
+      def read_relation_list(node)
+        node.elements.each('relation') {|child|
+          target_type = MBXML.add_namespace(node.attributes['target-type'], Model::NS_REL_1)
+          yield create_relation(child, target_type)
+        }
+      end
+      
+      # Create a +Relation+ object from the given relation node.
+      def create_relation(node, target_type)
+        relation = Model::Relation.new
+        
+        # Read all defined data fields
+        if node.attributes['direction']
+          relation.direction = node.attributes['direction'].to_sym
+        end
+        
+        if node.attributes['type']
+          relation.type = MBXML.add_namespace(node.attributes['type'], Model::NS_REL_1)
+        end
+        
+        if node.attributes['begin']
+          relation.begin_date = Model::IncompleteDate.new node.attributes['begin']
+        end
+        
+        if node.attributes['end']
+          relation.begin_end = Model::IncompleteDate.new node.attributes['end']
+        end
+        
+        if node.attributes['attributes']
+          node.attributes['attributes'].split(' ').each {|attribute|
+            relation.attributes << MBXML.add_namespace(attribute, Model::NS_REL_1)
+          }
+        end
+        
+        # Set the target. Either use the target included in the relation
+        # or create a new target according to the target type if no target
+        # is present.
+        case target_type
+        when Model::Relation::TO_ARTIST
+          if node.elements['artist']
+            target = create_artist node.elements['artist']
+          else
+            target = Model::Artist.new
+            target.id = Model::MBID.from_uuid(:artist, node.attributes['target'])
+          end
+        when Model::Relation::TO_RELEASE
+          if node.elements['release']
+            target = create_release node.elements['release']
+          else
+            target = Model::Release.new
+            target.id = Model::MBID.from_uuid(:release, node.attributes['target'])
+          end
+        when Model::Relation::TO_TRACK
+          if node.elements['track']
+            target = create_track node.elements['track']
+          else
+            target = Model::Track.new
+            target.id = Model::MBID.from_uuid(:track, node.attributes['target'])
+          end
+        when Model::Relation::TO_LABEL
+          if node.elements['label']
+            target = create_label node.elements['label']
+          else
+            target = Model::Label.new
+            target.id = Model::MBID.from_uuid(:label, node.attributes['target'])
+          end
+        when Model::Relation::TO_URL
+          target = node.attributes['target']
+        end
+        
+        relation.target = target
+        
+        return relation
+      end
+      
       # Helper method which will return the given property
-      # extended by the metadata namespace. If the property
+      # extended by the namespace. If the property
       # already includes the namespace it will be returned
       # unchanged.
-      def self.add_metadata_namespace(metadata_property)
-        regex = Regexp.new("/#{Model::NS_MMD_1}[a-z-]/i")
-        unless metadata_property =~ regex
-          return Model::NS_MMD_1 + metadata_property
+      def self.add_namespace(property, namespace)
+        regex = Regexp.new("/#{namespace}[a-z-]/i")
+        unless property =~ regex
+          return namespace + property
         else
-          return metadata_property
+          return property
         end
       end
       

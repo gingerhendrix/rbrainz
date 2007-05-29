@@ -123,9 +123,9 @@ class TestMBXML < Test::Unit::TestCase
     url_rels = artist.get_relations(:target_type => Model::Relation::TO_URL)
     assert_equal 2, url_rels.size
     assert_equal Model::NS_REL_1 + 'Discography', url_rels[0].type
-    assert_equal Model::NS_REL_1 + 'http://www.yessaid.com/albums.html', url_rels[0].target
+    assert_equal 'http://www.yessaid.com/albums.html', url_rels[0].target
     assert_equal Model::NS_REL_1 + 'Wikipedia', url_rels[1].type
-    assert_equal Model::NS_REL_1 + 'http://en.wikipedia.org/wiki/Tori_Amos', url_rels[1].target
+    assert_equal 'http://en.wikipedia.org/wiki/Tori_Amos', url_rels[1].target
   end
 
   def test_artist_tori_amos_4
@@ -307,11 +307,11 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', track.artist.id.uuid
     
     track_rels = track.get_relations(:target_type => Model::Relation::TO_TRACK)
-    assert_equal 1, track_rels.size
+    assert_equal 1, track_rels.size, track.get_relations.inspect
     assert_equal Model::NS_REL_1 + 'Cover', track_rels[0].type
     assert_equal Model::Relation::DIR_BACKWARD, track_rels[0].direction
-    assert artist_rels[0].target.is_a?(Model::Track)
-    assert_equal '5bcd4eaa-fae7-465f-9f03-d005b959ed02', artist_rels[0].target.artist.id.uuid
+    assert track_rels[0].target.is_a?(Model::Track)
+    assert_equal '5bcd4eaa-fae7-465f-9f03-d005b959ed02', track_rels[0].target.artist.id.uuid
   end
 
   def test_track_silent_all_these_years_3
