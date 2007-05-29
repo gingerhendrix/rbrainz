@@ -13,7 +13,7 @@ require 'rake/rdoctask'
 # Packaging tasks: -------------------------------------------------------
 
 PKG_NAME = 'rbrainz'
-PKG_VERSION = '0.1.0'
+PKG_VERSION = '0.1.1'
 PKG_FILES = FileList[
   "Rakefile", "LICENSE", "README", "TODO",
   "doc/README.rdoc",

@@ -1,7 +1,6 @@
 =TODO
 
 ==Short term tasks
-* Support relationships (0.1.1)
 * Query collections (0.2.0)
 * Support for the score parameter in search result. Could be implemented
   a little bit like in PythonMusicBrainz2, but more flexible. Maybe a result
