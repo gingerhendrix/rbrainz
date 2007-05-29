@@ -100,13 +100,6 @@ class TestArtist < Test::Unit::TestCase
     assert_equal 0, artist.releases.size
   end
   
-  # You can pass an array of releases to add them all.
-  def test_add_several_releases_at_once
-    artist = Model::Artist.new
-    assert_nothing_raised {artist.releases = @releases}
-    assert_equal @releases, artist.releases
-  end
- 
   # Many aliases can be added
   def test_add_and_remove_aliases
     artist = Model::Artist.new
@@ -122,11 +115,4 @@ class TestArtist < Test::Unit::TestCase
     assert_equal 0, artist.aliases.size
   end
   
-  # You can pass an array of aliases to add them all.
-  def test_add_several_aliases_at_once
-    artist = Model::Artist.new
-    assert_nothing_raised {artist.aliases = @aliases}
-    assert_equal @aliases, artist.aliases
-  end
- 
 end

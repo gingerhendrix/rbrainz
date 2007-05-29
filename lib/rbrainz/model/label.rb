@@ -21,9 +21,9 @@ module MusicBrainz
       TYPE_REISSUE_PRODUCTION  = NS_MMD_1 + 'ReissueProduction'
       
       attr_accessor :name, :sort_name, :disambiguation,
-                    :code, :country, :type, :releases
+                    :code, :country, :type
       
-      attr_reader :founding_date, :dissolving_date
+      attr_reader :founding_date, :dissolving_date, :releases
       
       def initialize
         super

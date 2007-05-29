@@ -70,13 +70,6 @@ class TestTrack < Test::Unit::TestCase
     assert_equal 0, track.puids.size
   end
   
-  # You can pass an array of PUIDs to add them all.
-  def test_add_several_puids_at_once
-    track = Model::Track.new
-    assert_nothing_raised {track.puids = @valid_puids}
-    assert_equal @valid_puids, track.puids
-  end
-  
   # Many releases can be added
   def test_add_and_remove_releases
     track = Model::Track.new
@@ -90,13 +83,6 @@ class TestTrack < Test::Unit::TestCase
     assert_equal 1, track.releases.size
     assert_nothing_raised {track.releases.delete @releases[0]}
     assert_equal 0, track.releases.size
-  end
-  
-  # You can pass an array of releases to add them all.
-  def test_add_several_releases_at_once
-    track = Model::Track.new
-    assert_nothing_raised {track.releases = @releases}
-    assert_equal @releases, track.releases
   end
   
 end

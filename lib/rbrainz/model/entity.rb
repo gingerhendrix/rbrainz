@@ -10,8 +10,6 @@ module MusicBrainz
   module Model
 
     # Superclass for all entities.
-    # 
-    # TODO: implement relations.
     class Entity
     
       attr_reader :id

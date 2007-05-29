@@ -32,10 +32,10 @@ module MusicBrainz
       TYPE_SOUNDTRACK     = NS_MMD_1 + 'Soundtrack' 
       TYPE_SPOKENWORD     = NS_MMD_1 + 'Spokenword' 
       
-      attr_accessor :title, :types, :asin, :artist,
+      attr_accessor :title, :asin, :artist,
                     :text_language, :text_script
                     
-      attr_accessor :tracks, :release_events, :discs
+      attr_reader :tracks, :release_events, :discs, :types
       
       def initialize
         super

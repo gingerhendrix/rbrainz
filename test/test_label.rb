@@ -119,11 +119,4 @@ class TestLabel < Test::Unit::TestCase
     assert_equal 0, label.releases.size
   end
   
-  # You can pass an array of releases to add them all.
-  def test_add_several_releases_at_once
-    label = Model::Label.new
-    assert_nothing_raised {label.releases = @releases}
-    assert_equal @releases, label.releases
-  end
-  
 end

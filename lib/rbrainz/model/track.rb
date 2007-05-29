@@ -13,8 +13,9 @@ module MusicBrainz
     # See http://musicbrainz.org/doc/Track.
     class Track < Entity
     
-      attr_accessor :title, :duration, :artist,
-                    :puids, :releases
+      attr_accessor :title, :duration, :artist
+                    
+      attr_reader :puids, :releases
       
       def initialize
         super

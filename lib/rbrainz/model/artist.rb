@@ -18,10 +18,9 @@ module MusicBrainz
       TYPE_PERSON = NS_MMD_1 + 'Person'
       TYPE_GROUP  = NS_MMD_1 + 'Group'
       
-      attr_accessor :name, :sort_name, :disambiguation,
-                    :type, :aliases, :releases
+      attr_accessor :name, :sort_name, :disambiguation, :type
                     
-      attr_reader :begin_date, :end_date
+      attr_reader :begin_date, :end_date, :aliases, :releases
                     
       def initialize
         super
