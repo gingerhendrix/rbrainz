@@ -26,6 +26,7 @@ module MusicBrainz
       attr_reader :founding_date, :dissolving_date
       
       def initialize
+        super
         @releases = Array.new
       end
       

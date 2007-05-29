@@ -58,6 +58,7 @@ module TestEntity
     artist_rel.target = Model::Artist.new
     artist_rel.type = Model::NS_REL_1 + 'Vocal'
     artist_rel.direction = Model::Relation::DIR_BACKWARD
+    artist_rel.attributes << 'Guest'
     artist_rel.attributes << 'Lead'
     assert_nothing_raised {entity.add_relation artist_rel}
     
@@ -75,36 +76,45 @@ module TestEntity
     assert_nothing_raised {entity.add_relation url_rel}
     
     # Get all relations
-    assert_nothing_raised {rel_list = entity.getRelations()}
+    rel_list = []
+    assert_nothing_raised {rel_list = entity.get_relations()}
     assert_equal 3, rel_list.size
     assert rel_list.include?(artist_rel)
     assert rel_list.include?(track_rel)
     assert rel_list.include?(url_rel)
   
     # Get only artist relation by target type
-    assert_nothing_raised {rel_list = entity.getRelations(
+    assert_nothing_raised {rel_list = entity.get_relations(
                              :target_type => Model::Relation::TO_ARTIST)}
     assert_equal 1, rel_list.size
     assert rel_list.include?(artist_rel)
     
     # Get only url relation type
-    assert_nothing_raised {rel_list = entity.getRelations(
+    assert_nothing_raised {rel_list = entity.get_relations(
                              :relation_type => Model::NS_REL_1 + 'OfficialHomepage')}
     assert_equal 1, rel_list.size
     assert rel_list.include?(url_rel)
     
     # Get only artist and track relation by attribute
-    assert_nothing_raised {rel_list = entity.getRelations(
-                             :required_attributes => ['lead'])}
+    assert_nothing_raised {rel_list = entity.get_relations(
+                             :required_attributes => ['Guest', 'Lead'])}
     assert_equal 2, rel_list.size
     assert rel_list.include?(artist_rel)
     assert rel_list.include?(track_rel)
     
     # Get only artist relation by target type
-    assert_nothing_raised {rel_list = entity.getRelations(
+    assert_nothing_raised {rel_list = entity.get_relations(
                              :direction => Model::Relation::DIR_BACKWARD)}
     assert_equal 1, rel_list.size
     assert rel_list.include?(artist_rel)
+    
+    # Test the target types
+    target_types = entity.relation_target_types
+    assert_equal 3, target_types.size, target_types.inspect
+    [Model::Relation::TO_ARTIST, Model::Relation::TO_TRACK,
+     Model::Relation::TO_URL].each {|type|
+      assert target_types.include?(type), target_types.inspect
+    }
   end
   
 end

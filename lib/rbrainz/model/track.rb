@@ -17,6 +17,7 @@ module MusicBrainz
                     :puids, :releases
       
       def initialize
+        super
         @puids = Array.new
         @releases = Array.new
       end

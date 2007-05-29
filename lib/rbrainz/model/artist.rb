@@ -24,6 +24,7 @@ module MusicBrainz
       attr_reader :begin_date, :end_date
                     
       def initialize
+        super
         @aliases = Array.new
         @releases = Array.new
       end

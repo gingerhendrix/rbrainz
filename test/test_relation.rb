@@ -12,7 +12,7 @@ class TestRelation < Test::Unit::TestCase
 
   def setup
     @target_entity = Model::Artist.new
-    @target_entity = Model::MBID.from_uuid '727ad90b-7ef4-48d2-8f16-c34016544822'
+    @target_entity.id = Model::MBID.from_uuid :artist, '727ad90b-7ef4-48d2-8f16-c34016544822'
   end
 
   def teardown
@@ -42,21 +42,35 @@ class TestRelation < Test::Unit::TestCase
 
   def test_begin_date
     relation = Model::Relation.new
-    assert relation.begin_date.nil?
-    assert_nothing_raised {relation.begin_date = Model::IncompleteDate.new('1969-01-05')}
-    assert_equal Model::IncompleteDate.new('1969-01-05'), relation.begin_date
+    date = Model::IncompleteDate.new '1988-04-18'
+    assert_nothing_raised {relation.begin_date}
+    assert_equal nil, relation.begin_date
+    assert_nothing_raised {relation.begin_date = date}
+    assert_equal date, relation.begin_date
+    
+    # It should be able to supply a date as a string,
+    # but Relation should convert it to an IncompleteDate.
+    assert_nothing_raised {relation.begin_date = '1988-04-20'}
+    assert_equal Model::IncompleteDate.new('1988-04-20'), relation.begin_date
   end
 
   def test_end_date
     relation = Model::Relation.new
-    assert relation.end_date.nil?
-    assert_nothing_raised {relation.end_date = Model::IncompleteDate.new('1969-01-05')}
-    assert_equal Model::IncompleteDate.new('1969-01-05'), relation.end_date
+    date = Model::IncompleteDate.new '1988-04-18'
+    assert_nothing_raised {relation.end_date}
+    assert_equal nil, relation.end_date
+    assert_nothing_raised {relation.end_date = date}
+    assert_equal date, relation.end_date
+    
+    # It should be able to supply a date as a string,
+    # but Relation should convert it to an IncompleteDate.
+    assert_nothing_raised {relation.end_date = '1988-04-20'}
+    assert_equal Model::IncompleteDate.new('1988-04-20'), relation.end_date
   end
   
   def test_target
     relation = Model::Relation.new
-    assert relation.artist.nil?
+    assert relation.target.nil?
     assert_nothing_raised {relation.target = @target_entity}
     assert_equal @target_entity, relation.target
     assert_nothing_raised {relation.target = 'http://www.example.com'}
@@ -68,7 +82,7 @@ class TestRelation < Test::Unit::TestCase
   def test_target_type
     relation = Model::Relation.new
     assert relation.target_type.nil?
-    assert_raise {relation.target_type = Model::Relation::TO_RELEASE}
+    assert_raise(NoMethodError) {relation.target_type = Model::Relation::TO_RELEASE}
     
     relation.target = Model::Artist.new
     assert_equal Model::Relation::TO_ARTIST, relation.target_type
@@ -91,7 +105,7 @@ class TestRelation < Test::Unit::TestCase
     assert_equal 0, relation.attributes.size
     assert_nothing_raised {relation.attributes << 'Lead'}
     assert_equal 1, relation.attributes.size
-    assert_nothing_raised {relation.delete 'Lead'}
+    assert_nothing_raised {relation.attributes.delete 'Lead'}
     assert_equal 0, relation.attributes.size
   end
   

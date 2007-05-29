@@ -38,6 +38,7 @@ module MusicBrainz
       attr_accessor :tracks, :release_events, :discs
       
       def initialize
+        super
         @tracks = Array.new
         @release_events = Array.new
         @discs = Array.new
