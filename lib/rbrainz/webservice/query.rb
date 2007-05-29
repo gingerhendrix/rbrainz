@@ -16,8 +16,7 @@ module MusicBrainz
       end
       
       def get_artist_by_id(id, include = nil)
-        xml = @webservice.get(Model::Artist.entity_type, id, :include => include)
-        return MBXML.new(xml).get_entity(Model::Artist.entity_type)
+        return get_entity_by_id(Model::Artist.entity_type, id, include)
       end
       
       # TODO: implement
@@ -26,8 +25,7 @@ module MusicBrainz
       end
       
       def get_release_by_id(id, include = nil)
-        xml = @webservice.get(Model::Release.entity_type, id, :include => include)
-        return MBXML.new(xml).get_entity(Model::Release.entity_type)
+        return get_entity_by_id(Model::Release.entity_type, id, include)
       end
       
       # TODO: implement
@@ -36,8 +34,7 @@ module MusicBrainz
       end
       
       def get_track_by_id(id, include = nil)
-        xml = @webservice.get(Model::Track.entity_type, id, :include => include)
-        return MBXML.new(xml).get_entity(Model::Track.entity_type)
+        return get_entity_by_id(Model::Track.entity_type, id, include)
       end
       
       # TODO: implement
@@ -46,13 +43,20 @@ module MusicBrainz
       end
       
       def get_label_by_id(id, include = nil)
-        xml = @webservice.get(Model::Label.entity_type, id, :include => include)
-        return MBXML.new(xml).get_entity(Model::Label.entity_type)
+        return get_entity_by_id(Model::Label.entity_type, id, include)
       end
       
       # TODO: implement
       def get_labels(filter)
         raise NotImplementedError.new
+      end
+      
+      private
+      
+      # Helper method which will return any entity by ID.
+      def get_entity_by_id(entity_type, id, include)
+        xml = @webservice.get(entity_type, id, :include => include)
+        return MBXML.new(xml).get_entity(entity_type)
       end
       
     end
