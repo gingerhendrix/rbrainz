@@ -14,6 +14,7 @@ module MusicBrainz
     # See http://musicbrainz.org/doc/Label.
     class Label < Entity
     
+      TYPE_UNKNOWN             = NS_MMD_1 + 'Unknown'
       TYPE_DISTRIBUTOR         = NS_MMD_1 + 'Distributor'
       TYPE_HOLDING             = NS_MMD_1 + 'Holding'
       TYPE_ORIGINAL_PRODUCTION = NS_MMD_1 + 'OriginalProduction'
