@@ -47,6 +47,13 @@ class TestLabel < Test::Unit::TestCase
     assert_equal 'Disambiguation comment', label.disambiguation
   end
   
+  def test_unique_name
+    label = Model::Label.new
+    label.name = 'EMI'
+    label.disambiguation = 'Taiwan'
+    assert_equal 'EMI (Taiwan)', label.unique_name
+  end
+  
   def test_code
     label = Model::Label.new
     assert label.code.nil?

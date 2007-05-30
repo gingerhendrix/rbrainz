@@ -48,6 +48,13 @@ class TestArtist < Test::Unit::TestCase
     assert_equal 'Disambiguation comment', artist.disambiguation
   end
   
+  def test_unique_name
+    artist = Model::Artist.new
+    artist.name = 'Paradise Lost'
+    artist.disambiguation = 'British metal / hard rock band'
+    assert_equal 'Paradise Lost (British metal / hard rock band)', artist.unique_name
+  end
+  
   def test_type
     artist = Model::Artist.new
     assert artist.type.nil?

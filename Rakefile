@@ -85,7 +85,7 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'doc/api'
   rdoc.rdoc_files.include('doc/README.rdoc', 'lib/**/*.rb',
                           'LICENSE', 'TODO', 'CHANGES')
-  rdoc.options << '--inline-source' << '--line-numbers'
+  rdoc.options << '--inline-source' << '--line-numbers' #<< '--diagram'
 end
 
 # Other tasks: -----------------------------------------------------------
