@@ -329,10 +329,10 @@ module MusicBrainz
         
         if life_span = node.elements['life-span']
           if life_span.attributes['begin']
-            label.founding_date = Model::IncompleteDate.new life_span.attributes['begin']
+            label.begin_date = Model::IncompleteDate.new life_span.attributes['begin']
           end
           if life_span.attributes['end']
-            label.dissolving_date = Model::IncompleteDate.new life_span.attributes['end']
+            label.end_date = Model::IncompleteDate.new life_span.attributes['end']
           end
         end
         

@@ -15,7 +15,7 @@ require 'rake/rdoctask'
 PKG_NAME = 'rbrainz'
 PKG_VERSION = '0.1.1'
 PKG_FILES = FileList[
-  "Rakefile", "LICENSE", "README", "TODO",
+  "Rakefile", "LICENSE", "README", "TODO", "CHANGES",
   "doc/README.rdoc",
   "examples/**/*",
   "lib/**/*.rb",
@@ -84,7 +84,7 @@ Rake::RDocTask.new do |rdoc|
   rdoc.main     = 'doc/README.rdoc'
   rdoc.rdoc_dir = 'doc/api'
   rdoc.rdoc_files.include('doc/README.rdoc', 'lib/**/*.rb',
-                          'LICENSE', 'TODO')
+                          'LICENSE', 'TODO', 'CHANGES')
   rdoc.options << '--inline-source' << '--line-numbers'
 end
 

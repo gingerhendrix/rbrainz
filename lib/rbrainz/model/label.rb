@@ -24,7 +24,7 @@ module MusicBrainz
       attr_accessor :name, :sort_name, :disambiguation,
                     :code, :country, :type
       
-      attr_reader :founding_date, :dissolving_date, :releases
+      attr_reader :begin_date, :end_date, :releases
       
       def initialize
         super
@@ -36,9 +36,9 @@ module MusicBrainz
       # Should be an IncompleteDate object or
       # a date string, which will get converted
       # into an IncompleteDate.
-      def founding_date=(date)
+      def begin_date=(date)
         date = IncompleteDate.new date unless date.is_a? IncompleteDate
-        @founding_date = date
+        @begin_date = date
       end
       
       # Set the dissolving date of the label.
@@ -46,9 +46,9 @@ module MusicBrainz
       # Should be an IncompleteDate object or
       # a date string, which will get converted
       # into an IncompleteDate.
-      def dissolving_date=(date)
+      def end_date=(date)
         date = IncompleteDate.new date unless date.is_a? IncompleteDate
-        @dissolving_date = date
+        @end_date = date
       end
       
     end

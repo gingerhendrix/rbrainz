@@ -74,7 +74,7 @@ module MusicBrainz
       # [:discs]        Include the disc IDs (boolean).
       # [:tracks]       Include the release tracks (boolean).
       # [:labels]       Include the labels under which the release
-      #                 was publlished (boolean).
+      #                 was published (boolean).
       # [:artist_rels]  Include artist relationships (boolean).
       # [:release_rels] Include release relationships (boolean).
       # [:track_rels]   Include track relationships (boolean).

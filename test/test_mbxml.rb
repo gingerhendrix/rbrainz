@@ -383,7 +383,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'Atlantic Records', label.name
     assert_equal '121', label.code
     assert_equal 'US', label.country
-    assert_equal '1947', label.founding_date.to_s
+    assert_equal '1947', label.begin_date.to_s
   end
 
   def test_label_atlantic_records_2
@@ -396,8 +396,8 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal '121', label.code
     assert_equal 'fake', label.disambiguation
     assert_equal 'US', label.country
-    assert_equal '1947', label.founding_date.to_s
-    assert_equal '2047', label.dissolving_date.to_s
+    assert_equal '1947', label.begin_date.to_s
+    assert_equal '2047', label.end_date.to_s
   end
 
 end

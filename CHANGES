@@ -1,0 +1,16 @@
+=Changelog
+
+==0.2.0 (not yet released)
+* Label: Renamed founding_date and dissolving_date to begin_date
+  and end_date (to be more consistent with Artist)
+* Added label type "Unknown"
+
+==0.1.1 (2007-05-29)
+* Full support for relations
+* Proper exception handling in Webservice class
+* Minor corrections
+
+==0.1.0 (2007-05-23)
+* Initial release
+
+$Id$

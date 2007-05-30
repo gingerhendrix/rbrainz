@@ -76,32 +76,32 @@ class TestLabel < Test::Unit::TestCase
     assert_equal Model::Label::TYPE_REISSUE_PRODUCTION, label.type
   end
   
-  def test_founding_date
+  def test_begin_date
     label = Model::Label.new
     date = Model::IncompleteDate.new '1988-04-18'
-    assert_nothing_raised {label.founding_date}
-    assert_equal nil, label.founding_date
-    assert_nothing_raised {label.founding_date = date}
-    assert_equal date, label.founding_date
+    assert_nothing_raised {label.begin_date}
+    assert_equal nil, label.begin_date
+    assert_nothing_raised {label.begin_date = date}
+    assert_equal date, label.begin_date
     
     # It should be able to supply a date as a string,
     # but Label should convert it to an IncompleteDate.
-    assert_nothing_raised {label.founding_date = '1988-04-20'}
-    assert_equal Model::IncompleteDate.new('1988-04-20'), label.founding_date
+    assert_nothing_raised {label.begin_date = '1988-04-20'}
+    assert_equal Model::IncompleteDate.new('1988-04-20'), label.begin_date
   end
   
-  def test_dissolving_date
+  def test_end_date
     label = Model::Label.new
     date = Model::IncompleteDate.new '1988-04-18'
-    assert_nothing_raised {label.dissolving_date}
-    assert_equal nil, label.dissolving_date
-    assert_nothing_raised {label.dissolving_date = date}
-    assert_equal date, label.dissolving_date
+    assert_nothing_raised {label.end_date}
+    assert_equal nil, label.end_date
+    assert_nothing_raised {label.end_date = date}
+    assert_equal date, label.end_date
     
     # It should be able to supply a date as a string,
     # but Label should convert it to an IncompleteDate.
-    assert_nothing_raised {label.dissolving_date = '1988-04-20'}
-    assert_equal Model::IncompleteDate.new('1988-04-20'), label.dissolving_date
+    assert_nothing_raised {label.end_date = '1988-04-20'}
+    assert_equal Model::IncompleteDate.new('1988-04-20'), label.end_date
   end
   
   # Many releases can be added
