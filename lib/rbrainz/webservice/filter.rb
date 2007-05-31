@@ -12,10 +12,18 @@ module MusicBrainz
     class AbstractFilter
       
       # The parameter +filter+ is a hash with filter options.
-      # The the concrete classes for a description of those
+      # See the concrete classes for a description of those
       # options.
+      # 
+      # The following options are available for all filters:
+      # [:limit]  The maximum number of entries returned. Defaults
+      #           to 25, the maximum allowed value is 100.
+      # [:offset] Return search results starting at a given offset. Used
+      #           for paging through more than one page of results.
       def initialize(filter)
-        raise 'Tried to initialize abstract class.'
+        @filter = Hash.new
+        @filter[:limit]  = filter[:limit] if filter[:limit]
+        @filter[:offset] = filter[:offset] if filter[:offset]
       end
       
       # Returns the filter list as a query string
@@ -31,13 +39,14 @@ module MusicBrainz
     class ArtistFilter < AbstractFilter
     
       # The parameter +filter+ is a hash with filter options:
-      # [:name]  Fetch a list of artists with a matching name.
-      # [:limit] The maximum number of artists returned. Defaults
-      #          to 25, the maximum allowed value is 100. 
+      # [:name]   Fetch a list of artists with a matching name.
+      # [:limit]  The maximum number of artists returned. Defaults
+      #           to 25, the maximum allowed value is 100.
+      # [:offset] Return search results starting at a given offset. Used
+      #           for paging through more than one page of results.
       def initialize(filter)
-        @filter = Hash.new
-        @filter[:name]  = filter[:name]  if filter[:name]
-        @filter[:limit] = filter[:limit] if filter[:limit]
+        super(filter)
+        @filter[:name] = filter[:name]  if filter[:name]
       end
     
     end
@@ -61,19 +70,20 @@ module MusicBrainz
       # [:script]    The script used in this release.
       # [:limit]     The maximum number of tracks returned. Defaults
       #              to 25, the maximum allowed value is 100. 
+      # [:offset]    Return search results starting at a given offset. Used
+      #              for paging through more than one page of results.
       def initialize(filter)
-        @filter = Hash.new
-        @filter[:title]     = filter[:title]     if filter[:title]
-        @filter[:discid]    = filter[:discid]    if filter[:discid]
-        @filter[:artist]    = filter[:artist]    if filter[:artist]
-        @filter[:artistid]  = filter[:artistid]  if filter[:artistid]
+        super(filter)
+        @filter[:title]        = filter[:title]     if filter[:title]
+        @filter[:discid]       = filter[:discid]    if filter[:discid]
+        @filter[:artist]       = filter[:artist]    if filter[:artist]
+        @filter[:artistid]     = filter[:artistid]  if filter[:artistid]
         @filter[:releasetypes] = filter[:releasetypes] if filter[:releasetypes]
-        @filter[:count]     = filter[:count]     if filter[:count]
-        @filter[:date]      = filter[:date]      if filter[:date]
-        @filter[:asin]      = filter[:asin]      if filter[:asin]
-        @filter[:lang]      = filter[:lang]      if filter[:lang]
-        @filter[:script]    = filter[:script]    if filter[:script]
-        @filter[:limit]     = filter[:limit]     if filter[:limit]
+        @filter[:count]        = filter[:count]     if filter[:count]
+        @filter[:date]         = filter[:date]      if filter[:date]
+        @filter[:asin]         = filter[:asin]      if filter[:asin]
+        @filter[:lang]         = filter[:lang]      if filter[:lang]
+        @filter[:script]       = filter[:script]    if filter[:script]
       end
     
     end
@@ -97,19 +107,20 @@ module MusicBrainz
       # [:releasetype] The type of the release this track appears on
       # [:limit]     The maximum number of tracks returned. Defaults
       #              to 25, the maximum allowed value is 100. 
+      # [:offset]    Return search results starting at a given offset. Used
+      #              for paging through more than one page of results.
       def initialize(filter)
-        @filter = Hash.new
-        @filter[:title]     = filter[:title]     if filter[:title]
-        @filter[:artist]    = filter[:artist]    if filter[:artist]
-        @filter[:release]   = filter[:release]   if filter[:release]
-        @filter[:duration]  = filter[:duration]  if filter[:duration]
-        @filter[:tracknum]  = filter[:tracknum]  if filter[:tracknum]
-        @filter[:artistid]  = filter[:artistid]  if filter[:artistid]
-        @filter[:releaseid] = filter[:releaseid] if filter[:releaseid]
-        @filter[:puid]      = filter[:puid]      if filter[:puid]
-        @filter[:count]     = filter[:count]     if filter[:count]
+        super(filter)
+        @filter[:title]       = filter[:title]     if filter[:title]
+        @filter[:artist]      = filter[:artist]    if filter[:artist]
+        @filter[:release]     = filter[:release]   if filter[:release]
+        @filter[:duration]    = filter[:duration]  if filter[:duration]
+        @filter[:tracknum]    = filter[:tracknum]  if filter[:tracknum]
+        @filter[:artistid]    = filter[:artistid]  if filter[:artistid]
+        @filter[:releaseid]   = filter[:releaseid] if filter[:releaseid]
+        @filter[:puid]        = filter[:puid]      if filter[:puid]
+        @filter[:count]       = filter[:count]     if filter[:count]
         @filter[:releasetype] = filter[:releasetype] if filter[:releasetype]
-        @filter[:limit]     = filter[:limit]     if filter[:limit]
       end
     
     end
@@ -117,13 +128,14 @@ module MusicBrainz
     class LabelFilter < AbstractFilter
     
       # The parameter +filter+ is a hash with filter options:
-      # [:name]  Fetch a list of labels with a matching name.
-      # [:limit] The maximum number of labels returned. Defaults
-      #          to 25, the maximum allowed value is 100. 
+      # [:name]   Fetch a list of labels with a matching name.
+      # [:limit]  The maximum number of labels returned. Defaults
+      #           to 25, the maximum allowed value is 100. 
+      # [:offset] Return search results starting at a given offset. Used
+      #           for paging through more than one page of results.
       def initialize(filter)
-        @filter = Hash.new
-        @filter[:name]  = filter[:name]  if filter[:name]
-        @filter[:limit] = filter[:limit] if filter[:limit]
+        super(filter)
+        @filter[:name] = filter[:name]  if filter[:name]
       end
     
     end

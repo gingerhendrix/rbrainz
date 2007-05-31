@@ -23,7 +23,8 @@ class TestReleaseFilter < Test::Unit::TestCase
       :asin         => 'B00004VVW9',
       :lang         => 'ENG',
       :script       => 'Latn',
-      :limit        => 10
+      :limit        => 10,
+      :offset       => 20
       }
   end
 
@@ -47,6 +48,7 @@ class TestReleaseFilter < Test::Unit::TestCase
     assert_equal @filter_hash[:lang], result_hash['lang'], filter_string
     assert_equal @filter_hash[:script], result_hash['script'], filter_string
     assert_equal @filter_hash[:limit].to_s, result_hash['limit'], filter_string
+    assert_equal @filter_hash[:offset].to_s, result_hash['offset'], filter_string
   end
   
   def test_empty_filter

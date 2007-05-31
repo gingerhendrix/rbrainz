@@ -12,9 +12,9 @@ include MusicBrainz
 class TestArtistFilter < Test::Unit::TestCase
 
   def setup
-    @filter_hash = {:name => 'Tori Amos', :limit => 10}
+    @filter_hash = {:name => 'Tori Amos', :limit => 10, :offset => 20}
   end
-
+  
   def teardown
   end
   
@@ -26,6 +26,7 @@ class TestArtistFilter < Test::Unit::TestCase
     result_hash = query_string_to_hash filter_string
     assert_equal @filter_hash[:name], result_hash['name'], filter_string
     assert_equal @filter_hash[:limit].to_s, result_hash['limit'], filter_string
+    assert_equal @filter_hash[:offset].to_s, result_hash['offset'], filter_string
   end
   
   def test_empty_filter

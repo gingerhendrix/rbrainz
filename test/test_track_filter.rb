@@ -23,7 +23,8 @@ class TestTrackFilter < Test::Unit::TestCase
       :puid        => '26d1355d-60b7-0de2-7a57-d01d7ee9e8be',
       :count       => 12,
       :releasetype => 'Album',
-      :limit       => 10
+      :limit       => 10,
+      :offset      => 20
       }
   end
 
@@ -47,6 +48,7 @@ class TestTrackFilter < Test::Unit::TestCase
     assert_equal @filter_hash[:count].to_s, result_hash['count'], filter_string
     assert_equal @filter_hash[:releasetype], result_hash['releasetype'], filter_string
     assert_equal @filter_hash[:limit].to_s, result_hash['limit'], filter_string
+    assert_equal @filter_hash[:offset].to_s, result_hash['offset'], filter_string
   end
   
   def test_empty_filter
