@@ -22,6 +22,8 @@ class TestCollection < Test::Unit::TestCase
   def test_collection
     collection = Webservice::Collection.new
     
+    assert collection.empty?
+    
     # Fill the collection
     assert_nothing_raised {
       collection << [@artist_one, 100]
@@ -30,6 +32,8 @@ class TestCollection < Test::Unit::TestCase
       collection << @artist_three
     }
     assert_equal 3, collection.size
+    
+    assert !collection.empty?
     
     # Iterate over the collection
     n = 0
@@ -49,12 +53,12 @@ class TestCollection < Test::Unit::TestCase
     assert_equal collection.size, n
     
     # Random access
-    assert_equal @artist_one, collection[0].first
-    assert_equal 100, collection[0].last
-    assert_equal @artist_two, collection[1].first
-    assert_equal 98, collection[1].last
-    assert_equal @artist_three, collection[2].first
-    assert_equal nil, collection[2].last
+    assert_equal @artist_one, collection[0][:entity]
+    assert_equal 100, collection[0][:score]
+    assert_equal @artist_two, collection[1][:entity]
+    assert_equal 98, collection[1][:score]
+    assert_equal @artist_three, collection[2][:entity]
+    assert_equal nil, collection[2][:score]
   end
 
 end

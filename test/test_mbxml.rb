@@ -39,7 +39,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
     assert_equal nil, mbxml.get_entity(:label)
-    assert_equal Array.new, mbxml.get_entity_list(:artist)
+    assert mbxml.get_entity_list(:artist).empty?
     assert_equal nil, mbxml.get_entity_list(:release)
     assert_equal nil, mbxml.get_entity_list(:track)
     assert_equal nil, mbxml.get_entity_list(:label)
@@ -54,11 +54,14 @@ class TestMBXML < Test::Unit::TestCase
 
     artist_list = mbxml.get_entity_list(:artist)
     assert_equal 3, artist_list.size, artist_list.inspect
-    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist_list[0].id.uuid
-    assert_equal Model::Artist::TYPE_PERSON, artist_list[0].type
-    assert_equal 'Tori Amos', artist_list[0].name
-    assert_equal 'Amos, Tori', artist_list[0].sort_name
-    assert_equal '1963-08-22', artist_list[0].begin_date.to_s
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist_list[0][:entity].id.uuid
+    assert_equal Model::Artist::TYPE_PERSON, artist_list[0][:entity].type
+    assert_equal 'Tori Amos', artist_list[0][:entity].name
+    assert_equal 'Amos, Tori', artist_list[0][:entity].sort_name
+    assert_equal '1963-08-22', artist_list[0][:entity].begin_date.to_s
+    assert_equal 100, artist_list[0][:score]
+    assert_equal 44, artist_list[1][:score]
+    assert_equal 44, artist_list[2][:score]
   end
   
   def test_artist_tchaikovsky_1
@@ -171,13 +174,15 @@ class TestMBXML < Test::Unit::TestCase
 
     release_list = mbxml.get_entity_list(:release)
     assert_equal 2, release_list.size, release_list.inspect
-    assert_equal '290e10c5-7efc-4f60-ba2c-0dfc0208fbf5', release_list[0].id.uuid
-    assert release_list[0].types.include?(Model::Release::TYPE_ALBUM)
-    assert release_list[0].types.include?(Model::Release::TYPE_OFFICIAL)
-    assert_equal 'Under the Pink', release_list[0].title
-    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release_list[0].artist.id.uuid
-    assert_equal 1, release_list[0].release_events.size
-    assert_equal Model::IncompleteDate.new('1994-01-28'), release_list[0].release_events[0].date
+    assert_equal '290e10c5-7efc-4f60-ba2c-0dfc0208fbf5', release_list[0][:entity].id.uuid
+    assert release_list[0][:entity].types.include?(Model::Release::TYPE_ALBUM)
+    assert release_list[0][:entity].types.include?(Model::Release::TYPE_OFFICIAL)
+    assert_equal 'Under the Pink', release_list[0][:entity].title
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', release_list[0][:entity].artist.id.uuid
+    assert_equal 1, release_list[0][:entity].release_events.size
+    assert_equal Model::IncompleteDate.new('1994-01-28'), release_list[0][:entity].release_events[0].date
+    assert_equal 100, release_list[0][:score]
+    assert_equal 80, release_list[1][:score]
   end
   
   def test_release_highway_61_revisited_1
@@ -280,12 +285,15 @@ class TestMBXML < Test::Unit::TestCase
 
     track_list = mbxml.get_entity_list(:track)
     assert_equal 3, track_list.size, track_list.inspect
-    assert_equal '748f2b79-8c50-4581-adb1-7708118a48fc', track_list[0].id.uuid
-    assert_equal 'Little Earthquakes', track_list[0].title
-    assert_equal 457760, track_list[0].duration
-    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', track_list[0].artist.id.uuid
-    assert_equal 1, track_list[0].releases.size
-    assert_equal '93264fe5-dff2-47ab-9ca8-1c865733aad9', track_list[0].releases[0].id.uuid
+    assert_equal '748f2b79-8c50-4581-adb1-7708118a48fc', track_list[0][:entity].id.uuid
+    assert_equal 'Little Earthquakes', track_list[0][:entity].title
+    assert_equal 457760, track_list[0][:entity].duration
+    assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', track_list[0][:entity].artist.id.uuid
+    assert_equal 1, track_list[0][:entity].releases.size
+    assert_equal '93264fe5-dff2-47ab-9ca8-1c865733aad9', track_list[0][:entity].releases[0].id.uuid
+    assert_equal 100, track_list[0][:score]
+    assert_equal 99, track_list[1][:score]
+    assert_equal 80, track_list[2][:score]
   end
   
   def test_track_silent_all_these_years_1
@@ -364,14 +372,16 @@ class TestMBXML < Test::Unit::TestCase
 
     label_list = mbxml.get_entity_list(:label)
     assert_equal 2, label_list.size, label_list.inspect
-    assert_equal '50c384a2-0b44-401b-b893-8181173339c7', label_list[0].id.uuid
-    assert_equal Model::Label::TYPE_ORIGINAL_PRODUCTION, label_list[0].type
-    assert_equal 'Atlantic Records', label_list[0].name
-    assert_equal 'US', label_list[0].country
-    assert_equal 'c2ccaec8-0dfe-4dd5-a710-bddf5fd7c1a7', label_list[1].id.uuid
-    assert_equal nil, label_list[1].type
-    assert_equal 'DRO Atlantic', label_list[1].name
-    assert_equal 'SP', label_list[1].country
+    assert_equal '50c384a2-0b44-401b-b893-8181173339c7', label_list[0][:entity].id.uuid
+    assert_equal Model::Label::TYPE_ORIGINAL_PRODUCTION, label_list[0][:entity].type
+    assert_equal 'Atlantic Records', label_list[0][:entity].name
+    assert_equal 'US', label_list[0][:entity].country
+    assert_equal 100, label_list[0][:score]
+    assert_equal 'c2ccaec8-0dfe-4dd5-a710-bddf5fd7c1a7', label_list[1][:entity].id.uuid
+    assert_equal nil, label_list[1][:entity].type
+    assert_equal 'DRO Atlantic', label_list[1][:entity].name
+    assert_equal 'SP', label_list[1][:entity].country
+    assert_equal 46, label_list[1][:score]
   end
   
   def test_label_atlantic_records_1

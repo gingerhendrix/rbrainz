@@ -1,7 +1,8 @@
 =Changelog
 
 ==0.2.0 (not yet released)
-* Intoduced Individual as superclass for Artist and Label
+* Collection class to store search results (with support for search score)
+* Introduced Individual as superclass for Artist and Label
 * Added unique_name method for Artist and Label
 * Label: Renamed founding_date and dissolving_date to begin_date
   and end_date (to be more consistent with Artist)

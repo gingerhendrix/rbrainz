@@ -60,7 +60,7 @@ module MusicBrainz
       end
       
       # Read the XML string and create a list of entity
-      # models for the given entity type. Ther must be
+      # models for the given entity type. There must be
       # an entity-list element as a child of the metadata
       # element in the document.
       # Returns nil if no entity list of the given type is present.
@@ -72,39 +72,17 @@ module MusicBrainz
                       [Model::NS_MMD_1, entity_type]]
         
         unless entity_list.nil? or entity_list.is_a? REXML::Text
-          list = Array.new
+          collection = Collection.new
           
-          case entity_list.name
-          when 'artist-list'
-            read_artist_list(entity_list) {|model|
-              list << model
-            }
-            return list
-          when 'release-list'
-            read_release_list(entity_list) {|model|
-              list << model
-            }
-            return list
-          when 'track-list'
-            read_track_list(entity_list) {|model|
-              list << model
-            }
-            return list
-          when 'label-list'
-            read_label_list(entity_list) {|model|
-              list << model
-            }
-            return list
-          end
+          # Select the method to use for reading the list.
+          read_list_method = method('read_' + entity_list.name.gsub('-', '_'))
           
-          if iterator
-            list = Array.new
-            iterator.each {|model|
-              raise model.inspect
-              list << model
-            }
-            return list
-          end
+          # Read the entity list and store the entities in the collection.
+          read_list_method.call(entity_list, true) {|model, score|
+            collection << [model, score]
+          } if read_list_method
+          
+          return collection
         end
         return nil
       end
@@ -114,10 +92,8 @@ module MusicBrainz
       # Iterate over a list of artists.
       # 
       # The node must be of the type <em>artist-list</em>.
-      def read_artist_list(node)
-        node.elements.each('artist') {|child|
-          yield create_artist(child)
-        }
+      def read_artist_list(node, read_scores=false)
+        read_list(node, 'artist', read_scores) {|*a| yield a.size == 1 ? a[0] : a}
       end
       
       # Create an +Artist+ object from the given artist node.
@@ -178,10 +154,8 @@ module MusicBrainz
       # Iterate over a list of releases.
       # 
       # The node must be of the type <em>release-list</em>.
-      def read_release_list(node)
-        node.elements.each('release') {|child|
-          yield create_release(child)
-        }
+      def read_release_list(node, read_scores=false)
+        read_list(node, 'release', read_scores) {|*a| yield a.size == 1 ? a[0] : a}
       end
       
       # Create a +Release+ object from the given release node.
@@ -250,10 +224,8 @@ module MusicBrainz
       # Iterate over a list of tracks.
       # 
       # The node must be of the type <em>track-list</em>.
-      def read_track_list(node)
-        node.elements.each('track') {|child|
-          yield create_track(child)
-        }
+      def read_track_list(node, read_scores=false)
+        read_list(node, 'track', read_scores) {|*a| yield a.size == 1 ? a[0] : a}
       end
       
       # Create a +Track+ object from the given track node.
@@ -301,10 +273,8 @@ module MusicBrainz
       # Iterate over a list of labels.
       # 
       # The node must be of the type <em>label-list</em>.
-      def read_label_list(node)
-        node.elements.each('label') {|child|
-          yield create_label(child)
-        }
+      def read_label_list(node, read_scores=false)
+        read_list(node, 'label', read_scores) {|*a| yield a.size == 1 ? a[0] : a}
       end
       
       # Create a +Label+ object from the given label node.
@@ -360,9 +330,7 @@ module MusicBrainz
       # 
       # The node must be of the type <em>alias-list</em>.
       def read_alias_list(node)
-        node.elements.each('alias') {|child|
-          yield create_alias(child)
-        }
+        read_list(node, 'alias', false) {|a| yield a}
       end
       
       # Create an +Alias+ object from the given alias node.
@@ -378,13 +346,11 @@ module MusicBrainz
       # 
       # The node must be of the type <em>release-event-list</em>.
       def read_release_event_list(node)
-        node.elements.each('event') {|child|
-          yield create_release_event(child)
-        }
+        read_list(node, 'event', false) {|a| yield a}
       end
       
       # Create an +ReleaseEvent+ object from the given release event node.
-      def create_release_event(node)
+      def create_event(node)
         event = Model::ReleaseEvent.new
         
         # Read all defined data fields
@@ -496,6 +462,21 @@ module MusicBrainz
         relation.target = target
         
         return relation
+      end
+      
+      # Helper method that reads a list of a special node type.
+      # There must be a method create_{child_name} which returns an
+      # instance of the corresponding model.
+      def read_list(node, child_name, read_scores=false)
+        node.elements.each(child_name) {|child|
+          model = method('create_' + child_name).call(child)
+          if read_scores
+            score = child.attributes['ext:score']
+            yield model, score ? score.to_i : nil
+          else
+            yield model
+          end
+        }
       end
       
       # Helper method which will return the given property

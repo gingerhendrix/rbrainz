@@ -2,13 +2,6 @@
 
 ==Short term tasks
 * Query collections (0.2.0)
-* Support for the score parameter in search result. Could be implemented
-  a little bit like in PythonMusicBrainz2, but more flexible. Maybe a result
-  object over which one can iterate to retrieve all results with the
-  corresponding score. (0.2.0)
-   result.each {|entity, score|
-     ...
-   }
 * Support for the offset parameter for queries on collections
   to retrieve results below the 100 results limit. Could be easily integrated
   into the result object (see previous point). (0.2.0)

@@ -54,12 +54,17 @@ module MusicBrainz
         @entities.each  {|entity| yield entity.first}
       end
       
-      # Return the
+      # Return the entity at the specified index location.
       #
-      # Returns an Array with two elements, the first being the entity and the
-      # second the score.
+      # Returns a Hash with the two keys :entity and :score.
       def [](index)
-        return @entities[index]
+        entity = @entities[index]
+        return {:entity => entity.first, :score => entity.last}
+      end
+      
+      # Returns true, if the collection contains no entities.
+      def empty?
+        return size == 0
       end
 
     end
