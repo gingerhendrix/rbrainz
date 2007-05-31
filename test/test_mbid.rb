@@ -29,6 +29,19 @@ class TestMBID < Test::Unit::TestCase
     assert_raise(NoMethodError) {Model::MBID.new}
   end
   
+  def test_from_string
+    assert_equal 'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf',
+      Model::MBID.from_string(:artist,
+      'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf').to_s
+    assert_equal 'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf',
+      Model::MBID.from_string(:artist,
+      '9d30e408-1559-448b-b491-2f8de1583ccf').to_s
+    assert_raise(Model::EntityTypeNotMatchingError) {
+      Model::MBID.from_string(:label,
+      'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf')
+    }
+  end
+  
   def test_from_uri
     @valid_entities.each{|entity|
       @valid_uuids.each{|uuid|

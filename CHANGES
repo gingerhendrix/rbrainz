@@ -8,6 +8,7 @@
 * Label: Renamed founding_date and dissolving_date to begin_date
   and end_date (to be more consistent with Artist)
 * Added label type "Unknown"
+* New constructor Model::MBID.from_string(entity_type, string)
 
 ==0.1.1 (2007-05-29)
 * Full support for relations

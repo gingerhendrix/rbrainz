@@ -46,8 +46,8 @@ module MusicBrainz
       # 
       # Raises: +RequestError+, +ResourceNotFoundError+, +AuthenticationError+,
       # +ConnectionError+ 
-      def get(entity, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
-        url = URI.parse(create_uri(entity, options))
+      def get(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
+        url = URI.parse(create_uri(entity_type, options))
         request = Net::HTTP::Get.new(url.request_uri)
         connection = Net::HTTP.new(url.host, url.port)
         
@@ -81,18 +81,25 @@ module MusicBrainz
       private # ----------------------------------------------------------------
       
       # Builds a request URI for querying the webservice.
-      def create_uri(entity, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
+      def create_uri(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
         # Make sure the version is set
         options[:version] = 1 if options[:version].nil?
         
         # Build the URI
         if options[:id]
+          # Make sure the id is a MBID object
+          id = options[:id]
+          unless id.is_a? Model::MBID
+            id = Model::MBID.from_string(entity_type, id)
+          end
+        
           uri = 'http://%s:%d%s/%d/%s/%s?type=%s' %
-                [@host, @port, @path_prefix, options[:version], entity,
-                 options[:id].uuid, 'xml']
+                [@host, @port, @path_prefix, options[:version],
+                 entity_type, id.uuid, 'xml']
         else
           uri = 'http://%s:%d%s/%d/%s/?type=%s' %
-                [@host, @port, @path_prefix, options[:version], entity, 'xml']
+                [@host, @port, @path_prefix, options[:version],
+                 entity_type, 'xml']
         end
         uri += '&' + options[:include].to_s unless options[:include].nil?
         uri += '&' + options[:filter].to_s unless options[:filter].nil?

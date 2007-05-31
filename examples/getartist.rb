@@ -37,6 +37,8 @@ query = Webservice::Query.new
 
 # Now query the MusicBrainz database for the artist
 # with the MBID defined above.
+# We could as well use the ID string directly instead
+# of the MBID object.
 artist = query.get_artist_by_id(mbid, artist_includes)
 
 # Display the fetched artist data together with all

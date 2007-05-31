@@ -27,16 +27,35 @@ module MusicBrainz
       # We make new private. Use from_uri or from_uuid instead.
       private_class_method :new
       
+      # Creates a new MBID from either a MBID URI or the UUID.
+      # 
+      # In case a complete URI is given its entity type must match the
+      # given entity type or an +EntityTypeNotMatchingError+ will be thrown.
+      def self.from_string(entity_type, string)
+        # Try to create an MBID from URI
+        begin
+          id = MBID.from_uri(string)
+          # Check if the entity type of @id matches that of the current object.
+          unless entity_type == id.entity
+            raise EntityTypeNotMatchingError.new(id.to_s)
+          end
+        rescue InvalidMBIDError => e
+          # Try it again and use mbid as the UUID
+          id = MBID.from_uuid(entity_type, string)
+        end
+        return id
+      end
+      
       # Creates a new MBID from a MBID URI, e.g.
       # http://musicbrainz.org/artist/6a2ca1ac-408d-49b0-a7f6-cd608f2f684f
       def self.from_uri(uri)
         if match = ENTITY_URI_REGEXP.match(uri)
-          entity = match[1]
+          entity_type = match[1]
           uuid = match[2]
         else
           raise InvalidMBIDError.new(uri.inspect)
         end
-        from_uuid(entity, uuid)
+        from_uuid(entity_type, uuid)
       end
       
       # Create a new MBID from the entity type and the UUID.
@@ -46,20 +65,20 @@ module MusicBrainz
       # part of the URI, e.g. <tt>6a2ca1ac-408d-49b0-a7f6-cd608f2f684f</tt>.
       # 
       # Raises: +UnknownEntityError+, +InvalidUUIDError+
-      def self.from_uuid(entity, uuid)
-        if entity.nil? or entity == '' or
-           not [:artist, :release, :track, :label].include? entity.to_sym
-          raise UnknownEntityError.new(entity.to_s)
+      def self.from_uuid(entity_type, uuid)
+        if entity_type.nil? or entity_type == '' or
+           not [:artist, :release, :track, :label].include? entity_type.to_sym
+          raise UnknownEntityError.new(entity_type.to_s)
         end
         unless uuid.is_a? String and uuid =~ UUID_REGEXP
           raise InvalidUUIDError.new(uuid.inspect)
         end
-        new(entity.to_sym, uuid)
+        new(entity_type.to_sym, uuid)
       end
       
       # Initialize the UUID given the entity type and an UUID.
-      def initialize(entity, uuid) # :notnew:
-        @entity = entity
+      def initialize(entity_type, uuid) # :notnew:
+        @entity = entity_type
         @uuid = uuid
       end
       
