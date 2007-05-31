@@ -4,6 +4,7 @@
 # See LICENSE for permissions.
 
 require 'rbrainz/model'
+require 'rbrainz/webservice/collection'
 require 'rexml/document'
 include REXML
 
