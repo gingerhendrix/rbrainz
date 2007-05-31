@@ -1,7 +1,6 @@
 =TODO
 
 ==Short term tasks
-* Query collections (0.2.0)
 * Support for the offset parameter for queries on collections
   to retrieve results below the 100 results limit. Could be easily integrated
   into the result object (see previous point). (0.2.0)

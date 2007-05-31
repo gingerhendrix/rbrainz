@@ -21,7 +21,7 @@ class TestWebservice < Test::Unit::TestCase
   def test_get_success
     ws = Webservice::Webservice.new(:host => @testserver)
     assert_nothing_raised {
-      ws.get(:artist, Model::MBID.from_uuid(:artist, '10bf95b6-30e3-44f1-817f-45762cdc0de0'))
+      ws.get(:artist, :id => Model::MBID.from_uuid(:artist, '10bf95b6-30e3-44f1-817f-45762cdc0de0'))
     }
   end
   
@@ -29,7 +29,7 @@ class TestWebservice < Test::Unit::TestCase
   def test_get_request_error
     ws = Webservice::Webservice.new(:host => @testserver)
     assert_raise(Webservice::RequestError) {
-      ws.get(:artist, Model::MBID.from_uuid(:artist, '10bf95b6-30e3-44f1-817f-45762cdc0de0'),
+      ws.get(:artist, :id => Model::MBID.from_uuid(:artist, '10bf95b6-30e3-44f1-817f-45762cdc0de0'),
              :include => 'inc=invalid')
     }
   end
@@ -47,7 +47,7 @@ class TestWebservice < Test::Unit::TestCase
   def test_get_resource_not_found_error
     ws = Webservice::Webservice.new(:host => @testserver, :path_prefix => '/invalid')
     assert_raise(Webservice::ResourceNotFoundError) {
-      ws.get(:artist, Model::MBID.from_uuid(:artist, '10bf95b6-30e3-44f1-817f-45762cdc0de0'))
+      ws.get(:artist, :id => Model::MBID.from_uuid(:artist, '10bf95b6-30e3-44f1-817f-45762cdc0de0'))
     }
   end
   
@@ -55,7 +55,7 @@ class TestWebservice < Test::Unit::TestCase
     ws = Webservice::Webservice.new(:host => 'example.org')
     ws.open_timeout = 0.1
     assert_raise(Webservice::ConnectionError) {
-      ws.get(:artist, Model::MBID.from_uuid(:artist, '10bf95b6-30e3-44f1-817f-45762cdc0de0'))
+      ws.get(:artist, :id => Model::MBID.from_uuid(:artist, '10bf95b6-30e3-44f1-817f-45762cdc0de0'))
     }
   end
   

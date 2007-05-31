@@ -19,44 +19,46 @@ module MusicBrainz
         return get_entity_by_id(Model::Artist.entity_type, id, include)
       end
       
-      # TODO: implement
       def get_artists(filter)
-        raise NotImplementedError.new
+        return get_entities(Model::Artist.entity_type, filter)
       end
       
       def get_release_by_id(id, include = nil)
         return get_entity_by_id(Model::Release.entity_type, id, include)
       end
       
-      # TODO: implement
       def get_releases(filter)
-        raise NotImplementedError.new
+        return get_entities(Model::Release.entity_type, filter)
       end
       
       def get_track_by_id(id, include = nil)
         return get_entity_by_id(Model::Track.entity_type, id, include)
       end
       
-      # TODO: implement
       def get_tracks(filter)
-        raise NotImplementedError.new
+        return get_entities(Model::Track.entity_type, filter)
       end
       
       def get_label_by_id(id, include = nil)
         return get_entity_by_id(Model::Label.entity_type, id, include)
       end
       
-      # TODO: implement
       def get_labels(filter)
-        raise NotImplementedError.new
+        return get_entities(Model::Label.entity_type, filter)
       end
       
       private
       
       # Helper method which will return any entity by ID.
       def get_entity_by_id(entity_type, id, include)
-        xml = @webservice.get(entity_type, id, :include => include)
+        xml = @webservice.get(entity_type, :id => id, :include => include)
         return MBXML.new(xml).get_entity(entity_type)
+      end
+      
+      # Helper method which will search for the given entity type.
+      def get_entities(entity_type, filter)
+        xml = @webservice.get(entity_type, :filter => filter)
+        return MBXML.new(xml).get_entity_list(entity_type)
       end
       
     end

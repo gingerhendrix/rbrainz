@@ -1,6 +1,7 @@
 =Changelog
 
 ==0.2.0 (not yet released)
+* Querying of collections implemented
 * Collection class to store search results (with support for search score)
 * Introduced Individual as superclass for Artist and Label
 * Added unique_name method for Artist and Label
