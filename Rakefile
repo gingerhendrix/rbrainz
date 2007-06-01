@@ -10,6 +10,10 @@ require 'rake/gempackagetask'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
+task :default do
+  puts "Please see 'rake --tasks' for an overview of the available tasks."
+end
+
 # Packaging tasks: -------------------------------------------------------
 
 PKG_NAME = 'rbrainz'
@@ -30,7 +34,7 @@ spec = Gem::Specification.new do |spec|
   spec.version = PKG_VERSION
   spec.requirements << 'none'
   spec.require_path = 'lib'
-  spec.autorequire = 'rbrainz'
+  spec.autorequire = spec.name
   spec.files = PKG_FILES
   spec.description = <<EOF
     RBrainz is a Ruby client library to access the MusicBrainz XML
