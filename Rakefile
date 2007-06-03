@@ -26,13 +26,14 @@ PKG_FILES = FileList[
   "test/**/*.rb",
   "test/test-data/**/*"
 ]
+PKG_EXTRA_RDOC_FILES = ['doc/README.rdoc', 'LICENSE', 'TODO', 'CHANGES']
 
 spec = Gem::Specification.new do |spec|
   spec.platform = Gem::Platform::RUBY
   spec.summary = 'Ruby library for the MusicBrainz XML webservice.'
   spec.name = PKG_NAME
   spec.version = PKG_VERSION
-  spec.requirements << 'none'
+  spec.requirements << 'Optional: mb-discid >= 1.2 (for calculating disc IDs)'
   spec.require_paths = 'lib'
   spec.autorequire = spec.name
   spec.files = PKG_FILES
@@ -54,7 +55,7 @@ EOF
   spec.homepage = 'http://rbrainz.rubyforge.org'
   spec.rubyforge_project = 'rbrainz'
   spec.has_rdoc = true
-  spec.extra_rdoc_files = ['doc/README.rdoc']
+  spec.extra_rdoc_files = PKG_EXTRA_RDOC_FILES
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
@@ -87,8 +88,7 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title    = "RBrainz %s" % PKG_VERSION
   rdoc.main     = 'doc/README.rdoc'
   rdoc.rdoc_dir = 'doc/api'
-  rdoc.rdoc_files.include('doc/README.rdoc', 'lib/**/*.rb',
-                          'LICENSE', 'TODO', 'CHANGES')
+  rdoc.rdoc_files.include('lib/**/*.rb', PKG_EXTRA_RDOC_FILES)
   rdoc.options << '--inline-source' << '--line-numbers' #<< '--diagram'
 end
 
