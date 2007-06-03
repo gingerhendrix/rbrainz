@@ -33,7 +33,7 @@ spec = Gem::Specification.new do |spec|
   spec.name = PKG_NAME
   spec.version = PKG_VERSION
   spec.requirements << 'none'
-  spec.require_path = 'lib'
+  spec.require_paths = 'lib'
   spec.autorequire = spec.name
   spec.files = PKG_FILES
   spec.description = <<EOF
