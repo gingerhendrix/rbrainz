@@ -1,7 +1,9 @@
 # $Id$
-# Copyright (c) 2007, Philipp Wolfer
-# All rights reserved.
-# See LICENSE for permissions.
+#
+# Author::    Philipp Wolfer (mailto:phw@rubyforge.org)
+# Copyright:: Copyright (c) 2007, Philipp Wolfer
+# License::   RBrainz is free software distributed under a BSD style license.
+#             See LICENSE[file:../LICENSE.html] for permissions.
 
 require 'rbrainz/model'
 require 'rbrainz/webservice/collection'

@@ -1,6 +1,6 @@
-=Changelog
+= Changelog
 
-==0.2.0 (not yet released)
+== 0.2.0 (not yet released)
 * Querying of collections implemented
 * Collection class to store search results (with support for search score)
 * Introduced Individual as superclass for Artist and Label
@@ -10,12 +10,12 @@
 * Added label type "Unknown"
 * New constructor Model::MBID.from_string(entity_type, string)
 
-==0.1.1 (2007-05-29)
+== 0.1.1 (2007-05-29)
 * Full support for relations
 * Proper exception handling in Webservice class
 * Minor corrections
 
-==0.1.0 (2007-05-23)
+== 0.1.0 (2007-05-23)
 * Initial release
 
 $Id$

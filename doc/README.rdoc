@@ -1,4 +1,4 @@
-=RBrainz - Ruby MusicBrainz library
+= RBrainz - Ruby MusicBrainz library
 RBrainz is a Ruby client library to access the MusicBrainz XML webservice,
 which can be used to query the MusicBrainz database.
 
@@ -12,16 +12,16 @@ library more Ruby like or easier to use.
 RBrainz supports the MusicBrainz XML Metadata Version 1.1, including support
 for labels and extended release events.
 
-==Installation
-===Installing with RubyGems
+== Installation
+=== Installing with RubyGems
 The easiest way to install the latest release of RBrainz is using
 RubyGems[http://rubygems.org] by executing the following command:
  gem install rbrainz
  
-===Manual installation
+=== Manual installation
 Not supported, yet.
 
-==Basic usage
+== Basic usage
 The most important classes in this library are the model classes
 MusicBrainz::Model::Artist, MusicBrainz::Model::Release,
 MusicBrainz::Model::Track and MusicBrainz::Model::Label
@@ -54,13 +54,13 @@ array of those classes. The example below should make the usage clear:
  q = Webservice::Query.new
  artist = q.get_artist_by_id(mbid, artist_includes)
 
-==The MusicBrainz webservice
+== The MusicBrainz webservice
 For more information about the MusicBrainz webservice visit the
 following resources:
 - MusicBrainzXMLWebService[http://musicbrainz.org/doc/XMLWebService]
 - MusicBrainzXMLMetaData[http://musicbrainz.org/doc/MusicBrainzXMLMetaData]
 
-==License
+== License
 RBrainz is Copyright (c) 2007 Philipp Wolfer.
 It is free softare distributed under a BSD style license. See
 LICENSE[link:files/LICENSE.html] for details.
