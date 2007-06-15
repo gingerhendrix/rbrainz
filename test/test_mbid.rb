@@ -27,20 +27,19 @@ class TestMBID < Test::Unit::TestCase
   def teardown
   end
   
-  def test_private_new
-    assert_raise(NoMethodError) {Model::MBID.new}
-  end
-  
-  def test_from_string
+  def test_parse
     assert_equal 'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf',
-      Model::MBID.from_string(:artist,
-      'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf').to_s
+      Model::MBID.parse( 
+        'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf', 
+        :artist).to_s
     assert_equal 'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf',
-      Model::MBID.from_string(:artist,
-      '9d30e408-1559-448b-b491-2f8de1583ccf').to_s
+      Model::MBID.parse(
+      '9d30e408-1559-448b-b491-2f8de1583ccf',
+      :artist ).to_s
     assert_raise(Model::EntityTypeNotMatchingError) {
-      Model::MBID.from_string(:label,
-      'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf')
+      Model::MBID.parse(
+      'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf',
+      :label )
     }
   end
   
@@ -48,27 +47,27 @@ class TestMBID < Test::Unit::TestCase
     @valid_entities.each{|entity|
       @valid_uuids.each{|uuid|
         assert_nothing_raised \
-          {Model::MBID.from_uri 'http://musicbrainz.org/' + entity.to_s + '/' + uuid}
+          {Model::MBID.parse 'http://musicbrainz.org/' + entity.to_s + '/' + uuid }
       }
     }
     @invalid_uris.each{|uri|
-      assert_raise(Model::InvalidMBIDError) {Model::MBID.from_uri uri}
+      assert_raise(Model::InvalidMBIDError, uri) {Model::MBID.parse uri}
     }
   end
   
   def test_from_uuid
     @valid_entities.each{|entity|
       @valid_uuids.each{|uuid|
-        assert_nothing_raised {Model::MBID.from_uuid entity, uuid}
+        assert_nothing_raised {Model::MBID.parse uuid, entity}
       }
     }
     @invalid_entities.each{|entity|
       assert_raise(Model::UnknownEntityError, 'Invalid entity ' + entity.inspect + '') \
-        {Model::MBID.from_uuid entity, @valid_uuids[0]}
+        {Model::MBID.parse @valid_uuids[0], entity}
     }
     @invalid_uuids.each{|uuid|
-      assert_raise(Model::InvalidUUIDError, 'Invalid uuid ' + uuid.inspect + '') \
-        {Model::MBID.from_uuid @valid_entities[0], uuid}
+      assert_raise(Model::InvalidMBIDError, uuid.inspect) \
+        {Model::MBID.parse uuid, @valid_entities[0]}
     }
   end
   
@@ -76,9 +75,9 @@ class TestMBID < Test::Unit::TestCase
     @valid_entities.each{|entity|
       @valid_uuids.each{|uuid|
         uri = 'http://musicbrainz.org/' + entity.to_s + '/' + uuid
-        mbid = Model::MBID.from_uuid entity, uuid
+        mbid = Model::MBID.parse uuid, entity
         assert_equal uri, mbid.to_s
-        mbid = Model::MBID.from_uri uri
+        mbid = Model::MBID.parse uri
         assert_equal uri, mbid.to_s
       }
     }
@@ -87,10 +86,10 @@ class TestMBID < Test::Unit::TestCase
   def test_read_attributes
     @valid_entities.each{|entity|
       @valid_uuids.each{|uuid|
-        mbid = Model::MBID.from_uuid entity, uuid
+        mbid = Model::MBID.parse uuid, entity
         assert_equal entity.to_sym, mbid.entity
         assert_equal uuid, mbid.uuid
-        mbid = Model::MBID.from_uri 'http://musicbrainz.org/' + entity.to_s + '/' + uuid
+        mbid = Model::MBID.parse 'http://musicbrainz.org/' + entity.to_s + '/' + uuid
         assert_equal entity.to_sym, mbid.entity
         assert_equal uuid, mbid.uuid
       }
@@ -99,14 +98,14 @@ class TestMBID < Test::Unit::TestCase
   
   # Test if the attributes are read only.
   def test_write_attributes
-    mbid = Model::MBID.from_uuid @valid_entities[0], @valid_uuids[0]
+    mbid = Model::MBID.parse @valid_uuids[0], @valid_entities[0]
     assert_raise(NoMethodError) {mbid.entity = :release}
     assert_raise(NoMethodError) {mbid.uuid = @valid_uuids[0]}
   end
   
   def test_equality
-    mbid1 = Model::MBID.from_uuid @valid_entities[0], @valid_uuids[0]
-    mbid2 = Model::MBID.from_uuid @valid_entities[0], @valid_uuids[0]
+    mbid1 = Model::MBID.parse @valid_uuids[0], @valid_entities[0]
+    mbid2 = Model::MBID.parse @valid_uuids[0], @valid_entities[0]
     assert_equal mbid1, mbid1
     assert_equal mbid1, mbid2
   end

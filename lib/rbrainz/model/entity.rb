@@ -38,19 +38,10 @@ module MusicBrainz
       # Raises: +UnknownEntityError+, +InvalidUUIDError+,
       # +EntityTypeNotMatchingError+
       def id=(mbid)
-        # If this already is an instance of MBID store it directly.
-        if mbid.is_a? MBID
-          @id = mbid
-          # Check if the entity type of @id matches that of the current object.
-          unless @id.entity == self.entity_type
-            exception = EntityTypeNotMatchingError.new(@id.entity.to_s)
-            @id = nil
-            raise exception
-          end
-        elsif mbid.nil?
-          @id = nil
+        if mbid
+          @id = MBID.parse(mbid, entity_type)
         else
-          @id = MBID.from_string(self.entity_type, mbid)
+          @id = nil
         end
       end
       

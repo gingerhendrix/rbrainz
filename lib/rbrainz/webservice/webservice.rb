@@ -92,7 +92,7 @@ module MusicBrainz
           # Make sure the id is a MBID object
           id = options[:id]
           unless id.is_a? Model::MBID
-            id = Model::MBID.from_string(entity_type, id)
+            id = Model::MBID.parse(id, entity_type)
           end
         
           uri = 'http://%s:%d%s/%d/%s/%s?type=%s' %

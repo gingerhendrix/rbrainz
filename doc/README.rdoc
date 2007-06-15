@@ -34,7 +34,7 @@ array of those classes. The example below should make the usage clear:
  include MusicBrainz
  
  # Create an MBID object which represents a MusicBrainz artist ID.
- mbid = Model::MBID.from_uuid(:artist, 'c0b2500e-0cef-4130-869d-732b23ed9df5')
+ mbid = Model::MBID.new('c0b2500e-0cef-4130-869d-732b23ed9df5', :artist)
 
  # With the ArtistInclude object we can control what kind of information
  # the MusicBrainz server will include in its answer.

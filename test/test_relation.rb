@@ -14,7 +14,7 @@ class TestRelation < Test::Unit::TestCase
 
   def setup
     @target_entity = Model::Artist.new
-    @target_entity.id = Model::MBID.from_uuid :artist, '727ad90b-7ef4-48d2-8f16-c34016544822'
+    @target_entity.id = Model::MBID.parse '727ad90b-7ef4-48d2-8f16-c34016544822', :artist
   end
 
   def teardown

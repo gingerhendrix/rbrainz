@@ -434,28 +434,28 @@ module MusicBrainz
             target = create_artist node.elements['artist']
           else
             target = Model::Artist.new
-            target.id = Model::MBID.from_uuid(:artist, node.attributes['target'])
+            target.id = Model::MBID.parse(node.attributes['target'], :artist)
           end
         when Model::Relation::TO_RELEASE
           if node.elements['release']
             target = create_release node.elements['release']
           else
             target = Model::Release.new
-            target.id = Model::MBID.from_uuid(:release, node.attributes['target'])
+            target.id = Model::MBID.parse(node.attributes['target'], :release)
           end
         when Model::Relation::TO_TRACK
           if node.elements['track']
             target = create_track node.elements['track']
           else
             target = Model::Track.new
-            target.id = Model::MBID.from_uuid(:track, node.attributes['target'])
+            target.id = Model::MBID.parse(node.attributes['target'], :track)
           end
         when Model::Relation::TO_LABEL
           if node.elements['label']
             target = create_label node.elements['label']
           else
             target = Model::Label.new
-            target.id = Model::MBID.from_uuid(:label, node.attributes['target'])
+            target.id = Model::MBID.parse(node.attributes['target'], :label)
           end
         when Model::Relation::TO_URL
           target = node.attributes['target']

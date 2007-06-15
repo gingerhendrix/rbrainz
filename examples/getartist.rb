@@ -19,7 +19,7 @@ include MusicBrainz
 id = $*[0] ? $*[0] : '10bf95b6-30e3-44f1-817f-45762cdc0de0'
 
 # Generate a new artist MBID object from the ID:
-mbid = Model::MBID.from_uuid(:artist, id)
+mbid = Model::MBID.parse(id, :artist)
 
 # Define what information about the artist
 # should be included in the result.
