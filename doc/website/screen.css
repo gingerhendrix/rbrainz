@@ -57,6 +57,11 @@ a:focus, a:hover, a:active {
 	margin-left: 2em;
 }
 
+#navigation ul {
+  margin: 0;
+  padding: 0;
+}
+
 #navigation li {
 	list-style: none;
 	color: rgb(47, 84, 255);
@@ -71,8 +76,18 @@ a:focus, a:hover, a:active {
 }
 
 #navigation li a:link, #navigation li a:visited,
-#navigation li a:focus, #navigation li a:hover,
-#navigation li a:active {
+#navigation li a:focus, #navigation li a:active {
 	color: rgb(47, 84, 255);
 	text-decoration: none;
+}
+
+#navigation li a:hover {
+  color: rgb(255, 255, 255);
+}
+
+#navigation li li {
+  background-color: transparent;
+  font-size: .8em;
+  margin: 0;
+  padding: 0 0 0 .8em;
 }
