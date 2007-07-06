@@ -33,11 +33,12 @@ class TestIncompleteDate < Test::Unit::TestCase
     assert_equal 1969, date.year
     assert_equal 1, date.month
     assert_equal 5, date.day
-    assert_nothing_raised {date = Model::IncompleteDate.new(nil)}
-    assert_equal nil, date.year
+#    assert_nothing_raised {date = Model::IncompleteDate.new(nil)}
+#    assert_equal nil, date.year
   end
   
   def test_invalid_format
+    assert_raise(ArgumentError) {date = Model::IncompleteDate.new(nil)}
     assert_raise(ArgumentError) {date = Model::IncompleteDate.new('69-01-05')}
     assert_raise(ArgumentError) {date = Model::IncompleteDate.new(69)}
     assert_raise(ArgumentError) {date = Model::IncompleteDate.new('1969/01/05')}
@@ -50,13 +51,17 @@ class TestIncompleteDate < Test::Unit::TestCase
     assert_equal '1980',       @date_year.to_s
   end
   
-  def test_equality
-    assert_equal(@date_year_month_day, @date_year_month,
-                 "#{@date_year_month_day.to_s} <=> #{@date_year_month.to_s}")
-    assert_equal(@date_year_month, @date_year,
-                 "#{@date_year_month.to_s} <=> #{@date_year.to_s}")
-    assert_equal(@date_year, @date_year_month_day,
-                 "#{@date_year.to_s} <=> #{@date_year_month_day.to_s}")
+  def test_range
+    assert_equal Date.civil(1980,8,22), @date_year_month_day.begin
+    assert_equal Date.civil(1980,8,23), @date_year_month_day.end
+    assert @date_year_month_day.exclude_end?
+    
+    assert_equal Date.civil(1980, 8, 1), @date_year_month.begin
+    assert_equal Date.civil(1980, 9, 1), @date_year_month.end
+    assert @date_year_month.exclude_end?
+
+    assert_equal Date.civil(1980, 1, 1), @date_year.begin
+    assert_equal Date.civil(1981, 1, 1), @date_year.end
+    assert @date_year.exclude_end?
   end
-  
 end
