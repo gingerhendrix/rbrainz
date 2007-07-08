@@ -10,9 +10,9 @@
 * Improve API documentation.
 
 ==Longer term tasks
-* Calculation of disc IDs (0.3.0)
-* User authentication (0.4.0)
-* Querying of user information (0.4.0)
+* User authentication (0.3.0)
+* Support POST in webservice to submit information (0.3.0).
+* Querying of user information (0.3.0)
 * PUID submission
 * Full text search (lucene search queries).
 * Implement a command line tool (+mbquery+) for querying the MusicBrainz

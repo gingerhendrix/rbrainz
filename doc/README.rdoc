@@ -60,8 +60,12 @@ following resources:
 - MusicBrainzXMLWebService[http://musicbrainz.org/doc/XMLWebService]
 - MusicBrainzXMLMetaData[http://musicbrainz.org/doc/MusicBrainzXMLMetaData]
 
+== Authors
+* Nigel Graham
+* Philipp Wolfer
+
 == License
-RBrainz is Copyright (c) 2007 Philipp Wolfer.
+RBrainz is Copyright (c) 2007 Philipp Wolfer and Nigel Graham.
 It is free softare distributed under a BSD style license. See
 LICENSE[link:files/LICENSE.html] for details.
 

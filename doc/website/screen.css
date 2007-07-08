@@ -47,6 +47,11 @@ a:focus, a:hover, a:active {
 	text-decoration: underline;
 }
 
+a[rel="external"] {
+  background: transparent url(img/external.png) no-repeat scroll right center;
+  padding-right: 13px;
+}
+
 #content {
 	width: 40em;
 }
