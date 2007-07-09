@@ -55,6 +55,9 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity(:label)
 
     artist_list = mbxml.get_entity_list(:artist)
+    assert_equal 0, artist_list.offset
+    assert_equal 47, artist_list.count
+    
     assert_equal 3, artist_list.size, artist_list.inspect
     assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist_list[0][:entity].id.uuid
     assert_equal Model::Artist::TYPE_PERSON, artist_list[0][:entity].type
@@ -175,6 +178,9 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity(:label)
 
     release_list = mbxml.get_entity_list(:release)
+    assert_equal 0, release_list.offset
+    assert_equal 234, release_list.count
+    
     assert_equal 2, release_list.size, release_list.inspect
     assert_equal '290e10c5-7efc-4f60-ba2c-0dfc0208fbf5', release_list[0][:entity].id.uuid
     assert release_list[0][:entity].types.include?(Model::Release::TYPE_ALBUM)
@@ -286,6 +292,9 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity(:label)
 
     track_list = mbxml.get_entity_list(:track)
+    assert_equal 7, track_list.offset
+    assert_equal 100, track_list.count
+    
     assert_equal 3, track_list.size, track_list.inspect
     assert_equal '748f2b79-8c50-4581-adb1-7708118a48fc', track_list[0][:entity].id.uuid
     assert_equal 'Little Earthquakes', track_list[0][:entity].title
@@ -373,6 +382,9 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity(:label)
 
     label_list = mbxml.get_entity_list(:label)
+    assert_equal 0, label_list.offset
+    assert_equal 2, label_list.count
+    
     assert_equal 2, label_list.size, label_list.inspect
     assert_equal '50c384a2-0b44-401b-b893-8181173339c7', label_list[0][:entity].id.uuid
     assert_equal Model::Label::TYPE_ORIGINAL_PRODUCTION, label_list[0][:entity].type

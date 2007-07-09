@@ -74,7 +74,8 @@ module MusicBrainz
                       [Model::NS_MMD_1, entity_type]]
         
         unless entity_list.nil? or entity_list.is_a? REXML::Text
-          collection = Collection.new
+          collection = Collection.new(entity_list.attributes['count'],
+                                      entity_list.attributes['offset'])
           
           # Select the method to use for reading the list.
           read_list_method = method('read_' + entity_list.name.gsub('-', '_'))

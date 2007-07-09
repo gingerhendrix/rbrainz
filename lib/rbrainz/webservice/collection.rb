@@ -17,11 +17,30 @@ module MusicBrainz
     # score for each entity, which indicates how good the entity matches the
     # search criteria.
     # 
+    # A collection object may only store an extract of the complete data
+    # available on the server. This is especially the case if the limit or
+    # offset filter was used in the query. The collection object makes the
+    # total number of elements on the server and the current offset available
+    # with the +count+ respective the +offset+ parameter.
+    # 
     # The entities in the collection are sorted by score (in descending order).
     class Collection
     
-      def initialize
+      # Returns the total number of elements for that collection on the server. 
+      attr_reader :count
+      
+      # Returns the position at which this collection starts. Used for paging
+      # through more than one page of results.
+      attr_reader :offset
+    
+      # Create a new collection object.
+      # 
+      # The count and offset parameters should be set according to the values
+      # returned by the server.
+      def initialize(count=0, offset=0)
         @entities = Array.new
+        @count    = count.to_i
+        @offset   = offset.to_i
       end
       
       # Add a new entity to the collection.
@@ -67,6 +86,15 @@ module MusicBrainz
       # Returns true, if the collection contains no entities.
       def empty?
         return size == 0
+      end
+      
+      # Convert the collection into an array.
+      #
+      # Each element in the array is hash with the two keys :entity and :score.
+      def to_a
+        return @entities.map {|entity|
+          {:entity => entity.first, :score => entity.last}
+        }
       end
 
     end
