@@ -32,14 +32,19 @@ module MusicBrainz #:nodoc:
       end
       alias :> :after?
 
+=begin comment
+Allready exists in Range so we can't define it in the module
       def eql?(b)
         if b.kind_of? ::Range
+          puts "Range class eql?"
           self.begin == b.begin && self.open_end == b.open_end
         else
+          puts "b.class eql?"
           self.begin == b && self.open_end == b.succ
         end
       end
       alias :== :eql?
+=end
 
       def meets_beginning_of?(b)
         if b.kind_of? ::Range
@@ -133,9 +138,12 @@ module MusicBrainz #:nodoc:
         self.starts?(b) || self.during?(b) || self.finishes?(b)
       end
 
-      def includes?(b)
-        self.started_by?(b) || self.contains?(b) || self.finished_by?(b)
+=begin comment
+Allready exists in Range so we can't define it in the module
+      def include?(b)
+        self.started_by?(b) || self.contains?(b) || self.eql?(b) || self.finished_by?(b)
       end
+=end
 
       protected
       def open_end

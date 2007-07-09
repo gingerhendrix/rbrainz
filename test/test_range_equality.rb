@@ -14,16 +14,23 @@ class TestRangeEquality < Test::Unit::TestCase
     [
       [  1..11,  13..30,                :before?], # a before b
       [ 1...12, 13...30,                :before?], # a before b
+      [  1..11,      13,                :before?], # a before b
       [ 13..30,   1..11,                 :after?], # a after b
       [13...30,  1...12,                 :after?], # a after b
-      [  1..12,  1...13,                 :equal?], # a equals b
-      [  1..12,   1..12,                 :equal?], # a equals b
-      [ 1...13,   1..12,                 :equal?], # a equals b
-      [ 1...13,  1...13,                 :equal?], # a equals b
+      [ 13..30,      11,                 :after?], # a after b
+      [  1..12,  1...13,                   :eql?], # a equals b
+      [  1..12,   1..12,                   :eql?], # a equals b
+      [ 1...13,   1..12,                   :eql?], # a equals b
+      [ 1...13,  1...13,                   :eql?], # a equals b
+      [  1...2,       1,                   :eql?], # a equals b
+      [   1..1,       1,                   :eql?], # a equals b
       [ 1...13,  13..30,    :meets_beginning_of?], # a meets_beginning_of b
       [  1..12,  13..30,    :meets_beginning_of?], # a meets_beginning_of b
+      [ 1...13,      13,    :meets_beginning_of?], # a meets_beginning_of b
+      [  1..12,      13,    :meets_beginning_of?], # a meets_beginning_of b
       [ 13..30,  1...13,          :meets_end_of?], # a meets_end_of b
       [ 13..30,   1..12,          :meets_end_of?], # a meets_end_of b
+      [ 13..30,      12,          :meets_end_of?], # a meets_end_of b
       [  1..13,  13..30, :overlaps_beginning_of?], # a overlaps_beginning_of b
       [ 1...14,  13..30, :overlaps_beginning_of?], # a overlaps_beginning_of b
       [  1..29,  13..30, :overlaps_beginning_of?], # a overlaps_beginning_of b
@@ -40,6 +47,7 @@ class TestRangeEquality < Test::Unit::TestCase
       [ 12..30, 13...30,              :contains?], # a contains b
       [12...31, 13...30,              :contains?], # a contains b
       [12...32,  13..30,              :contains?], # a contains b
+      [12...32,      13,              :contains?], # a contains b
       [ 13..30,  13..31,                :starts?], # a starts b
       [13...30,  13..30,                :starts?], # a starts b
       [ 13..30, 13...32,                :starts?], # a starts b
@@ -48,6 +56,7 @@ class TestRangeEquality < Test::Unit::TestCase
       [ 13..30, 13...30,            :started_by?], # a started_by b
       [13...32,  13..30,            :started_by?], # a started_by b
       [13...31, 13...30,            :started_by?], # a started_by b
+      [13...31,      13,            :started_by?], # a started_by b
       [ 14..30,  13..30,              :finishes?], # a finishes b
       [14...30,  13..29,              :finishes?], # a finishes b
       [ 14..30, 13...31,              :finishes?], # a finishes b
@@ -56,11 +65,12 @@ class TestRangeEquality < Test::Unit::TestCase
       [ 13..29, 14...30,           :finished_by?], # a finished_by b
       [13...31,  14..30,           :finished_by?], # a finished_by b
       [13...30, 14...30,           :finished_by?], # a finished_by b
+      [13...30,      29,           :finished_by?], # a finished_by b
     ]
   OPERATIONS = [
       :before?,
       :after?,
-      :equal?,
+      :eql?,
       :meets_beginning_of?,
       :meets_end_of?,
       :overlaps_beginning_of?,
@@ -122,12 +132,12 @@ class TestRangeEquality < Test::Unit::TestCase
     end
   end
 
-  def test_includes
+  def test_include
     TESTSET.each do |a,b,op|
-      if op == :started_by? || op == :contains? || op == :finished_by?
-        assert a.includes?(b), a.inspect + ".includes? " + b.inspect
+      if op == :started_by? || op == :contains? || op == :eql? || op == :finished_by?
+        assert a.include?(b), a.inspect + ".include? " + b.inspect
       else
-        assert !a.includes?(b), '!' + a.inspect + ".includes? " + b.inspect + ''
+        assert !a.include?(b), '!' + a.inspect + ".include? " + b.inspect + ''
       end
     end
   end
