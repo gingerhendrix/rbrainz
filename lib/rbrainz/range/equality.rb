@@ -40,7 +40,6 @@ module MusicBrainz #:nodoc:
         end
       end
       alias :== :eql?
-      alias :equal? :eql?
 
       def meets_beginning_of?(b)
         if b.kind_of? ::Range
