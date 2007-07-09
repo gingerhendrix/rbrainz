@@ -25,7 +25,7 @@ kbd.command {
 	padding: .2em;
 }
 
-h1, h2 {
+h1, h2, h3 {
 	font-family: Georgia, serif;
 }
 
@@ -56,7 +56,7 @@ a[rel="external"] {
 	width: 40em;
 }
 
-#navigation {
+#sidebar {
 	float: right;
 	width: 10em;
 	margin-left: 2em;
@@ -96,3 +96,8 @@ a[rel="external"] {
   margin: 0;
   padding: 0 0 0 .8em;
 }
+
+#news { font-size: .9em; }
+#news h3 { font-size: 1.2em; margin: 1.2em 0 0; }
+#news h4 { font-size: .9em; margin: .6em 0 .1em; }
+#news .date { color: rgb(90, 90, 90); }
