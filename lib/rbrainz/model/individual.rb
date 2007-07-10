@@ -16,9 +16,14 @@ module MusicBrainz
     # Aggregates the common attributes of artists and labels.
     class Individual < Entity
     
-      attr_accessor :name, :sort_name, :disambiguation, :type
+      attr_accessor :name, :sort_name, :disambiguation, :type, :aliases
                     
       attr_reader :begin_date, :end_date
+      
+      def initialize
+        super
+        @aliases = Array.new
+      end
                     
       # Set the begin date of this individual.
       # 

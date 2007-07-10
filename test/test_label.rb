@@ -14,6 +14,7 @@ class TestLabel < Test::Unit::TestCase
     @tested_class = Model::Label
     @invalid_entity_types = [:artist, :release, :track]
     @releases = [Model::Release.new, Model::Release.new]
+    @aliases = [Model::Alias.new, Model::Alias.new]
   end
 
   def teardown
@@ -126,6 +127,21 @@ class TestLabel < Test::Unit::TestCase
     assert_equal 1, label.releases.size
     assert_nothing_raised {label.releases.delete @releases[0]}
     assert_equal 0, label.releases.size
+  end
+  
+  # Many aliases can be added
+  def test_add_and_remove_aliases
+    label = Model::Label.new
+    assert_equal 0, label.aliases.size
+    assert_nothing_raised {label.aliases << @aliases[0]}
+    assert_equal 1, label.aliases.size
+    assert_nothing_raised {label.aliases << @aliases[1]}
+    assert_equal 2, label.aliases.size
+    
+    assert_nothing_raised {label.aliases.delete @aliases[1]}
+    assert_equal 1, label.aliases.size
+    assert_nothing_raised {label.aliases.delete @aliases[0]}
+    assert_equal 0, label.aliases.size
   end
   
 end

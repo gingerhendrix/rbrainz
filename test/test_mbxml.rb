@@ -422,6 +422,8 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'US', label.country
     assert_equal '1947', label.begin_date.to_s
     assert_equal '2047', label.end_date.to_s
+    assert_equal 1, label.aliases.size
+    assert_equal 'Atlantic Rec.', label.aliases[0].name
   end
 
 end

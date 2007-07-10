@@ -19,11 +19,10 @@ module MusicBrainz
       TYPE_PERSON = NS_MMD_1 + 'Person'
       TYPE_GROUP  = NS_MMD_1 + 'Group'
       
-      attr_reader :aliases, :releases
+      attr_reader :releases
                     
       def initialize
         super
-        @aliases = Array.new
         @releases = Array.new
       end
       

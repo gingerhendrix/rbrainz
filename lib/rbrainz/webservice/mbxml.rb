@@ -311,6 +311,13 @@ module MusicBrainz
         end
         
         # Read the alias list
+        if node.elements['alias-list']
+          read_alias_list(node.elements['alias-list']) {|label_alias|
+            label.aliases << label_alias
+          }
+        end
+        
+        # Read the release list
         if node.elements['release-list']
           read_release_list(node.elements['release-list']) {|release|
             label.releases << release
