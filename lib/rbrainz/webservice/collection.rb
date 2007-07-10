@@ -88,6 +88,11 @@ module MusicBrainz
         return size == 0
       end
       
+      # Returns an array with all entities without the score.
+      def entities
+        return @entities.map {|entity| entity.first}
+      end
+
       # Convert the collection into an array.
       #
       # Each element in the array is hash with the two keys :entity and :score.
@@ -96,7 +101,7 @@ module MusicBrainz
           {:entity => entity.first, :score => entity.last}
         }
       end
-
+      
     end
     
   end

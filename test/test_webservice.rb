@@ -36,15 +36,6 @@ class TestWebservice < Test::Unit::TestCase
     }
   end
   
-  # 401 - Unauthorized
-  # Not implemented, yet.
-  #def test_get_authentication_error
-  #  ws = Webservice::Webservice.new(:host => @testserver)
-  #  assert_raise(Webservice::AuthenticationError) {
-  #  #...
-  #  }
-  #end
-  
   # 404 - Not Found
   def test_get_resource_not_found_error
     ws = Webservice::Webservice.new(:host => @testserver, :path_prefix => '/invalid')

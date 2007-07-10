@@ -428,7 +428,7 @@ class TestMBXML < Test::Unit::TestCase
 
   def test_user_1
     mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'user/User_1.xml')
-    users = mbxml.get_entity_array(:user, Model::NS_EXT_1)
+    users = mbxml.get_entity_list(:user, Model::NS_EXT_1).entities
     
     assert_equal 1, users.size
     assert_equal 'matt', users[0].name

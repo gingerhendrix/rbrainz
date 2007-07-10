@@ -71,6 +71,11 @@ class TestCollection < Test::Unit::TestCase
     assert_equal 98, array[1][:score]
     assert_equal @artist_three, array[2][:entity]
     assert_equal nil, array[2][:score]
+    
+    # Access the entities as an array
+    assert_equal @artist_one, collection.entities[0]
+    assert_equal @artist_two, collection.entities[1]
+    assert_equal @artist_three, collection.entities[2]
   end
 
 end

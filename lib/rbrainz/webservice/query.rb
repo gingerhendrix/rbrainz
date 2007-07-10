@@ -51,10 +51,10 @@ module MusicBrainz
       
       def get_user_by_name(name)
         xml = @webservice.get(:user, :filter => UserFilter.new(name))
-        MBXML.new(xml).get_entity_array(:user, Model::NS_EXT_1)[0]
+        MBXML.new(xml).get_entity_list(:user, Model::NS_EXT_1)[0][:entity]
       end
       
-      private
+      private # ----------------------------------------------------------------
       
       # Helper method which will return any entity by ID.
       def get_entity_by_id(entity_type, id, include)

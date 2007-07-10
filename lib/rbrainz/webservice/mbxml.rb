@@ -46,39 +46,11 @@ module MusicBrainz
                  [Model::NS_MMD_1, entity_type]]
         
         unless entity.nil? or entity.is_a? REXML::Text
-          case entity.name
-          when 'artist'
-            return create_artist(entity)
-          when 'release'
-            return create_release(entity)
-          when 'track'
-            return create_track(entity)
-          when 'label'
-            return create_label(entity)
-          end
+          create_method = method('create_' + entity.name)
+          create_method.call(entity) if create_method
         else
           return nil
         end
-      end
-      
-      def get_entity_array(entity_type, ns=Model::NS_MMD_1)
-        # Search for the first occuring node of type entity which is a child node
-        # of the metadata element.
-        entity_list = @document.elements[
-          "//[local-name()='metadata' and namespace-uri()='%s']/[local-name()='%s-list' and namespace-uri()='%s'][1]" %
-                      [Model::NS_MMD_1, entity_type, ns]]
-        unless entity_list.nil? or entity_list.is_a? REXML::Text
-          collection = Array.new
-          # Select the method to use for reading the list.
-          read_list_method = method('read_' + entity_list.name.gsub('-', '_'))
-          
-          # Read the entity list and store the entities in the collection.
-          read_list_method.call(entity_list, false) {|model|
-            collection << model
-          } if read_list_method
-          return collection
-        end
-        return nil
       end
       
       # Read the XML string and create a list of entity
@@ -86,12 +58,14 @@ module MusicBrainz
       # an entity-list element as a child of the metadata
       # element in the document.
       # Returns nil if no entity list of the given type is present.
-      # Returns an empty array if the list is empty.
+      # Returns an empty Collection if the list is empty.
       def get_entity_list(entity_type, ns=Model::NS_MMD_1)
         # Search for the first occuring node of type entity which is a child node
         # of the metadata element.
-        entity_list = @document.elements["//[local-name()='metadata' and namespace-uri()='%s']/[local-name()='%s-list' and namespace-uri()='%s'][1]" %
-                      [Model::NS_MMD_1, entity_type, ns]]
+        entity_list = @document.elements[
+          "//[local-name()='metadata' and namespace-uri()='%s']/[local-name()='%s-list' and namespace-uri()='%s'][1]" %
+            [Model::NS_MMD_1, entity_type, ns]]
+        
         unless entity_list.nil? or entity_list.is_a? REXML::Text
           collection = Collection.new(entity_list.attributes['count'],
                                       entity_list.attributes['offset'])
