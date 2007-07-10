@@ -5,7 +5,7 @@
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
-require 'rbrainz/range'
+require 'rbrainz/core_ext/range'
 require 'date'
 
 module MusicBrainz

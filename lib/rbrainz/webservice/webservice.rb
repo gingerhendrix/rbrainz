@@ -36,10 +36,12 @@ module MusicBrainz
       # Timeouts for opening and reading connections (in seconds)
       attr_accessor :open_timeout, :read_timeout
     
-      def initialize(options = {:host => nil, :port => nil, :path_prefix => nil})
+      def initialize(options = {:host => nil, :port => nil, :path_prefix => nil, :username=>nil, :password=>nil})
         @host = options[:host] ? options[:host] : 'musicbrainz.org'
         @port = options[:port] ? options[:port] : 80
         @path_prefix = options[:path_prefix] ? options[:path_prefix] : '/ws'
+        @username = options[:username]
+        @password = options[:password]
         @open_timeout = nil
         @read_timeout = nil
       end
@@ -62,6 +64,13 @@ module MusicBrainz
           response = connection.start {|http|
             http.request(request)
           }
+          if response.is_a?(Net::HTTPUnauthorized) && @username && @password
+            request = Net::HTTP::Get.new(url.request_uri)
+            request.digest_auth @username, @password, response
+            response = connection.start {|http|
+              http.request(request)
+            }
+          end
         rescue Timeout::Error, Errno::ETIMEDOUT
           raise ConnectionError.new('%s timed out' % url.to_s)
         end
@@ -73,6 +82,8 @@ module MusicBrainz
           raise AuthenticationError.new(url.to_s)
         elsif response.is_a? Net::HTTPNotFound # 404
           raise ResourceNotFoundError.new(url.to_s)
+        elsif response.is_a? Net::HTTPForbidden 
+          raise AuthenticationError.new(url.to_s)
         elsif not response.is_a? Net::HTTPSuccess
           raise ConnectionError.new(response.class.name)
         end

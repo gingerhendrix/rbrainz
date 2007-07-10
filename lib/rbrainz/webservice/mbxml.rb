@@ -24,7 +24,7 @@ module MusicBrainz
     
       def initialize(xml)
         @document = Document.new(xml)
-        
+
         # Already loaded artists, releases, tracks
         # and labels will get cached in these variables
         # to link to them if they occure multiple times
@@ -61,22 +61,40 @@ module MusicBrainz
         end
       end
       
+      def get_entity_array(entity_type, ns=Model::NS_MMD_1)
+        # Search for the first occuring node of type entity which is a child node
+        # of the metadata element.
+        entity_list = @document.elements[
+          "//[local-name()='metadata' and namespace-uri()='%s']/[local-name()='%s-list' and namespace-uri()='%s'][1]" %
+                      [Model::NS_MMD_1, entity_type, ns]]
+        unless entity_list.nil? or entity_list.is_a? REXML::Text
+          collection = Array.new
+          # Select the method to use for reading the list.
+          read_list_method = method('read_' + entity_list.name.gsub('-', '_'))
+          
+          # Read the entity list and store the entities in the collection.
+          read_list_method.call(entity_list, false) {|model|
+            collection << model
+          } if read_list_method
+          return collection
+        end
+        return nil
+      end
+      
       # Read the XML string and create a list of entity
       # models for the given entity type. There must be
       # an entity-list element as a child of the metadata
       # element in the document.
       # Returns nil if no entity list of the given type is present.
       # Returns an empty array if the list is empty.
-      def get_entity_list(entity_type)
+      def get_entity_list(entity_type, ns=Model::NS_MMD_1)
         # Search for the first occuring node of type entity which is a child node
         # of the metadata element.
-        entity_list = @document.elements["//[local-name()='metadata' and namespace-uri()='%s']/%s-list[1]" %
-                      [Model::NS_MMD_1, entity_type]]
-        
+        entity_list = @document.elements["//[local-name()='metadata' and namespace-uri()='%s']/[local-name()='%s-list' and namespace-uri()='%s'][1]" %
+                      [Model::NS_MMD_1, entity_type, ns]]
         unless entity_list.nil? or entity_list.is_a? REXML::Text
           collection = Collection.new(entity_list.attributes['count'],
                                       entity_list.attributes['offset'])
-          
           # Select the method to use for reading the list.
           read_list_method = method('read_' + entity_list.name.gsub('-', '_'))
           
@@ -474,11 +492,27 @@ module MusicBrainz
         return relation
       end
       
+      def read_user_list(node, read_scores=false)
+        read_list(node, 'user', read_scores, Model::NS_EXT_1) {|*a| yield a.size == 1 ? a[0] : a}
+      end
+      
+      def create_user(node)
+        user_model = Model::User.new
+        # Read the types
+        node.attributes['type'].split(' ').each {|type|
+          user.types << MBXML.add_namespace(type, Model::NS_EXT_1)
+        } if node.attributes['type']
+
+        user_model.name = node.elements['name'].text
+        user_model.show_nag = MBXML.get_element(node, 'nag', Model::NS_EXT_1).attributes['show'] == 'true'
+        return user_model
+      end
+      
       # Helper method that reads a list of a special node type.
       # There must be a method create_{child_name} which returns an
       # instance of the corresponding model.
-      def read_list(node, child_name, read_scores=false)
-        node.elements.each(child_name) {|child|
+      def read_list(node, child_name, read_scores=false, ns=Model::NS_MMD_1)
+        MBXML.each_element(node, child_name, ns ) do |child|
           model = method('create_' + child_name).call(child)
           if read_scores
             score = child.attributes['ext:score']
@@ -486,7 +520,7 @@ module MusicBrainz
           else
             yield model
           end
-        }
+        end
       end
       
       # Helper method which will return the given property
@@ -502,6 +536,13 @@ module MusicBrainz
         end
       end
       
+      def self.get_element(node, local_name, ns)
+        node.elements["*[local-name() = '#{local_name}' and namespace-uri() = '#{ns}']"]
+      end
+      
+      def self.each_element(node, local_name, ns, &block)
+        node.elements.each("*[local-name() = '#{local_name}' and namespace-uri()='#{ns}']", &block)
+      end
     end
 
   end

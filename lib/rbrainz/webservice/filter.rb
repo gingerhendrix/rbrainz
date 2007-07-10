@@ -142,5 +142,19 @@ module MusicBrainz
     
     end
     
+    class UserFilter
+      def initialize(name=nil)
+        @filter = Hash.new
+        @filter[:name] = name if name
+      end
+      
+      # Returns the filter list as a query string
+      # (without leading +&+).
+      def to_s
+        @filter.to_a.map {|name, value|
+          '%s=%s' % [URI.escape(name.to_s), URI.escape(value.to_s)]
+        }.join('&')
+      end
+    end
   end
 end

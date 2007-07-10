@@ -61,4 +61,10 @@ class TestWebservice < Test::Unit::TestCase
     }
   end
   
+  def test_user
+    ws = Webservice::Webservice.new()
+    assert_raise(Webservice::AuthenticationError) {
+      ws.get(:user, :filter=> Webservice::UserFilter.new("Nigel Graham"))
+    }
+  end
 end
