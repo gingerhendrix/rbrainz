@@ -1,4 +1,4 @@
-# $Id: equality.rb 88 2007-06-15 21:24:08Z nigel_graham $
+# $Id$
 #
 # Author::    Nigel Graham (mailto:nigel_graham@rubyforge.org)
 # Copyright:: Copyright (c) 2007, Nigel Graham, Philipp Wolfer

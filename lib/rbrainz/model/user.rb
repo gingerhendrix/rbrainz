@@ -1,4 +1,4 @@
-# $Id: user.rb 78 2007-06-04 19:47:11Z phw $
+# $Id$
 #
 # Author::    Nigel Graham (mailto:nigel_graham@rubyforge.org)
 # Copyright:: Copyright (c) 2007, Nigel Graham, Philipp Wolfer

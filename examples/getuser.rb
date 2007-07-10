@@ -3,7 +3,7 @@
 # Example script which queries the database for a
 # User
 # 
-# $Id: getartist.rb 88 2007-06-15 21:24:08Z nigel_graham $
+# $Id$
 
 # Just make sure we can run this example from the command
 # line even if RBrainz is not yet installed properly.
