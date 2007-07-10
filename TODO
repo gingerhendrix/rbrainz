@@ -1,21 +1,17 @@
-=TODO
+= TODO
 
-==Short term tasks
-* Support for the offset parameter for queries on collections
-  to retrieve results below the 100 results limit. Could be easily integrated
-  into the result object (see previous point). (0.2.0)
-* Make it easier to create MBID objects or allow usage of ID strings
-  where it makes life easier (>= 0.2.1).
+== Short term tasks
 * Add usefull constructor parameters to the models (>= 0.2.1).
+* Support entity tags as defined in the MB metadata scheme 1.2.
 * Improve API documentation.
 
-==Longer term tasks
-* User authentication (0.3.0)
+== Longer term tasks
 * Support POST in webservice to submit information (0.3.0).
-* Querying of user information (0.3.0)
 * PUID submission
 * Full text search (lucene search queries).
 * Implement a command line tool (+mbquery+) for querying the MusicBrainz
   database which will serve as a usefull example for RBrainz.
 * Support for common extensions (this could be implemented by adding
   additional extension libraries which extend the existing classes).
+  
+$Id$

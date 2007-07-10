@@ -2,13 +2,17 @@
 
 == 0.2.0 (not yet released)
 * Querying of collections implemented
-* Collection class to store search results (with support for search score)
+* Collection class to store search results (with support for search score and offset)
+* User authentication
+* Querying of user information
+* Made IncompleteDate behave like a range with corresponding equality operations
+* Restructured MBID to use a ducktyping approach
 * Introduced Individual as superclass for Artist and Label
 * Added unique_name method for Artist and Label
 * Label: Renamed founding_date and dissolving_date to begin_date
   and end_date (to be more consistent with Artist)
+* Support for label aliases
 * Added label type "Unknown"
-* New constructor Model::MBID.from_string(entity_type, string)
 
 == 0.1.1 (2007-05-29)
 * Full support for relations

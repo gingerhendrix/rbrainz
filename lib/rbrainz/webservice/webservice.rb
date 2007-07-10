@@ -30,7 +30,6 @@ module MusicBrainz
     end
     
     # Webservice class to query the default MusicBrainz server.
-    # TODO: Implement authorization.
     class Webservice < IWebservice
     
       # Timeouts for opening and reading connections (in seconds)
