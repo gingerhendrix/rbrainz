@@ -6,7 +6,7 @@
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
 require 'test/unit'
-require 'rbrainz/range'
+require 'rbrainz'
 
 # Unit test for range equality extension.
 class TestRangeEquality < Test::Unit::TestCase
