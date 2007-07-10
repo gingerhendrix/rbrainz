@@ -500,7 +500,7 @@ module MusicBrainz
         user_model = Model::User.new
         # Read the types
         node.attributes['type'].split(' ').each {|type|
-          user.types << MBXML.add_namespace(type, Model::NS_EXT_1)
+          user_model.types << MBXML.add_namespace(type, Model::NS_EXT_1)
         } if node.attributes['type']
 
         user_model.name = node.elements['name'].text

@@ -426,4 +426,15 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'Atlantic Rec.', label.aliases[0].name
   end
 
+  def test_user_1
+    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'user/User_1.xml')
+    users = mbxml.get_entity_array(:user, Model::NS_EXT_1)
+    
+    assert_equal 1, users.size
+    assert_equal 'matt', users[0].name
+    assert_equal false, users[0].show_nag?
+    assert_equal 2, users[0].types.size
+    assert_equal Model::NS_EXT_1 + 'AutoEditor', users[0].types[0]
+    assert_equal Model::NS_EXT_1 + 'RelationshipEditor', users[0].types[1]
+  end
 end
