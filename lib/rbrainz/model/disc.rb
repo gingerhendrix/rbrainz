@@ -37,6 +37,7 @@ module MusicBrainz
     class Disc
     
       attr_accessor :sectors
+      # The MusicBrainz DiscID.A string containing a 28-character DiscID
       attr_reader :id
       
       # Set the MusicBrainz disc ID for this disc.

@@ -12,9 +12,20 @@ require 'rbrainz/model/disc'
 module MusicBrainz
   module Model
 
+    #
     # A release in the MusicBrainz DB.
-    # 
-    # See http://musicbrainz.org/doc/Release.
+    #
+    # A release within MusicBrainz is an Entity which contains Track
+    # objects.  Releases may be of more than one type: There can be albums,
+    # singles, compilations, live recordings, official releases, bootlegs
+    # etc.
+    #
+    # == See
+    # http://musicbrainz.org/doc/Release.
+    # == Note
+    # The current MusicBrainz server implementation supports only a
+    # limited set of types.
+    #
     class Release < Entity
     
       TYPE_ALBUM          = NS_MMD_1 + 'Album' 
@@ -34,10 +45,59 @@ module MusicBrainz
       TYPE_SOUNDTRACK     = NS_MMD_1 + 'Soundtrack' 
       TYPE_SPOKENWORD     = NS_MMD_1 + 'Spokenword' 
       
-      attr_accessor :title, :asin, :artist,
-                    :text_language, :text_script
+      # The title of this release.
+      attr_accessor :title
+
+      # The amazon shop identifier.
+      #
+      # The ASIN is a 10-letter code (except for books) assigned
+      # by Amazon, which looks like 'B000002IT2' or 'B00006I4YD'.
+      attr_accessor :asin
+
+      # The main artist of this release.
+      attr_accessor :artist
+
+      # The language used in release and track titles.
+      # 
+      # To represent the language, the ISO-639-2/T standard is used,
+      # which provides three-letter terminological language codes like
+      # 'ENG', 'DEU', 'JPN', 'KOR', 'ZHO' or 'YID'.
+      #
+      # Note that this refers to release and track <i>titles</i>, not
+      # lyrics.
+      attr_accessor :text_language
+
+      # The script used in release and track titles.
+      #
+      # To represent the script, ISO-15924 script codes are used.
+      # Valid codes are, among others: 'Latn', 'Cyrl', 'Hans', 'Hebr'
+      #
+      # Note that this refers to release and track <i>titles</i>, not
+      # lyrics.
+      attr_accessor :text_script
                     
-      attr_reader :tracks, :release_events, :discs, :types
+      # The list of tracks.
+      attr_reader :tracks
+
+      # The list of release events.
+      #
+      # A Release may contain a list of so-called release events,
+      # each represented using a ReleaseEvent object. Release
+      # events specify where and when this release was, well, released.
+      attr_reader :release_events
+
+      # The list of associated discs.
+      #
+      # Discs are currently containers for MusicBrainz DiscIDs.
+      # Note that under rare circumstances (identical TOCs), a
+      # DiscID could be associated with more than one release.
+      attr_reader :discs
+
+      # The list of types for this release.
+      #
+      # To test for release types, you can use the constants
+      # TYPE_ALBUM, TYPE_SINGLE, etc.
+      attr_reader :types
       
       def initialize
         super
@@ -46,7 +106,20 @@ module MusicBrainz
         @discs = Array.new
         @types = Array.new
       end
-      
+
+      #
+      # Checks if this is a single artist's release.
+      #
+      # Returns +true+ if the release's main artist (#artist) is
+      # also the main artist for all of the tracks. This is checked by
+      # comparing the artist IDs.
+      #
+      # Note that the release's artist has to be set (see #artist=)
+      # for this. The track artists may be unset.
+      def single_artist_release?
+          raise 'Release Artist may not be None!' unless artist
+          tracks.all {|track| !track.artist || track.artist.id == artist.id }
+      end
     end
     
   end    

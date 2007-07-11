@@ -11,9 +11,31 @@ require 'rbrainz/model/relation'
 module MusicBrainz
   module Model
 
-    # Superclass for all entities.
+    #
+    # A first-level MusicBrainz class.
+    # 
+    # All entities in MusicBrainz have unique IDs (which are MBID's representing
+    # absolute URIs) and may have any number of #relations to other entities.
+    # This class is abstract and should not be instantiated.
+    # 
+    # Relations are differentiated by their <i>target type</i>, that means,
+    # where they link to. MusicBrainz currently supports four target types
+    # (artists, releases, tracks, and URLs) each identified using a URI.
+    # To get all relations with a specific target type, you can use
+    # #relations and pass one of the following constants as the
+    # parameter:
+    #
+    # - Relation::TO_ARTIST
+    # - Relation::TO_RELEASE
+    # - Relation::TO_TRACK
+    # - Relation::TO_URL
+    #
+    # == See 
+    # Relation
+    #
     class Entity
     
+      # The MusicBrainz ID. A MBID containing an absolute URI.
       attr_reader :id
       
       def initialize
@@ -35,7 +57,7 @@ module MusicBrainz
       # by +entity_type+ or an +EntityTypeNotMatchingError+
       # will be raised.
       # 
-      # Raises: +UnknownEntityError+, +InvalidUUIDError+,
+      # Raises: +UnknownEntityError+, +InvalidMBIDError+,
       # +EntityTypeNotMatchingError+
       def id=(mbid)
         if mbid
@@ -61,12 +83,42 @@ module MusicBrainz
         self.class.entity_type
       end
       
-      # Add a relation to this entity.
+      #
+      # Adds a relation.
+      #
+      # This method adds +relation+ to the list of relations. The
+      # given relation has to be initialized, at least the target
+      # type has to be set.
+      #
       def add_relation(relation)
         @relations[relation.target_type] << relation
       end
       
-      # Returns the relations of this entity.
+      #
+      # Returns a list of relations.
+      #
+      # If +target_type+ is given, only relations of that target
+      # type are returned. For MusicBrainz, the following target
+      # types are defined:
+      # - Relation::TO_ARTIST
+      # - Relation::TO_RELEASE
+      # - Relation::TO_TRACK
+      # - Relation::TO_URL
+      # 
+      # If +target_type+ is Relation::TO_ARTIST, for example,
+      # this method returns all relations between this Entity and
+      # artists.
+      #
+      # You may use the +relation_type+ parameter to further restrict
+      # the selection. If it is set, only relations with the given
+      # relation type are returned. The +required_attributes+ sequence
+      # lists attributes that have to be part of all returned relations.
+      #
+      # If +direction+ is set, only relations with the given reading
+      # direction are returned. You can use the Relation::DIR_FORWARD,
+      # Relation::DIR_BACKWARD, and Relation::DIR_BOTH constants
+      # for this.
+      #
       def get_relations(options = {:target_type => nil, :relation_type => nil,
                                    :required_attributes => [], :direction => nil})
         # Select all results depending on the requested target type
@@ -89,8 +141,14 @@ module MusicBrainz
         return result
       end
       
-      # Return all relation target types for which this entity
-      # has relations defined.
+      #
+      # Returns a list of target types available for this entity.
+      # 
+      # Use this to find out to which types of targets this entity
+      # has relations. If the entity only has relations to tracks and
+      # artists, for example, then a list containg the strings
+      # Relation::TO_TRACK and Relation::TO_ARTIST is returned.
+      #
       def relation_target_types
         result = []
         @relations.each_pair {|type, relations|

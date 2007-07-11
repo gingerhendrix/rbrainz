@@ -6,6 +6,23 @@
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
 module MusicBrainz
+=begin rdoc
+    The MusicBrainz domain model.
+
+    These classes are part of the MusicBrainz domain model. They may be used
+    by other modules and don't contain any network or other I/O code. If you
+    want to request data from the web service, please have a look at
+    Webservice::Query.
+
+    The most important classes, usually acting as entry points, are
+    Artist, Release, and Track.
+
+    == See 
+    Webservice
+
+    == Authors
+    Brian Olsen
+=end
   module Model
 
     # Namespace for all MusicBrainz metadata.

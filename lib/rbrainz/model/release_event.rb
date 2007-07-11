@@ -10,12 +10,21 @@ require 'rbrainz/model/label'
 module MusicBrainz
   module Model
 
-    # A release event in the MusicBrainz DB.
+    #
+    # A release event in the MusicBrainz DB indicating where and when a release
+    #  took place.
     # 
-    # See http://musicbrainz.org/doc/ReleaseEvent.
+    # All country codes used must be valid ISO-3166 country codes (i.e. 'DE',
+    # 'UK' or 'FR'). The dates are strings and must have the format 'YYYY',
+    # 'YYYY-MM' or 'YYYY-MM-DD'.
+    #
+    # == See
+    # http://musicbrainz.org/doc/ReleaseEvent.
+    #
     class ReleaseEvent
     
-      attr_accessor :country, :catalog_number,
+      attr_accessor :country
+      attr_accessor :catalog_number,
                     :barcode, :label
                     
       attr_reader :date
