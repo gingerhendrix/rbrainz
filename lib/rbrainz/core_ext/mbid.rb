@@ -7,8 +7,6 @@
 #             
 # Core extensions to add a to_mbid conversion to existing classes.
 
-require 'rbrainz/core_ext/mbid.rb'
-
 class String
   def to_mbid(entity_type=nil)
     ::MusicBrainz::Model::MBID.new(self, entity_type)
