@@ -101,9 +101,9 @@ module MusicBrainz
       
       def initialize
         super
-        @tracks = Array.new
-        @release_events = Array.new
-        @discs = Array.new
+        @tracks = Collection.new
+        @release_events = Collection.new
+        @discs = Collection.new
         @types = Array.new
       end
 

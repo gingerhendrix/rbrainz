@@ -7,6 +7,7 @@
  
 require 'rbrainz/model/mbid'
 require 'rbrainz/model/relation'
+require 'rbrainz/model/collection'
 
 module MusicBrainz
   module Model
@@ -40,11 +41,11 @@ module MusicBrainz
       
       def initialize
         @relations = {
-          Relation::TO_ARTIST  => Array.new,
-          Relation::TO_RELEASE => Array.new,
-          Relation::TO_TRACK   => Array.new,
-          Relation::TO_LABEL   => Array.new,
-          Relation::TO_URL     => Array.new,
+          Relation::TO_ARTIST  => Collection.new,
+          Relation::TO_RELEASE => Collection.new,
+          Relation::TO_TRACK   => Collection.new,
+          Relation::TO_LABEL   => Collection.new,
+          Relation::TO_URL     => Collection.new,
         }
       end
       

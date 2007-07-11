@@ -23,8 +23,8 @@ module MusicBrainz
     #  
     #  artist_collection = query.get_artists(artist_filter)
     #  
-    #  artists.each do |artist, score|
-    #    print "%s (%i%%)\r\n" % [artist.unique_name, score]
+    #  artists.each do |entry|
+    #    print "%s (%i%%)\r\n" % [entry.entity.unique_name, entry.score]
     #  end
     #  
     # User authentication:
@@ -76,7 +76,7 @@ module MusicBrainz
       def get_user_by_name(name)
         xml = @webservice.get(:user, :filter => UserFilter.new(name))
         collection = MBXML.new(xml).get_entity_list(:user, Model::NS_EXT_1)
-        return collection ? collection[0][:entity] : nil
+        return collection ? collection[0].entity : nil
       end
       
       private # ----------------------------------------------------------------

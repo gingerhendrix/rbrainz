@@ -24,13 +24,6 @@ module MusicBrainz
       
       attr_accessor :code, :country
       
-      attr_reader :releases
-      
-      def initialize
-        super
-        @releases = Array.new
-      end
-      
     end
     
   end

@@ -6,7 +6,7 @@
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
 require 'rbrainz/model'
-require 'rbrainz/webservice/collection'
+require 'rbrainz/model/scored_collection'
 require 'rexml/document'
 include REXML
 
@@ -67,15 +67,13 @@ module MusicBrainz
             [Model::NS_MMD_1, entity_type, ns]]
         
         unless entity_list.nil? or entity_list.is_a? REXML::Text
-          collection = Collection.new(entity_list.attributes['count'],
-                                      entity_list.attributes['offset'])
+          collection = Model::ScoredCollection.new(entity_list.attributes['count'],
+                                                   entity_list.attributes['offset'])
           # Select the method to use for reading the list.
           read_list_method = method('read_' + entity_list.name.gsub('-', '_'))
           
           # Read the entity list and store the entities in the collection.
-          read_list_method.call(entity_list, true) {|model, score|
-            collection << [model, score]
-          } if read_list_method
+          read_list_method.call(entity_list, collection, true) if read_list_method
           
           return collection
         end
@@ -84,11 +82,13 @@ module MusicBrainz
       
       private # ----------------------------------------------------------------
       
-      # Iterate over a list of artists.
+      # Iterate over a list of artists and add them to the target collection.
       # 
       # The node must be of the type <em>artist-list</em>.
-      def read_artist_list(node, read_scores=false)
-        read_list(node, 'artist', read_scores) {|*a| yield a.size == 1 ? a[0] : a}
+      def read_artist_list(list_node, target_collection, read_scores=false)
+        read_list(list_node, target_collection, 'artist', read_scores) do |a|
+          yield a if block_given?
+        end
       end
       
       # Create an +Artist+ object from the given artist node.
@@ -120,19 +120,12 @@ module MusicBrainz
         end
         
         # Read the alias list
-        if node.elements['alias-list']
-          read_alias_list(node.elements['alias-list']) {|artist_alias|
-            artist.aliases << artist_alias
-          }
-        end
+        read_alias_list(node.elements['alias-list'], artist.aliases)
         
         # Read the release list
-        if node.elements['release-list']
-          read_release_list(node.elements['release-list']) {|release|
-            release.artist = artist unless release.artist
-            artist.releases << release
-          }
-        end
+        read_release_list(node.elements['release-list'], artist.releases) {|release|
+          release.artist = artist unless release.artist
+        }
         
         # Read the relation list
         if node.elements['relation-list']
@@ -146,16 +139,18 @@ module MusicBrainz
         return artist
       end
       
-      # Iterate over a list of releases.
+      # Iterate over a list of releases and add them to the target collection.
       # 
       # The node must be of the type <em>release-list</em>.
-      def read_release_list(node, read_scores=false)
-        read_list(node, 'release', read_scores) {|*a| yield a.size == 1 ? a[0] : a}
+      def read_release_list(list_node, target_collection, read_scores=false)
+        read_list(list_node, target_collection, 'release', read_scores) do |a|
+          yield a if block_given?
+        end
       end
       
       # Create a +Release+ object from the given release node.
       # 
-      # TODO: PUID list
+      # TODO:: PUID list
       def create_release(node)
         if node.attributes['id'] and @releases[node.attributes['id']]
           release = @releases[node.attributes['id']]
@@ -182,28 +177,17 @@ module MusicBrainz
         end
         
         # Read the track list
-        if node.elements['track-list']
-          read_track_list(node.elements['track-list']) {|track|
-            track.artist = release.artist unless track.artist
-            track.releases << release
-            release.tracks << track
-          }
-        end
+        read_track_list(node.elements['track-list'], release.tracks) {|track|
+          track.artist = release.artist unless track.artist
+          track.releases << release
+        }
         
         # Read the release event list
-        if node.elements['release-event-list']
-          read_release_event_list(node.elements['release-event-list']) {|event|
-            release.release_events << event
-          }
-        end
+        read_release_event_list(node.elements['release-event-list'], release.release_events)
         
         # Read the disc list
-        if node.elements['disc-list']
-          read_disc_list(node.elements['disc-list']) {|disc|
-            release.discs << disc
-          }
-        end
-        
+        read_disc_list(node.elements['disc-list'], release.discs)
+                
         # Read the relation list
         if node.elements['relation-list']
           node.elements.each('relation-list') {|relation_node|
@@ -216,11 +200,13 @@ module MusicBrainz
         return release
       end
       
-      # Iterate over a list of tracks.
+      # Iterate over a list of tracks and add them to the target collection.
       # 
       # The node must be of the type <em>track-list</em>.
-      def read_track_list(node, read_scores=false)
-        read_list(node, 'track', read_scores) {|*a| yield a.size == 1 ? a[0] : a}
+      def read_track_list(list_node, target_collection, read_scores=false)
+        read_list(list_node, target_collection, 'track', read_scores) do |a|
+          yield a if block_given?
+        end
       end
       
       # Create a +Track+ object from the given track node.
@@ -239,19 +225,12 @@ module MusicBrainz
         track.artist   = create_artist(node.elements['artist']) if node.elements['artist']
         
         # Read the release list
-        if node.elements['release-list']
-          read_release_list(node.elements['release-list']) {|release|
-            release.tracks << track
-            track.releases << release
-          }
-        end
+        read_release_list(node.elements['release-list'], track.releases) {|release|
+          release.tracks << track
+        }
         
         # Read the PUID list
-        if node.elements['puid-list']
-          read_puid_list(node.elements['puid-list']) {|puid|
-            track.puids << puid
-          }
-        end
+        read_puid_list(node.elements['puid-list'], track.puids)
         
         # Read the relation list
         if node.elements['relation-list']
@@ -265,11 +244,13 @@ module MusicBrainz
         return track
       end
       
-      # Iterate over a list of labels.
+      # Iterate over a list of labels and add them to the target collection.
       # 
       # The node must be of the type <em>label-list</em>.
-      def read_label_list(node, read_scores=false)
-        read_list(node, 'label', read_scores) {|*a| yield a.size == 1 ? a[0] : a}
+      def read_label_list(list_node, target_collection, read_scores=false)
+        read_list(list_node, target_collection, 'label', read_scores) do |a|
+          yield a if block_given?
+        end
       end
       
       # Create a +Label+ object from the given label node.
@@ -303,18 +284,10 @@ module MusicBrainz
         end
         
         # Read the alias list
-        if node.elements['alias-list']
-          read_alias_list(node.elements['alias-list']) {|label_alias|
-            label.aliases << label_alias
-          }
-        end
+        read_alias_list(node.elements['alias-list'], label.aliases)
         
         # Read the release list
-        if node.elements['release-list']
-          read_release_list(node.elements['release-list']) {|release|
-            label.releases << release
-          }
-        end
+        read_release_list(node.elements['release-list'], label.releases)
       
         # Read the relation list
         if node.elements['relation-list']
@@ -328,11 +301,13 @@ module MusicBrainz
         return label  
       end
       
-      # Iterate over a list of aliases.
+      # Iterate over a list of aliases and add them to the target collection.
       # 
       # The node must be of the type <em>alias-list</em>.
-      def read_alias_list(node)
-        read_list(node, 'alias', false) {|a| yield a}
+      def read_alias_list(list_node, target_collection)
+        read_list(list_node, target_collection, 'alias') do |a|
+          yield a if block_given?
+        end
       end
       
       # Create an +Alias+ object from the given alias node.
@@ -344,11 +319,13 @@ module MusicBrainz
         return alias_model
       end
       
-      # Iterate over a list of release events.
+      # Iterate over a list of release events and add them to the target collection.
       # 
       # The node must be of the type <em>release-event-list</em>.
-      def read_release_event_list(node)
-        read_list(node, 'event', false) {|a| yield a}
+      def read_release_event_list(list_node, target_collection)
+        read_list(list_node, target_collection, 'event') do |a|
+          yield a if block_given?
+        end
       end
       
       # Create an +ReleaseEvent+ object from the given release event node.
@@ -367,33 +344,43 @@ module MusicBrainz
         return event
       end
       
-      # Iterate over a list of PUIDs.
+      # Iterate over a list of PUIDs and add them to the target collection.
       # 
       # The node must be of the type <em>puid-list</em>.
-      def read_puid_list(node)
-        node.elements.each('puid') {|child|
-          yield child.attributes['id']
-        }
+      def read_puid_list(list_node, target_collection)
+        read_list(list_node, target_collection, 'puid') do |a|
+          yield a if block_given?
+        end
       end
       
-      # Iterate over a list of discs.
+      # Create a PUID
+      def create_puid(node)
+        return node.attributes['id']
+      end
+      
+      # Iterate over a list of discs and add them to the target collection.
       # 
       # The node must be of the type <em>disc-list</em>.
-      def read_disc_list(node)
-        node.elements.each('disc') {|child|
-          disc = Model::Disc.new
-          disc.id = child.attributes['id']
-          disc.sectors = child.attributes['sectors'].to_i
-          yield disc
-        }
+      def read_disc_list(list_node, target_collection)
+        read_list(list_node, target_collection, 'disc') do |a|
+          yield a if block_given?
+        end
+      end
+      
+      # Create a +Disc+ object from the given disc node.
+      def create_disc(node)
+        disc = Model::Disc.new
+        disc.id = node.attributes['id']
+        disc.sectors = node.attributes['sectors'].to_i
+        return disc
       end
       
       # Iterate over a list of relations.
       # 
       # The node must be of the type <em>relation-list</em>.
       def read_relation_list(node)
+        target_type = MBXML.add_namespace(node.attributes['target-type'], Model::NS_REL_1)
         node.elements.each('relation') {|child|
-          target_type = MBXML.add_namespace(node.attributes['target-type'], Model::NS_REL_1)
           yield create_relation(child, target_type)
         }
       end
@@ -466,10 +453,12 @@ module MusicBrainz
         return relation
       end
       
-      def read_user_list(node, read_scores=false)
-        read_list(node, 'user', read_scores, Model::NS_EXT_1) {|*a| yield a.size == 1 ? a[0] : a}
+      def read_user_list(list_node, target_collection, read_scores=false)
+        read_list(list_node, target_collection, 'user', read_scores, Model::NS_EXT_1) {|a|
+          yield a if block_given?
+        }
       end
-      
+
       def create_user(node)
         user_model = Model::User.new
         # Read the types
@@ -485,14 +474,20 @@ module MusicBrainz
       # Helper method that reads a list of a special node type.
       # There must be a method create_{child_name} which returns an
       # instance of the corresponding model.
-      def read_list(node, child_name, read_scores=false, ns=Model::NS_MMD_1)
-        MBXML.each_element(node, child_name, ns ) do |child|
-          model = method('create_' + child_name).call(child)
-          if read_scores
-            score = child.attributes['ext:score']
-            yield model, score ? score.to_i : nil
-          else
-            yield model
+      def read_list(list_node, target_collection, child_name, read_scores=false, ns=Model::NS_MMD_1)
+        if list_node
+          target_collection.offset = list_node.attributes['offset'].to_i
+          target_collection.count  = list_node.attributes['count'].to_i
+          MBXML.each_element(list_node, child_name, ns) do |child|
+            model = method('create_' + child_name).call(child)
+            if read_scores
+              score = child.attributes['ext:score'].to_i
+              entry = Model::ScoredCollection::Entry.new(model, score)
+            else
+              entry = model
+            end
+            target_collection << entry
+            yield entry if block_given?
           end
         end
       end

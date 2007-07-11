@@ -20,9 +20,17 @@ module MusicBrainz
                     
       attr_reader :aliases, :begin_date, :end_date
       
+      # The list of releases of this artist or label.
+      #
+      # This may also include releases where this artist isn't the
+      # <i>main</i> artist but has just contributed one or more tracks
+      # (aka VA-Releases).
+      attr_reader :releases
+    
       def initialize
         super
-        @aliases = Array.new
+        @aliases = Collection.new
+        @releases = Collection.new
       end
                     
       # Set the begin date of this individual.

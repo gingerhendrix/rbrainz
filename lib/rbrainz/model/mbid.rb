@@ -7,20 +7,6 @@
 
 require 'uri'
 
-class String
-  def to_mbid(entity_type=nil)
-    ::MusicBrainz::Model::MBID.new(self, entity_type)
-  end
-end
-
-module URI
-  class HTTP
-    def to_mbid(entity_type=nil)
-      ::MusicBrainz::Model::MBID.new(self.to_s, entity_type)
-    end
-  end
-end
-
 module MusicBrainz
   module Model
 

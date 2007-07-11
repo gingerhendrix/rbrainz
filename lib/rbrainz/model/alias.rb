@@ -9,18 +9,16 @@ module MusicBrainz
   module Model
 
     #
-    # Represents an artist alias.
+    # Represents an artist or label alias.
     #
     # An alias (the <i>alias name</i>) is a different representation of an
-    # artist's name. This may be a common misspelling or a transliteration
-    # (the <i>alias type</i>).
+    # artist's or label's name. This may be a common misspelling or
+    # a transliteration (the <i>alias type</i>).
     # 
     # The <i>alias script</i> is interesting mostly for transliterations and
     # indicates which script is used for the alias value. To represent the
     # script, ISO-15924 script codes like 'Latn', 'Cyrl', or 'Hebr' are used.
     #
-    # An artist alias.
-    # 
     # == See
     # http://musicbrainz.org/doc/ArtistAlias.
     class Alias

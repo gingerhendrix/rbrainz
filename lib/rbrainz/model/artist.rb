@@ -30,18 +30,6 @@ module MusicBrainz
       TYPE_PERSON = NS_MMD_1 + 'Person'
       TYPE_GROUP  = NS_MMD_1 + 'Group'
       
-      # The list of releases.
-      #
-      # This may also include releases where this artist isn't the
-      # <i>main</i> artist but has just contributed one or more tracks
-      # (aka VA-Releases).
-      attr_reader :releases
-                    
-      def initialize
-        super
-        @releases = Array.new
-      end
-      
     end
 
   end

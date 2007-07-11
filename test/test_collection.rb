@@ -22,17 +22,21 @@ class TestCollection < Test::Unit::TestCase
   end
   
   def test_collection
-    collection = Webservice::Collection.new(102, 8)
+    collection = Model::Collection.new(102, 8)
     assert_equal 102, collection.count
     assert_equal 8, collection.offset
+    
+    collection.count = 99
+    collection.offset=15
+    assert_equal 99, collection.count
+    assert_equal 15, collection.offset
     
     assert collection.empty?
     
     # Fill the collection
     assert_nothing_raised {
-      collection << [@artist_one, 100]
-      collection << [@artist_two,  98]
-      # The score can be ignored
+      collection << @artist_one
+      collection << @artist_two
       collection << @artist_three
     }
     assert_equal 3, collection.size
@@ -40,42 +44,23 @@ class TestCollection < Test::Unit::TestCase
     
     # Iterate over the collection
     n = 0
-    collection.each {|artist, score|
-      assert artist.is_a?(Model::Artist), artist.inspect
-      assert((score.is_a?(Integer) or score.nil?), score.inspect)
-      n += 1
-    }
-    assert_equal collection.size, n
-    
-    # Iterate over the artists only, ignoring the scores
-    n = 0
-    collection.each_entity {|artist|
+    collection.each {|artist|
       assert artist.is_a?(Model::Artist), artist.inspect
       n += 1
     }
     assert_equal collection.size, n
     
     # Random access
-    assert_equal @artist_one, collection[0][:entity]
-    assert_equal 100, collection[0][:score]
-    assert_equal @artist_two, collection[1][:entity]
-    assert_equal 98, collection[1][:score]
-    assert_equal @artist_three, collection[2][:entity]
-    assert_equal nil, collection[2][:score]
+    assert_equal @artist_one, collection[0]
+    assert_equal @artist_two, collection[1]
+    assert_equal @artist_three, collection[2]
     
     # Convert collection to array
     array = collection.to_a
-    assert_equal @artist_one, array[0][:entity]
-    assert_equal 100, array[0][:score]
-    assert_equal @artist_two, array[1][:entity]
-    assert_equal 98, array[1][:score]
-    assert_equal @artist_three, array[2][:entity]
-    assert_equal nil, array[2][:score]
-    
-    # Access the entities as an array
-    assert_equal @artist_one, collection.entities[0]
-    assert_equal @artist_two, collection.entities[1]
-    assert_equal @artist_three, collection.entities[2]
+    assert_equal Array, array.class
+    assert_equal @artist_one, array[0]
+    assert_equal @artist_two, array[1]
+    assert_equal @artist_three, array[2]
   end
 
 end

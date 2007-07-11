@@ -30,6 +30,6 @@ artists = query.get_artists(artist_filter)
 
 # Display the fetched artist's names and the score, which
 # indicates how good the artist matches the search parameters.
-artists.each do |artist, score|
-  print "%s (%i%%)\r\n" % [artist.unique_name, score]
+artists.each do |entry|
+  print "%s (%i%%)\r\n" % [entry.entity.unique_name, entry.score]
 end

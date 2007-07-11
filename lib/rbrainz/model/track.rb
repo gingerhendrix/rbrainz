@@ -21,8 +21,8 @@ module MusicBrainz
       
       def initialize
         super
-        @puids = Array.new
-        @releases = Array.new
+        @puids = Collection.new
+        @releases = Collection.new
       end
       
     end

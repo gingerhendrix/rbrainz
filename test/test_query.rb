@@ -32,9 +32,9 @@ class TestQuery < Test::Unit::TestCase
   def test_get_artists
     filter = Webservice::ArtistFilter.new(:name=>'Tori Amos')
     collection = @query.get_artists(filter)
-    assert collection.is_a?(Webservice::Collection)
+    assert collection.is_a?(Model::Collection)
     assert_equal 3, collection.size
-    collection.each_entity {|e| assert e.is_a?(Model::Artist) }
+    collection.entities.each {|e| assert e.is_a?(Model::Artist) }
   end
   
   def test_get_release
@@ -48,9 +48,9 @@ class TestQuery < Test::Unit::TestCase
   def test_get_releases
     filter = Webservice::ReleaseFilter.new(:title=>'Under the Pink')
     collection = @query.get_releases(filter)
-    assert collection.is_a?(Webservice::Collection)
+    assert collection.is_a?(Model::Collection)
     assert_equal 2, collection.size
-    collection.each_entity {|e| assert e.is_a?(Model::Release) }
+    collection.entities.each {|e| assert e.is_a?(Model::Release) }
   end
   
   def test_get_track
@@ -64,9 +64,9 @@ class TestQuery < Test::Unit::TestCase
   def test_get_tracks
     filter = Webservice::TrackFilter.new(:title=>'Little Earthquakes')
     collection = @query.get_tracks(filter)
-    assert collection.is_a?(Webservice::Collection)
+    assert collection.is_a?(Model::Collection)
     assert_equal 3, collection.size
-    collection.each_entity {|e| assert e.is_a?(Model::Track) }
+    collection.entities.each {|e| assert e.is_a?(Model::Track) }
   end
   
   def test_get_label
@@ -80,9 +80,9 @@ class TestQuery < Test::Unit::TestCase
   def test_get_labels
     filter = Webservice::LabelFilter.new(:name=>'Atlantic Records')
     collection = @query.get_labels(filter)
-    assert collection.is_a?(Webservice::Collection)
+    assert collection.is_a?(Model::Collection)
     assert_equal 2, collection.size
-    collection.each_entity {|e| assert e.is_a?(Model::Label) }
+    collection.entities.each {|e| assert e.is_a?(Model::Label) }
   end
   
   def test_get_user_by_name
