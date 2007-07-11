@@ -1,7 +1,7 @@
 # $Id$
 #
 # Author::    Philipp Wolfer (mailto:phw@rubyforge.org)
-# Copyright:: Copyright (c) 2007, Philipp Wolfer
+# Copyright:: Copyright (c) 2007, Nigel Graham, Philipp Wolfer
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
@@ -11,8 +11,32 @@ require 'rbrainz/webservice/mbxml'
 module MusicBrainz
   module Webservice
 
+    # Provides an easy to use interface to the MusicBrainz webservice.
+    # 
+    # Basic usage:
+    #  query = Webservice::Query.new
+    #  
+    #  artist_filter = Webservice::ArtistFilter.new(
+    #    :name  => 'Paradise Lost',
+    #    :limit => 10
+    #  )
+    #  
+    #  artist_collection = query.get_artists(artist_filter)
+    #  
+    #  artists.each do |artist, score|
+    #    print "%s (%i%%)\r\n" % [artist.unique_name, score]
+    #  end
+    #  
+    # User authentication:
+    #  ws = Webservice::Webservice.new(:username=>username, :password=>password)
+    #  query = Webservice::Query.new(ws)
+    #  user = query.get_user_by_name(username)
     class Query
     
+      # Create a new Query object.
+      # 
+      # You can pass a custom Webservice[link:classes/MusicBrainz/Webservice/Webservice.html]
+      # object. If none is given a default webservice will be used.
       def initialize(webservice = nil)
         @webservice = webservice.nil? ? Webservice.new : webservice
       end
@@ -51,7 +75,8 @@ module MusicBrainz
       
       def get_user_by_name(name)
         xml = @webservice.get(:user, :filter => UserFilter.new(name))
-        MBXML.new(xml).get_entity_list(:user, Model::NS_EXT_1)[0][:entity]
+        collection = MBXML.new(xml).get_entity_list(:user, Model::NS_EXT_1)
+        return collection ? collection[0][:entity] : nil
       end
       
       private # ----------------------------------------------------------------

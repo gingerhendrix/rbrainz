@@ -2,7 +2,7 @@
 RBrainz is a Ruby client library to access the MusicBrainz XML webservice,
 which can be used to query the MusicBrainz database.
 
-RBrainz is written in pure Ruby and follows the design of
+RBrainz is written in Ruby and follows the design of
 PythonMusicBrainz2[http://musicbrainz.org/doc/PythonMusicBrainz2],
 the reference implementation for a MusicBrainz client library. Developers
 used to PythonMusicBrainz2 should already know most of RBrainz' interface.
@@ -19,7 +19,11 @@ RubyGems[http://rubygems.org] by executing the following command:
  gem install rbrainz
  
 === Manual installation
-Not supported, yet.
+If you downloaded the RBRainz source package or checked out the latest version
+from SVN you can install it with
+ rake install
+ 
+You still need RubyGems for the installation to succeed.
 
 == Basic usage
 The most important classes in this library are the model classes
@@ -59,6 +63,14 @@ For more information about the MusicBrainz webservice visit the
 following resources:
 - MusicBrainzXMLWebService[http://musicbrainz.org/doc/XMLWebService]
 - MusicBrainzXMLMetaData[http://musicbrainz.org/doc/MusicBrainzXMLMetaData]
+
+== Contact
+For more information about RBrainz visit http://rbrainz.rubyforge.org.
+
+If you have any questions or suggestions regarding RBrainz please write to
+the rbrainz-user mailinglist[http://rubyforge.org/mail/?group_id=3677].
+If you find bugs or if you have any feature requests please use the
+RBrainz bug tracker[http://rubyforge.org/tracker/?group_id=3677]. 
 
 == Authors
 * Nigel Graham

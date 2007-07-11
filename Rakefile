@@ -34,7 +34,6 @@ spec = Gem::Specification.new do |spec|
   spec.name = PKG_NAME
   spec.version = PKG_VERSION
   spec.requirements << 'Optional: mb-discid >= 1.2 (for calculating disc IDs)'
-  spec.require_paths = 'lib'
   spec.autorequire = spec.name
   spec.files = PKG_FILES
   spec.description = <<EOF
@@ -50,7 +49,7 @@ spec = Gem::Specification.new do |spec|
     RBrainz supports the MusicBrainz XML Metadata Version 1.1, including
     support for labels and extended release events.
 EOF
-  spec.author = 'Philipp Wolfer' 
+  spec.author = ['Philipp Wolfer', 'Nigel Graham']
   spec.email = 'phw@rubyforge.org'
   spec.homepage = 'http://rbrainz.rubyforge.org'
   spec.rubyforge_project = 'rbrainz'
@@ -61,6 +60,16 @@ end
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_zip = true
   pkg.need_tar_gz= true
+end
+
+# Build the RBrainz gem and install it"
+task :install => [:test, :gem] do
+  sh %{gem install pkg/#{PKG_NAME}-#{PKG_VERSION}.gem}
+end
+
+# Uninstall RBrainz"
+task :uninstall => [:gem] do
+  sh %{gem uninstall #{PKG_NAME}}
 end
 
 # Test tasks: ------------------------------------------------------------

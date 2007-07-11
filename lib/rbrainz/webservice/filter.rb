@@ -1,7 +1,7 @@
 # $Id$
 #
 # Author::    Philipp Wolfer (mailto:phw@rubyforge.org)
-# Copyright:: Copyright (c) 2007, Philipp Wolfer
+# Copyright:: Copyright (c) 2007, Nigel Graham, Philipp Wolfer
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
@@ -40,7 +40,10 @@ module MusicBrainz
     
     class ArtistFilter < AbstractFilter
     
-      # The parameter +filter+ is a hash with filter options:
+      # The parameter +filter+ is a hash with filter options. At least the
+      # <tt>:name<//tt> filter must be specified.
+      # 
+      # Available filter options:
       # [:name]   Fetch a list of artists with a matching name.
       # [:limit]  The maximum number of artists returned. Defaults
       #           to 25, the maximum allowed value is 100.
@@ -55,7 +58,10 @@ module MusicBrainz
     
     class ReleaseFilter < AbstractFilter
     
-      # The parameter +filter+ is a hash with filter options:
+      # The parameter +filter+ is a hash with filter options. At least one
+      # filter despite <tt>:limit</tt> and <tt>:offset</tt> must be specified.
+      # 
+      # Available filter options:
       # [:title]     Fetch a list of releases with a matching title.
       # [:discid]    Fetch all releases matching to the given DiscID.
       # [:artist]    The returned releases should match the given artist name.
@@ -92,7 +98,10 @@ module MusicBrainz
     
     class TrackFilter < AbstractFilter
     
-      # The parameter +filter+ is a hash with filter options:
+      # The parameter +filter+ is a hash with filter options. At least the
+      # <tt>:title<//tt> filter must be specified.
+      # 
+      # Available filter options:
       # [:title]     Fetch a list of tracks with a matching title.
       # [:artist]    The returned tracks have to match the given
       #              artist name.
@@ -129,7 +138,10 @@ module MusicBrainz
     
     class LabelFilter < AbstractFilter
     
-      # The parameter +filter+ is a hash with filter options:
+      # The parameter +filter+ is a hash with filter options. At least the
+      # <tt>:name<//tt> filter must be specified.
+      # 
+      # Available filter options:
       # [:name]   Fetch a list of labels with a matching name.
       # [:limit]  The maximum number of labels returned. Defaults
       #           to 25, the maximum allowed value is 100. 

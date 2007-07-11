@@ -1,7 +1,7 @@
 # $Id$
 #
 # Author::    Philipp Wolfer (mailto:phw@rubyforge.org)
-# Copyright:: Copyright (c) 2007, Philipp Wolfer
+# Copyright:: Copyright (c) 2007, Nigel Graham, Philipp Wolfer
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
@@ -16,13 +16,14 @@ module MusicBrainz
       
       # Query the Webservice with HTTP GET.
       # Must be implemented by the concrete webservices.
-      def get(entity, id, options = {:include => nil, :filter => nil, :version => 1})
+      def get(entity, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
         raise Exception.new('Called abstract method.')
       end
       
       # Query the Webservice with HTTP POST.
       # Must be implemented by the concrete webservices.
-      # TODO: Specify and implement in Webservice.
+      # 
+      # TODO:: Specify and implement in Webservice.
       def post
         raise NotImplementedError.new('Called abstract method.')
       end
@@ -35,6 +36,18 @@ module MusicBrainz
       # Timeouts for opening and reading connections (in seconds)
       attr_accessor :open_timeout, :read_timeout
     
+      # If no options are given the default MusicBrainz webservice will be used.
+      # User authentication with username and password is only needed for some
+      # services. If you want to query an alternative webservice you can do so
+      # by setting the appropriate options.
+      # 
+      # Available options:
+      # [:host] Host, defaults to 'musicbrainz.org'.
+      # [:port] Port, defaults to 80.
+      # [:path_prefix] The path prefix under which the webservice is located on
+      #                the server. Defaults to '/ws'.
+      # [:username] The username to authenticate with.
+      # [:password] The password to authenticate with.
       def initialize(options = {:host => nil, :port => nil, :path_prefix => nil, :username=>nil, :password=>nil})
         @host = options[:host] ? options[:host] : 'musicbrainz.org'
         @port = options[:port] ? options[:port] : 80

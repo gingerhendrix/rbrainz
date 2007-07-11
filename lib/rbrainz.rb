@@ -6,7 +6,7 @@
 # should be ok most of the time.
 # 
 # Author::    Philipp Wolfer (mailto:phw@rubyforge.org)
-# Copyright:: Copyright (c) 2007, Philipp Wolfer
+# Copyright:: Copyright (c) 2007, Nigel Graham, Philipp Wolfer
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
