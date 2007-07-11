@@ -31,7 +31,8 @@ class TestReleaseIncludes < Test::Unit::TestCase
       :track_rels => true,
       :label_rels => true,
       :url_rels => true,
-      :track_level_rels => true
+      :track_level_rels => true,
+      :tags => true
       )
     result_string = includes.to_s
     assert_equal 'inc=', result_string[0..3]
@@ -49,6 +50,7 @@ class TestReleaseIncludes < Test::Unit::TestCase
     assert result_array.include?('label-rels')
     assert result_array.include?('url-rels')
     assert result_array.include?('track-level-rels')
+    assert result_array.include?('tags')
   end
   
   def test_empty_includes
@@ -64,7 +66,8 @@ class TestReleaseIncludes < Test::Unit::TestCase
       :track_rels => false,
       :label_rels => false,
       :url_rels => false,
-      :track_level_rels => false
+      :track_level_rels => false,
+      :tags => false
       )
     assert_equal '', includes.to_s
   

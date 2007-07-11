@@ -44,6 +44,7 @@ module MusicBrainz
       # [:track_rels]   Include track relationships (boolean).
       # [:label_rels]   Include label relationships (boolean).
       # [:url_rels]     Include url relationships (boolean).
+      # [:tags]         Include tags (boolean).
       # 
       # TODO: Check release types. It's possible that :releases
       # and :va_releases can't be used in parallel.
@@ -55,6 +56,7 @@ module MusicBrainz
         @parameters << 'track-rels'   if includes[:track_rels]
         @parameters << 'label-rels'   if includes[:label_rels]
         @parameters << 'url-rels'     if includes[:url_rels]
+        @parameters << 'tags'         if includes[:tags]
         
         includes[:releases].each {|release_type|
           @parameters << 'sa-' + release_type.to_s
@@ -84,6 +86,7 @@ module MusicBrainz
       # [:url_rels]     Include url relationships (boolean).
       # [:track_level_rels] Include the relationships for the
       #                     single tracks as well (boolean).
+      # [:tags]         Include tags (boolean).
       def initialize(includes)
         @parameters = Array.new
         @parameters << 'artist'       if includes[:artist]
@@ -98,6 +101,7 @@ module MusicBrainz
         @parameters << 'label-rels'   if includes[:label_rels]
         @parameters << 'url-rels'     if includes[:url_rels]
         @parameters << 'track-level-rels' if includes[:track_level_rels]
+        @parameters << 'tags'         if includes[:tags]
       end
     
     end
@@ -113,6 +117,7 @@ module MusicBrainz
       # [:track_rels]   Include track relationships (boolean).
       # [:label_rels]   Include label relationships (boolean).
       # [:url_rels]     Include url relationships (boolean).
+      # [:tags]         Include tags (boolean).
       def initialize(includes)
         @parameters = Array.new
         @parameters << 'artist'       if includes[:artist]
@@ -123,6 +128,7 @@ module MusicBrainz
         @parameters << 'track-rels'   if includes[:track_rels]
         @parameters << 'label-rels'   if includes[:label_rels]
         @parameters << 'url-rels'     if includes[:url_rels]
+        @parameters << 'tags'         if includes[:tags]
       end
     
     end
@@ -136,6 +142,7 @@ module MusicBrainz
       # [:track_rels]   Include track relationships (boolean).
       # [:label_rels]   Include label relationships (boolean).
       # [:url_rels]     Include url relationships (boolean).
+      # [:tags]         Include tags (boolean).
       def initialize(includes)
         @parameters = Array.new
         @parameters << 'aliases'      if includes[:aliases]
@@ -144,6 +151,7 @@ module MusicBrainz
         @parameters << 'track-rels'   if includes[:track_rels]
         @parameters << 'label-rels'   if includes[:label_rels]
         @parameters << 'url-rels'     if includes[:url_rels]
+        @parameters << 'tags'         if includes[:tags]
       end
     
     end

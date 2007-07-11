@@ -27,7 +27,8 @@ class TestArtistIncludes < Test::Unit::TestCase
       :label_rels => true,
       :url_rels => true,
       :releases => ['Album', 'Official'],
-      :va_releases => ['Album', 'Official']
+      :va_releases => ['Album', 'Official'],
+      :tags => true
       )
     result_string = includes.to_s
     assert_equal 'inc=', result_string[0..3]
@@ -43,6 +44,7 @@ class TestArtistIncludes < Test::Unit::TestCase
     assert result_array.include?('sa-Official')
     assert result_array.include?('va-Album')
     assert result_array.include?('va-Official')
+    assert result_array.include?('tags')
   end
   
   def test_empty_includes
@@ -54,7 +56,8 @@ class TestArtistIncludes < Test::Unit::TestCase
       :label_rels => false,
       :url_rels => false,
       :releases => [],
-      :va_releases => []
+      :va_releases => [],
+      :tags => false
       )
     assert_equal '', includes.to_s
     

@@ -8,7 +8,6 @@
 * Support POST in webservice to submit information (0.3.0).
 * PUID submission (0.3.0)
 * Full text search (lucene search queries).
-* Support entity tags as defined in the MB metadata scheme 1.2.
 * Implement a command line tool (+mbquery+) for querying the MusicBrainz
   database which will serve as a usefull example for RBrainz.
 * Support for common extensions (this could be implemented by adding

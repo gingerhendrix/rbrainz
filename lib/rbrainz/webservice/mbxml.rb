@@ -136,6 +136,9 @@ module MusicBrainz
           }
         end
         
+        # Read the tag list
+        read_tag_list(node.elements['tag-list'], artist.tags)
+        
         return artist
       end
       
@@ -197,6 +200,9 @@ module MusicBrainz
           }
         end
         
+        # Read the tag list
+        read_tag_list(node.elements['tag-list'], release.tags)
+        
         return release
       end
       
@@ -240,6 +246,9 @@ module MusicBrainz
             }
           }
         end
+        
+        # Read the tag list
+        read_tag_list(node.elements['tag-list'], track.tags)
         
         return track
       end
@@ -298,6 +307,9 @@ module MusicBrainz
           }
         end
         
+        # Read the tag list
+        read_tag_list(node.elements['tag-list'], label.tags)
+        
         return label  
       end
       
@@ -317,6 +329,23 @@ module MusicBrainz
         alias_model.type = node.attributes['type']
         alias_model.script = node.attributes['script']
         return alias_model
+      end
+      
+      # Iterate over a list of tags and add them to the target collection.
+      # 
+      # The node must be of the type <em>tag-list</em>.
+      def read_tag_list(list_node, target_collection)
+        read_list(list_node, target_collection, 'tag') do |a|
+          yield a if block_given?
+        end
+      end
+      
+      # Create an +Tag+ object from the given tag node.
+      def create_tag(node)
+        tag = Model::Tag.new
+        tag.text = node.text
+        tag.count = node.attributes['count'].to_i if node.attributes['count']
+        return tag
       end
       
       # Iterate over a list of release events and add them to the target collection.

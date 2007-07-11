@@ -89,15 +89,15 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal '9ddd7abc-9e1b-471d-8031-583bc6bc8be9', artist.id.uuid
     assert_equal Model::Artist::TYPE_PERSON, artist.type
     assert_equal 'Пётр Ильич Чайковский', artist.name
-    #assert_equal 4, artist.tags.size
-    #assert_equal 'classical', artist.tags[0].text
-    #assert_equal 100, artist.tags[0].count
-    #assert_equal 'russian', artist.tags[1].text
-    #assert_equal 60, artist.tags[1].count
-    #assert_equal 'romantic era', artist.tags[2].text
-    #assert_equal 40, artist.tags[2].count
-    #assert_equal 'composer', artist.tags[3].text
-    #assert_equal 120, artist.tags[3].count
+    assert_equal 4, artist.tags.size
+    assert_equal 'classical', artist.tags[0].text
+    assert_equal 100, artist.tags[0].count
+    assert_equal 'russian', artist.tags[1].text
+    assert_equal 60, artist.tags[1].count
+    assert_equal 'romantic era', artist.tags[2].text
+    assert_equal 40, artist.tags[2].count
+    assert_equal 'composer', artist.tags[3].text
+    assert_equal 120, artist.tags[3].count
   end
  
   def test_artist_tori_amos_1
@@ -246,6 +246,25 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal Model::NS_REL_1 + 'AmazonAsin', url_rels[1].type
     assert_equal nil, url_rels[1].direction
     assert_equal 'http://www.amazon.com/gp/product/B0000024SI', url_rels[1].target
+  end
+  
+  def test_release_highway_61_revisited_2
+    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Highway_61_Revisited_2.xml')
+    release = mbxml.get_entity(:release)
+    
+    assert_equal 'd61a2bd9-81ac-4023-bd22-1c884d4a176c', release.id.uuid
+    assert release.types.include?(Model::Release::TYPE_ALBUM)
+    assert release.types.include?(Model::Release::TYPE_OFFICIAL)
+    assert_equal 'Highway 61 Revisited', release.title
+    assert_equal 4, release.tags.size
+    assert_equal 'rock', release.tags[0].text
+    assert_equal 100, release.tags[0].count
+    assert_equal 'blues rock', release.tags[1].text
+    assert_equal 40, release.tags[1].count
+    assert_equal 'folk rock', release.tags[2].text
+    assert_equal 40, release.tags[2].count
+    assert_equal 'dylan', release.tags[3].text
+    assert_equal 4, release.tags[3].count
   end
   
   def test_release_little_earthquakes_1
@@ -460,7 +479,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'd6118046-407d-4e06-a1ba-49c399a4c42f', track.id.uuid
     assert_equal 'Silent All These Years', track.title
     assert_equal 253466, track.duration
-    #assert_equal 0, track.tags.size
+    assert_equal 0, track.tags.size
   end
 
   def test_label_search
@@ -522,10 +541,10 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal '50c384a2-0b44-401b-b893-8181173339c7', label.id.uuid
     assert_equal Model::Label::TYPE_ORIGINAL_PRODUCTION, label.type
     assert_equal 'Atlantic Records', label.name
-    #assert_equal 3, label.tags.size
-    #assert_equal 'american', label.tags[0].text
-    #assert_equal 'jazz', label.tags[1].text
-    #assert_equal 'blues', label.tags[2].text
+    assert_equal 3, label.tags.size
+    assert_equal 'american', label.tags[0].text
+    assert_equal 'jazz', label.tags[1].text
+    assert_equal 'blues', label.tags[2].text
   end
   
   def test_user_1

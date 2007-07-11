@@ -119,4 +119,21 @@ module TestEntity
     }
   end
   
+  def test_tags
+    entity = @tested_class.new
+    tag1 = Model::Tag.new('doom metal')
+    tag2 = Model::Tag.new
+    
+    assert_equal 0, entity.tags.size
+    assert_nothing_raised {entity.tags << tag1}
+    assert_equal 1, entity.tags.size
+    assert_nothing_raised {entity.tags << tag2}
+    assert_equal 2, entity.tags.size
+    
+    assert_nothing_raised {entity.tags.delete tag2}
+    assert_equal 1, entity.tags.size
+    assert_nothing_raised {entity.tags.delete tag1}
+    assert_equal 0, entity.tags.size
+  end
+  
 end

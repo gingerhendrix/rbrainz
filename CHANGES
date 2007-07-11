@@ -13,6 +13,8 @@
   and end_date (to be more consistent with Artist)
 * Support for label aliases
 * Added label type "Unknown"
+* Support entity tags as defined in the MB metadata scheme 1.2. Currently only
+  available on test.musicbrainz.org.
 
 == 0.1.1 (2007-05-29)
 * Full support for relations

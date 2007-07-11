@@ -8,6 +8,7 @@
 require 'rbrainz/model/mbid'
 require 'rbrainz/model/relation'
 require 'rbrainz/model/collection'
+require 'rbrainz/model/tag'
 
 module MusicBrainz
   module Model
@@ -39,7 +40,11 @@ module MusicBrainz
       # The MusicBrainz ID. A MBID containing an absolute URI.
       attr_reader :id
       
+      # A Collection of Tag objects assigned to this entity.
+      attr_reader :tags
+      
       def initialize
+        @tags = Collection.new
         @relations = {
           Relation::TO_ARTIST  => Collection.new,
           Relation::TO_RELEASE => Collection.new,
