@@ -15,7 +15,7 @@ module MusicBrainz
     Webservice::Query.
 
     The most important classes, usually acting as entry points, are
-    Artist, Release, and Track.
+    Artist, Release, Track and Label.
 
     See:: Webservice
 =end
@@ -37,7 +37,6 @@ require 'rbrainz/data/countrynames'
 require 'rbrainz/data/languagenames'
 require 'rbrainz/data/scriptnames'
 
-require 'rbrainz/model/mbid'
 require 'rbrainz/model/artist'
 require 'rbrainz/model/label'
 require 'rbrainz/model/release'
