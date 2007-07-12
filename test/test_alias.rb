@@ -20,6 +20,10 @@ class TestAlias < Test::Unit::TestCase
   
   def test_new_alias
     assert_nothing_raised {Model::Alias.new}
+    alias_ = Model::Alias.new('Dark Tranquility', 'Misspelling', 'Latn')
+    assert_equal 'Dark Tranquility', alias_.name
+    assert_equal 'Misspelling', alias_.type
+    alias_.script = 'Latn'
   end
   
   def test_name

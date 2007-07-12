@@ -88,9 +88,8 @@ module MusicBrainz
 
       # The list of associated discs.
       #
-      # Discs are currently containers for MusicBrainz DiscIDs.
       # Note that under rare circumstances (identical TOCs), a
-      # DiscID could be associated with more than one release.
+      # Disc could be associated with more than one release.
       attr_reader :discs
 
       # The list of types for this release.
@@ -99,12 +98,13 @@ module MusicBrainz
       # TYPE_ALBUM, TYPE_SINGLE, etc.
       attr_reader :types
       
-      def initialize
-        super
+      def initialize(id=nil, title=nil)
+        super id
+        @title  = title
         @tracks = Collection.new
         @release_events = Collection.new
-        @discs = Collection.new
-        @types = Array.new
+        @discs  = Collection.new
+        @types  = Array.new
       end
 
       #

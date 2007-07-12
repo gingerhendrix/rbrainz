@@ -77,9 +77,12 @@ module MusicBrainz # :nodoc:
       # or may not be defined.
       attr_reader :end_date
       
-      def initialize
-        @attributes = Array.new
-        @target = nil
+      def initialize(type=nil, target=nil, direction=nil)
+        @target        = nil
+        @attributes    = Array.new
+        self.type      = type
+        self.target    = target if target
+        self.direction = direction
       end
       
       # Set the target of this relation.

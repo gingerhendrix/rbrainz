@@ -21,6 +21,8 @@ class TestDisc < Test::Unit::TestCase
   def test_new_disc
     disc = nil
     assert_nothing_raised {disc = Model::Disc.new}
+    assert_nothing_raised {disc = Model::Disc.new('Tit3F0Do_sZ_7NbfM_1vlEbF0wo-')}
+    assert_equal 'Tit3F0Do_sZ_7NbfM_1vlEbF0wo-', disc.id
   end
   
   def test_id

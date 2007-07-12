@@ -36,9 +36,15 @@ module MusicBrainz
     # MusicBrainz disc IDs.
     class Disc
     
+      # Number of sectors on the disc
       attr_accessor :sectors
+      
       # The MusicBrainz DiscID.A string containing a 28-character DiscID
       attr_reader :id
+      
+      def initialize(id=nil)
+        self.id = id if id
+      end
       
       # Set the MusicBrainz disc ID for this disc.
       # 

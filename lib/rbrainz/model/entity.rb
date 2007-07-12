@@ -43,7 +43,8 @@ module MusicBrainz
       # A Collection of Tag objects assigned to this entity.
       attr_reader :tags
       
-      def initialize
+      def initialize(id=nil)
+        @id = id
         @tags = Collection.new
         @relations = {
           Relation::TO_ARTIST  => Collection.new,

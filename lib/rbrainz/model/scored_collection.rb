@@ -23,6 +23,9 @@ module MusicBrainz
     # offset filter was used in the query. The collection object makes the
     # total number of elements on the server and the current offset available
     # with the +count+ respective the +offset+ parameter.
+    # 
+    # See http://lucene.apache.org/java/docs/scoring.html for more information
+    # about the scoring system used by MusicBrainz.
     class ScoredCollection < Collection
     
       # An entry in a ScoredCollection wrapping an entity and a

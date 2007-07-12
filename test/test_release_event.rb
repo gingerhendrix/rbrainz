@@ -18,6 +18,16 @@ class TestReleaseEvent < Test::Unit::TestCase
   def teardown
   end
   
+  def test_new
+    event = nil
+    assert_nothing_raised {event = Model::ReleaseEvent.new(
+      'SE',
+      '2007-04-18'
+      )}
+    assert_equal 'SE', event.country
+    assert_equal Model::IncompleteDate.new('2007-04-18'), event.date
+  end
+  
   def test_date
     event = Model::ReleaseEvent.new
     date = Model::IncompleteDate.new '2007-04-18'

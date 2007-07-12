@@ -28,6 +28,14 @@ class TestRelease < Test::Unit::TestCase
     release = nil
     assert_nothing_raised {release = Model::Release.new}
     assert release.is_a?(Model::Entity)
+    
+    mbid = Model::MBID.new('9d30e408-1559-448b-b491-2f8de1583ccf', release.entity_type)
+    assert_nothing_raised {release = Model::Release.new(
+      mbid,
+      'Draconian Times'
+      )}
+    assert_equal mbid, release.id
+    assert_equal 'Draconian Times', release.title
   end
   
   def test_title

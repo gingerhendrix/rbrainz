@@ -31,6 +31,12 @@ module MusicBrainz
       # The alias script.
       attr_accessor :script
       
+      def initialize(name=nil, type=nil, script=nil)
+        @name   = name
+        @type   = type
+        @script = script
+      end
+      
       def to_s
         return name.to_s
       end

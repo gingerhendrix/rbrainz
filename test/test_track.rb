@@ -30,6 +30,14 @@ class TestTrack < Test::Unit::TestCase
     track = nil
     assert_nothing_raised {track = Model::Track.new}
     assert track.is_a?(Model::Entity)
+    
+    mbid = Model::MBID.new('9d30e408-1559-448b-b491-2f8de1583ccf', track.entity_type)
+    assert_nothing_raised {track = Model::Track.new(
+      mbid,
+      'Indifferent Suns'
+      )}
+    assert_equal mbid, track.id
+    assert_equal 'Indifferent Suns', track.title
   end
   
   def test_title

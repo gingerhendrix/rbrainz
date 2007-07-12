@@ -21,8 +21,17 @@ class TestRelation < Test::Unit::TestCase
   end
   
   def test_new_relation
-    disc = nil
-    assert_nothing_raised {disc = Model::Relation.new}
+    relation = nil
+    assert_nothing_raised {relation = Model::Relation.new}
+    
+    assert_nothing_raised {relation = Model::Relation.new(
+      'Wikipedia',
+      'http://www.example.com',
+      Model::Relation::DIR_FORWARD
+      )}
+    assert_equal 'Wikipedia', relation.type
+    assert_equal 'http://www.example.com', relation.target
+    assert_equal Model::Relation::DIR_FORWARD, relation.direction
   end
   
   def test_type

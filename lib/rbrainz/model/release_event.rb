@@ -29,6 +29,11 @@ module MusicBrainz
                     
       attr_reader :date
       
+      def initialize(country=nil, date=nil)
+        self.country = country
+        self.date    = date if date
+      end
+      
       # Set the date the release took place.
       # 
       # Should be an IncompleteDate object or

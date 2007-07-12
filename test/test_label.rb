@@ -27,6 +27,18 @@ class TestLabel < Test::Unit::TestCase
     label = nil
     assert_nothing_raised {label = Model::Label.new}
     assert label.is_a?(Model::Entity)
+    
+    mbid = Model::MBID.new('9d30e408-1559-448b-b491-2f8de1583ccf', label.entity_type)
+    assert_nothing_raised {label = Model::Label.new(
+      mbid,
+      Model::Label::TYPE_ORIGINAL_PRODUCTION,
+      'Century Media',
+      'Century Media'
+      )}
+    assert_equal mbid, label.id
+    assert_equal Model::Label::TYPE_ORIGINAL_PRODUCTION, label.type
+    assert_equal 'Century Media', label.name
+    assert_equal 'Century Media', label.sort_name
   end
   
   def test_name

@@ -27,10 +27,13 @@ module MusicBrainz
       # (aka VA-Releases).
       attr_reader :releases
     
-      def initialize
-        super
-        @aliases = Collection.new
-        @releases = Collection.new
+      def initialize(id=nil, type=nil, name=nil, sort_name=nil)
+        super id
+        @type      = type
+        @name      = name
+        @sort_name = sort_name
+        @aliases   = Collection.new
+        @releases  = Collection.new
       end
                     
       # Set the begin date of this individual.

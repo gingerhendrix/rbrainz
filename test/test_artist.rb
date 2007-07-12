@@ -27,6 +27,18 @@ class TestArtist < Test::Unit::TestCase
     artist = nil
     assert_nothing_raised {artist = Model::Artist.new}
     assert artist.is_a?(Model::Entity)
+    
+    mbid = Model::MBID.new('9d30e408-1559-448b-b491-2f8de1583ccf', artist.entity_type)
+    assert_nothing_raised {artist = Model::Artist.new(
+      mbid,
+      Model::Artist::TYPE_GROUP,
+      'The White Stripes',
+      'White Stripes, The'
+      )}
+    assert_equal mbid, artist.id
+    assert_equal Model::Artist::TYPE_GROUP, artist.type
+    assert_equal 'The White Stripes', artist.name
+    assert_equal 'White Stripes, The', artist.sort_name
   end
   
   def test_name

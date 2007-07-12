@@ -19,7 +19,7 @@ module MusicBrainz
       # assigned to.
       attr_accessor :count
       
-      def initialize(text='', count=nil)
+      def initialize(text=nil, count=nil)
         @text  = text
         @count = count
       end

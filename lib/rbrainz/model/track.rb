@@ -19,9 +19,10 @@ module MusicBrainz
                     
       attr_reader :puids, :releases
       
-      def initialize
-        super
-        @puids = Collection.new
+      def initialize(id=nil, title=nil)
+        super id
+        @title    = title
+        @puids    = Collection.new
         @releases = Collection.new
       end
       

@@ -9,7 +9,7 @@ used to PythonMusicBrainz2 should already know most of RBrainz' interface.
 However, RBrainz differs from PythonMusicBrainz2 wherever it makes the
 library more Ruby like or easier to use.
 
-RBrainz supports the MusicBrainz XML Metadata Version 1.1, including support
+RBrainz supports the MusicBrainz XML Metadata Version 1.2, including support
 for labels and extended release events.
 
 == Installation
