@@ -16,7 +16,7 @@ module MusicBrainz
       
       # Query the Webservice with HTTP GET.
       # Must be implemented by the concrete webservices.
-      def get(entity, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
+      def get(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
         raise NotImplementedError.new('Called abstract method.')
       end
       
@@ -25,6 +25,15 @@ module MusicBrainz
       def post( entity_type, options={:id=>nil, :querystring=>[], :version=>1} )
         raise NotImplementedError.new('Called abstract method.')
       end
+      
+      def check_options(options, *optdecl)   #:nodoc:
+        h = options.dup
+        optdecl.each do |name|
+          h.delete name
+        end
+        raise ArgumentError, "no such option: #{h.keys.join(' ')}" unless h.empty?
+      end
+      private :check_options
       
     end
     
@@ -48,6 +57,7 @@ module MusicBrainz
       # [:password] The password to authenticate with.
       # [:user_agent] Value sent in the User-Agent HTTP header. Defaults to 'rbrainz/2.0'
       def initialize(options = {:host => nil, :port => nil, :path_prefix => nil, :username=>nil, :password=>nil})
+        check_options options, :host, :port, :path_prefix, :username, :password, :user_agent
         @host = options[:host] ? options[:host] : 'musicbrainz.org'
         @port = options[:port] ? options[:port] : 80
         @path_prefix = options[:path_prefix] ? options[:path_prefix] : '/ws'
@@ -63,6 +73,7 @@ module MusicBrainz
       # Raises: +RequestError+, +ResourceNotFoundError+, +AuthenticationError+,
       # +ConnectionError+ 
       def get(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
+        check_options options, :id, :include, :filter, :version
         url = URI.parse(create_uri(entity_type, options))
         request = Net::HTTP::Get.new(url.request_uri)
         request['User-Agent'] = @user_agent
@@ -116,6 +127,7 @@ module MusicBrainz
       # +IWebService.post+
       #
       def post( entity_type, options={:id=>nil, :querystring=>[], :version=>1} )
+        check_options options, :id, :querystring, :version
         url = URI.parse(create_uri(entity_type, options))
         request = Net::HTTP::Post.new(url.request_uri)
         request['User-Agent'] = @user_agent

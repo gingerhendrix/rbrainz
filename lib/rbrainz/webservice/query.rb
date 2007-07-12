@@ -261,8 +261,8 @@ module MusicBrainz
       private # ----------------------------------------------------------------
       
       # Helper method which will return any entity by ID.
-      def get_entity_by_id(entity_type, id, include)
-        xml = @webservice.get(entity_type, :id => id, :include => include)
+      def get_entity_by_id(entity_type, id, includes)
+        xml = @webservice.get(entity_type, :id => id, :include => includes)
         return MBXML.new(xml).get_entity(entity_type)
       end
       

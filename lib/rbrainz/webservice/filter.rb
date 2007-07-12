@@ -41,6 +41,15 @@ module MusicBrainz
         }.join('&')
       end
       
+      def check_options(options, *optdecl)   #:nodoc:
+        h = options.dup
+        optdecl.each do |name|
+          h.delete name
+        end
+        raise ArgumentError, "no such option: #{h.keys.join(' ')}" unless h.empty?
+      end
+      private :check_options
+      
     end
     
     class ArtistFilter < AbstractFilter
@@ -59,6 +68,7 @@ module MusicBrainz
       #           engine. It must follow the syntax described in
       #           http://musicbrainz.org/doc/TextSearchSyntax.
       def initialize(filter)
+        check_options filter, :name, :limit, :offset, :query
         super(filter)
         @filter[:name] = filter[:name]  if filter[:name]
       end
@@ -94,6 +104,9 @@ module MusicBrainz
       #              engine. It must follow the syntax described in
       #              http://musicbrainz.org/doc/TextSearchSyntax.
       def initialize(filter)
+        check_options filter, 
+          :limit, :offset, :query, :title, :discid, :artist, :artistid, 
+          :releasetypes, :count, :date, :asin, :lang, :script
         super(filter)
         @filter[:title]        = filter[:title]     if filter[:title]
         @filter[:discid]       = filter[:discid]    if filter[:discid]
@@ -138,6 +151,9 @@ module MusicBrainz
       #              engine. It must follow the syntax described in
       #              http://musicbrainz.org/doc/TextSearchSyntax.
       def initialize(filter)
+        check_options filter, 
+            :limit, :offset, :query, :title, :artist, :release, :duration, 
+            :tracknum, :artistid, :releaseid, :puid, :count, :releasetype
         super(filter)
         @filter[:title]       = filter[:title]     if filter[:title]
         @filter[:artist]      = filter[:artist]    if filter[:artist]
@@ -169,6 +185,7 @@ module MusicBrainz
       #           engine. It must follow the syntax described in
       #           http://musicbrainz.org/doc/TextSearchSyntax.
       def initialize(filter)
+        check_options filter, :limit, :offset, :query, :name
         super(filter)
         @filter[:name] = filter[:name]  if filter[:name]
       end

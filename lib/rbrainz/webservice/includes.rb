@@ -24,6 +24,15 @@ module MusicBrainz
           return ''
         end
       end
+
+      def check_options(options, *optdecl)   #:nodoc:
+        h = options.dup
+        optdecl.each do |name|
+          h.delete name
+        end
+        raise ArgumentError, "no such option: #{h.keys.join(' ')}" unless h.empty?
+      end
+      private :check_options
     
     end
     
@@ -49,6 +58,9 @@ module MusicBrainz
       # TODO: Check release types. It's possible that :releases
       # and :va_releases can't be used in parallel.
       def initialize(includes)
+        check_options includes, 
+          :aliases, :artist_rels, :release_rels, :track_rels, 
+          :label_rels, :url_rels, :tags, :releases, :va_releases
         @parameters = Array.new
         @parameters << 'aliases'      if includes[:aliases]
         @parameters << 'artist-rels'  if includes[:artist_rels]
@@ -88,6 +100,10 @@ module MusicBrainz
       #                     single tracks as well (boolean).
       # [:tags]         Include tags (boolean).
       def initialize(includes)
+        check_options includes, 
+            :artist, :counts, :release_events, :discs, :tracks, 
+            :labels, :artist_rels, :release_rels, :track_rels, 
+            :label_rels, :url_rels, :track_level_rels, :tags
         @parameters = Array.new
         @parameters << 'artist'       if includes[:artist]
         @parameters << 'counts'       if includes[:counts]
@@ -119,6 +135,9 @@ module MusicBrainz
       # [:url_rels]     Include url relationships (boolean).
       # [:tags]         Include tags (boolean).
       def initialize(includes)
+        check_options includes, 
+            :artist, :releases, :puids, :artist_rels, :release_rels, 
+            :track_rels, :label_rels, :url_rels, :tags
         @parameters = Array.new
         @parameters << 'artist'       if includes[:artist]
         @parameters << 'releases'     if includes[:releases]
@@ -144,6 +163,9 @@ module MusicBrainz
       # [:url_rels]     Include url relationships (boolean).
       # [:tags]         Include tags (boolean).
       def initialize(includes)
+        check_options includes, 
+            :aliases, :artist_rels, :release_rels, 
+            :track_rels, :label_rels, :url_rels, :tags
         @parameters = Array.new
         @parameters << 'aliases'      if includes[:aliases]
         @parameters << 'artist-rels'  if includes[:artist_rels]

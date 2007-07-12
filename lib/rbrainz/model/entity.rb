@@ -9,6 +9,7 @@ require 'rbrainz/model/mbid'
 require 'rbrainz/model/relation'
 require 'rbrainz/model/collection'
 require 'rbrainz/model/tag'
+require 'set'
 
 module MusicBrainz
   module Model
@@ -127,27 +128,35 @@ module MusicBrainz
       #
       def get_relations(options = {:target_type => nil, :relation_type => nil,
                                    :required_attributes => [], :direction => nil})
-        result = Collection.new
+        check_options options, 
+            :target_type, :relation_type, :required_attributes, :direction
+        target_type = options[:target_type]
+        relation_type = options[:relation_type]
+        required_attributes = 
+          options[:required_attributes] ? options[:required_attributes] : []
+        direction = options[:direction]
         
         # Select all relevant relations depending on the requested target type
-        if options[:target_type]
-          relations = @relations[options[:target_type]]
+        if target_type
+          result = @relations[target_type].dup
         else
-          relations = @relations.values.flatten
+          result = Collection.new(0,0,@relations.values.flatten)
         end
         
-        # Add all relations to the result which meet all the criteria.
-        relations.each do |relation|
-          unless (options[:relation_type] and relation.type != options[:relation_type]) \
-             or (options[:required_attributes] and
-               (relation.attributes & options[:required_attributes]).sort \
-                 != options[:required_attributes].sort) \
-             or (options[:direction] and relation.direction != options[:direction])
-             result << relation
-          end
-        end
+        # Filter for direction
+        #
+        result = result.find_all { |r| r.direction == direction } if direction
         
-        return result
+        # Filter for relation type
+        #
+        result = result.find_all{ |r| r.type == relation_type } if relation_type
+        
+        # Filter for attributes
+        #
+        required = required_attributes.to_set
+        result.find_all do |r|
+             required.subset?( r.attributes.to_set )
+        end
       end
       
       #
@@ -165,6 +174,15 @@ module MusicBrainz
         }
         return result
       end
+      
+      def check_options(options, *optdecl)   #:nodoc:
+        h = options.dup
+        optdecl.each do |name|
+          h.delete name
+        end
+        raise ArgumentError, "no such option: #{h.keys.join(' ')}" unless h.empty?
+      end
+      private :check_options
       
     end
     

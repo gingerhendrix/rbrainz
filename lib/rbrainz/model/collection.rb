@@ -32,10 +32,14 @@ module MusicBrainz
       # 
       # The count and offset parameters should be set according to the values
       # returned by the server.
-      def initialize(count=0, offset=0)
+      def initialize(count=0, offset=0, array=nil)
         @count  = count.to_i
         @offset = offset.to_i
-        @entries = Array.new
+        if array
+          @entries = array.to_ary.dup
+        else
+          @entries = Array.new
+        end
       end
       
       # Add a new element to this collection.
@@ -85,10 +89,13 @@ module MusicBrainz
       
       # Convert the collection into an Array.
       def to_a
-        @entries
+        @entries.dup
       end
       alias to_ary to_a
       
+      def dup
+        Collection.new(self.count, self.offset, @entries)
+      end
     end
     
   end
