@@ -31,11 +31,22 @@ module MusicBrainz
       # An entry in a ScoredCollection wrapping an entity and a
       # corresponding search result score.
       class Entry
+        include Comparable
         attr_accessor :entity, :score
         
         def initialize(entity, score=nil)
           @entity = entity
           @score  = score
+        end
+        
+        def <=>(other)
+          if self.score.nil? && other.score.nil?
+            return self.entity <=> other.entity
+          end
+          return -1 if self.score.nil?
+          return 1 if other.score.nil?
+          
+          return self.score <=> other.score
         end
       end
     

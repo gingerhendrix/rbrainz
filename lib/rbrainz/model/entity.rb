@@ -138,9 +138,9 @@ module MusicBrainz
         
         # Select all relevant relations depending on the requested target type
         if target_type
-          result = @relations[target_type].dup
+          result = @relations[target_type].to_a
         else
-          result = Collection.new(0,0,@relations.values.flatten)
+          result = @relations.values.flatten
         end
         
         # Filter for direction
