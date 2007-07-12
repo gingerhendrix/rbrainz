@@ -5,6 +5,8 @@
 * Collection class to store search results (with support for search score and offset)
 * User authentication
 * Querying of user information
+* Support POST in webservice to submit information.
+* PUID submission.
 * Made IncompleteDate behave like a range with corresponding equality operations
 * Restructured MBID to use a ducktyping approach
 * Introduced Individual as superclass for Artist and Label

@@ -17,14 +17,12 @@ module MusicBrainz
       # Query the Webservice with HTTP GET.
       # Must be implemented by the concrete webservices.
       def get(entity, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
-        raise Exception.new('Called abstract method.')
+        raise NotImplementedError.new('Called abstract method.')
       end
       
       # Query the Webservice with HTTP POST.
       # Must be implemented by the concrete webservices.
-      # 
-      # TODO:: Specify and implement in Webservice.
-      def post
+      def post( entity_type, options={:id=>nil, :querystring=>[], :version=>1} )
         raise NotImplementedError.new('Called abstract method.')
       end
       
