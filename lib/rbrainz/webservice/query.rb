@@ -191,42 +191,42 @@ module MusicBrainz
       end
       
       def get_artist_by_id(id, includes = nil)
-        includes = ArtistIncludes.new(includes) unless includes.is_a? ArtistIncludes
+        includes = ArtistIncludes.new(includes) unless includes.nil? || includes.is_a?(ArtistIncludes)
         return get_entity_by_id(Model::Artist.entity_type, id, includes)
       end
       
       def get_artists(filter)
-        filter = ArtistFilter.new(filter) unless filter.is_a? ArtistFilter
+        filter = ArtistFilter.new(filter) unless filter.nil? || filter.is_a?(ArtistFilter)
         return get_entities(Model::Artist.entity_type, filter)
       end
       
       def get_release_by_id(id, includes = nil)
-        includes = ReleaseIncludes.new(includes) unless includes.is_a? ReleaseIncludes
+        includes = ReleaseIncludes.new(includes) unless includes.nil? || includes.is_a?(ReleaseIncludes)
         return get_entity_by_id(Model::Release.entity_type, id, includes)
       end
       
       def get_releases(filter)
-        filter = ReleaseFilter.new(filter) unless filter.is_a? ReleaseFilter
+        filter = ReleaseFilter.new(filter) unless filter.nil? || filter.is_a?(ReleaseFilter)
         return get_entities(Model::Release.entity_type, filter)
       end
       
       def get_track_by_id(id, includes = nil)
-        includes = TrackIncludes.new(includes) unless includes.is_a? TrackIncludes
+        includes = TrackIncludes.new(includes) unless includes.nil? || includes.is_a?(TrackIncludes)
         return get_entity_by_id(Model::Track.entity_type, id, includes)
       end
       
       def get_tracks(filter)
-        filter = TrackFilter.new(filter) unless filter.is_a? TrackFilter
+        filter = TrackFilter.new(filter) unless filter.nil? || filter.is_a?(TrackFilter)
         return get_entities(Model::Track.entity_type, filter)
       end
       
       def get_label_by_id(id, includes = nil)
-        includes = LabelIncludes.new(includes) unless includes.is_a? LabelIncludes
+        includes = LabelIncludes.new(includes) unless includes.nil? || includes.is_a?(LabelIncludes)
         return get_entity_by_id(Model::Label.entity_type, id, includes)
       end
       
       def get_labels(filter)
-        filter = LabelFilter.new(filter) unless filter.is_a? LabelFilter
+        filter = LabelFilter.new(filter) unless filter.nil? || filter.is_a?(LabelFilter)
         return get_entities(Model::Label.entity_type, filter)
       end
       
@@ -249,7 +249,7 @@ module MusicBrainz
       # to supply authentication data.
       #
       # Raises:: +ConnectionError+, +RequestError+, +AuthenticationError+
-      def submit_puids(tracks2puids):
+      def submit_puids(tracks2puids)
         raise RequestError, 'Please supply a client ID' unless @client_id
         params = [['client', @client_id.to_s]] # Encoded as utf-8
 
