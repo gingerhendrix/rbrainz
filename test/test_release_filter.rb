@@ -26,7 +26,8 @@ class TestReleaseFilter < Test::Unit::TestCase
       :lang         => 'ENG',
       :script       => 'Latn',
       :limit        => 10,
-      :offset       => 20
+      :offset       => 20,
+      :query        => 'date:2000'
       }
   end
 
@@ -51,6 +52,7 @@ class TestReleaseFilter < Test::Unit::TestCase
     assert_equal @filter_hash[:script], result_hash['script'], filter_string
     assert_equal @filter_hash[:limit].to_s, result_hash['limit'], filter_string
     assert_equal @filter_hash[:offset].to_s, result_hash['offset'], filter_string
+    assert_equal @filter_hash[:query].to_s, result_hash['query'], filter_string
   end
   
   def test_empty_filter

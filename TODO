@@ -3,7 +3,6 @@
 == Short term tasks
 * Support POST in webservice to submit information.
 * PUID submission.
-* Full text search (lucene search queries).
 * Improve API documentation.
 
 == Longer term tasks

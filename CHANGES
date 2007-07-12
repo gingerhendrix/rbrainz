@@ -13,6 +13,7 @@
   and end_date (to be more consistent with Artist)
 * Support for label aliases
 * Added label type "Unknown"
+* Full text search (lucene search queries).
 * Support entity tags as defined in the MB metadata scheme 1.2. Currently only
   available on test.musicbrainz.org.
 

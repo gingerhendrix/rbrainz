@@ -22,10 +22,15 @@ module MusicBrainz
       #           to 25, the maximum allowed value is 100.
       # [:offset] Return search results starting at a given offset. Used
       #           for paging through more than one page of results.
+      # [:query]  A Lucene search query. The query parameter is a search
+      #           string which will be passed to the underlying Lucene search
+      #           engine. It must follow the syntax described in
+      #           http://musicbrainz.org/doc/TextSearchSyntax.
       def initialize(filter)
         @filter = Hash.new
-        @filter[:limit]  = filter[:limit] if filter[:limit]
+        @filter[:limit]  = filter[:limit]  if filter[:limit]
         @filter[:offset] = filter[:offset] if filter[:offset]
+        @filter[:query]  = filter[:query]  if filter[:query]
       end
       
       # Returns the filter list as a query string
@@ -49,6 +54,10 @@ module MusicBrainz
       #           to 25, the maximum allowed value is 100.
       # [:offset] Return search results starting at a given offset. Used
       #           for paging through more than one page of results.
+      # [:query]  A Lucene search query. The query parameter is a search
+      #           string which will be passed to the underlying Lucene search
+      #           engine. It must follow the syntax described in
+      #           http://musicbrainz.org/doc/TextSearchSyntax.
       def initialize(filter)
         super(filter)
         @filter[:name] = filter[:name]  if filter[:name]
@@ -80,6 +89,10 @@ module MusicBrainz
       #              to 25, the maximum allowed value is 100. 
       # [:offset]    Return search results starting at a given offset. Used
       #              for paging through more than one page of results.
+      # [:query]     A Lucene search query. The query parameter is a search
+      #              string which will be passed to the underlying Lucene search
+      #              engine. It must follow the syntax described in
+      #              http://musicbrainz.org/doc/TextSearchSyntax.
       def initialize(filter)
         super(filter)
         @filter[:title]        = filter[:title]     if filter[:title]
@@ -120,6 +133,10 @@ module MusicBrainz
       #              to 25, the maximum allowed value is 100. 
       # [:offset]    Return search results starting at a given offset. Used
       #              for paging through more than one page of results.
+      # [:query]     A Lucene search query. The query parameter is a search
+      #              string which will be passed to the underlying Lucene search
+      #              engine. It must follow the syntax described in
+      #              http://musicbrainz.org/doc/TextSearchSyntax.
       def initialize(filter)
         super(filter)
         @filter[:title]       = filter[:title]     if filter[:title]
@@ -147,6 +164,10 @@ module MusicBrainz
       #           to 25, the maximum allowed value is 100. 
       # [:offset] Return search results starting at a given offset. Used
       #           for paging through more than one page of results.
+      # [:query]  A Lucene search query. The query parameter is a search
+      #           string which will be passed to the underlying Lucene search
+      #           engine. It must follow the syntax described in
+      #           http://musicbrainz.org/doc/TextSearchSyntax.
       def initialize(filter)
         super(filter)
         @filter[:name] = filter[:name]  if filter[:name]

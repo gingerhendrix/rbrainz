@@ -14,7 +14,8 @@ include MusicBrainz
 class TestLabelFilter < Test::Unit::TestCase
 
   def setup
-    @filter_hash = {:name => 'Century Media', :limit => 10, :offset => 20}
+    @filter_hash = {:name => 'Century Media', :limit => 10, :offset => 20,
+                    :query => 'alias:Century Media OR alias:Century'}
   end
 
   def teardown
@@ -29,6 +30,7 @@ class TestLabelFilter < Test::Unit::TestCase
     assert_equal @filter_hash[:name], result_hash['name'], filter_string
     assert_equal @filter_hash[:limit].to_s, result_hash['limit'], filter_string
     assert_equal @filter_hash[:offset].to_s, result_hash['offset'], filter_string
+    assert_equal @filter_hash[:query].to_s, result_hash['query'], filter_string
   end
   
   def test_empty_filter
