@@ -127,22 +127,25 @@ module MusicBrainz
       #
       def get_relations(options = {:target_type => nil, :relation_type => nil,
                                    :required_attributes => [], :direction => nil})
-        # Select all results depending on the requested target type
+        result = Collection.new
+        
+        # Select all relevant relations depending on the requested target type
         if options[:target_type]
-          result = @relations[options[:target_type]]
+          relations = @relations[options[:target_type]]
         else
-          result = []
-          @relations.each_value {|array| result += array}
+          relations = @relations.values.flatten
         end
         
-        # Remove relations which don't meet all the criteria.
-        result.delete_if {|relation|
-          (options[:relation_type] and relation.type != options[:relation_type]) \
-          or (options[:required_attributes] and
-              (relation.attributes & options[:required_attributes]).sort \
-               != options[:required_attributes].sort) \
-          or (options[:direction] and relation.direction != options[:direction])
-        }
+        # Add all relations to the result which meet all the criteria.
+        relations.each do |relation|
+          unless (options[:relation_type] and relation.type != options[:relation_type]) \
+             or (options[:required_attributes] and
+               (relation.attributes & options[:required_attributes]).sort \
+                 != options[:required_attributes].sort) \
+             or (options[:direction] and relation.direction != options[:direction])
+             result << relation
+          end
+        end
         
         return result
       end

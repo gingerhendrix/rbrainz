@@ -58,7 +58,7 @@ module MusicBrainz
       #  collection << [artist, 100]
       #  collection << artist
       def <<(entry)
-        self[size] = entry
+        super wrap(entry)
       end
       
       # Set the entry at the given position.
@@ -67,6 +67,12 @@ module MusicBrainz
       # or an object responding to +first+ and +last+ where +first+ must
       # return the entity and +last+ the score.
       def []=(index, entry)
+        super wrap(entry)
+      end
+      
+      private #-----------------------------------------------------------------
+      
+      def wrap(entry)
         unless entry.is_a? Entry
           if entry.respond_to?(:first) and entry.respond_to?(:last)
             entry = Entry.new(entry.first, entry.last)
@@ -74,9 +80,8 @@ module MusicBrainz
             entry = Entry.new(entry)
           end
         end
-        super index, entry
+        return entry
       end
-      
     end
     
   end

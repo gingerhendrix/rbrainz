@@ -17,8 +17,10 @@ module MusicBrainz
     # offset filter was used in the query. The collection object makes the
     # total number of elements on the server and the current offset available
     # with the +count+ respective the +offset+ parameter.
-    class Collection < ::Array
+    class Collection
     
+      include ::Enumerable
+      
       # Returns the total number of elements for that collection on the server. 
       attr_accessor :count
       
@@ -33,7 +35,59 @@ module MusicBrainz
       def initialize(count=0, offset=0)
         @count  = count.to_i
         @offset = offset.to_i
+        @entries = Array.new
       end
+      
+      # Add a new element to this collection.
+      def <<(entry)
+        @entries << entry
+      end
+      
+      # Delete an element from the collection.
+      def delete(entry)
+        @entries.delete(entry)
+      end
+      
+      # Iterate over the contents of the collection.
+      def each
+        @entries.each {|e| yield e}
+      end
+      
+      # Access a random element in the collection by the element's index.
+      def [](index)
+        @entries[index]
+      end
+      
+      # Set a random element in the collection by the element's index.
+      def []=(index, entry)
+        @entries[index] = entry
+      end
+      
+      # Create a new collection containing the elements of both collections.
+      # Count and offset will be set to +nil+ in the new collection.
+      def +(other_collection)
+        new_collection = Collection.new
+        (self.to_a + other_collection.to_a).each do |entry|
+          new_collection << entry
+        end
+        return new_collection
+      end
+      
+      # The number of elements in the collection.
+      def size
+        @entries.size
+      end
+      
+      # Returns true, if the collection contains no elements.
+      def empty?
+        @entries.empty?
+      end
+      
+      # Convert the collection into an Array.
+      def to_a
+        @entries
+      end
+      alias to_ary to_a
       
     end
     
