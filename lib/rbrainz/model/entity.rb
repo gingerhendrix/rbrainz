@@ -128,7 +128,7 @@ module MusicBrainz
       #
       def get_relations(options = {:target_type => nil, :relation_type => nil,
                                    :required_attributes => [], :direction => nil})
-        check_options options, 
+        Utils.check_options options, 
             :target_type, :relation_type, :required_attributes, :direction
         target_type = options[:target_type]
         relation_type = options[:relation_type]
@@ -174,15 +174,6 @@ module MusicBrainz
         }
         return result
       end
-      
-      def check_options(options, *optdecl)   #:nodoc:
-        h = options.dup
-        optdecl.each do |name|
-          h.delete name
-        end
-        raise ArgumentError, "no such option: #{h.keys.join(' ')}" unless h.empty?
-      end
-      private :check_options
       
     end
     

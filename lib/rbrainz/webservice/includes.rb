@@ -25,15 +25,6 @@ module MusicBrainz
         end
       end
 
-      def check_options(options, *optdecl)   #:nodoc:
-        h = options.dup
-        optdecl.each do |name|
-          h.delete name
-        end
-        raise ArgumentError, "no such option: #{h.keys.join(' ')}" unless h.empty?
-      end
-      private :check_options
-    
     end
     
     class ArtistIncludes < AbstractIncludes
@@ -58,7 +49,7 @@ module MusicBrainz
       # TODO: Check release types. It's possible that :releases
       # and :va_releases can't be used in parallel.
       def initialize(includes)
-        check_options includes, 
+        Utils.check_options includes, 
           :aliases, :artist_rels, :release_rels, :track_rels, 
           :label_rels, :url_rels, :tags, :releases, :va_releases
         @parameters = Array.new
@@ -100,7 +91,7 @@ module MusicBrainz
       #                     single tracks as well (boolean).
       # [:tags]         Include tags (boolean).
       def initialize(includes)
-        check_options includes, 
+        Utils.check_options includes, 
             :artist, :counts, :release_events, :discs, :tracks, 
             :labels, :artist_rels, :release_rels, :track_rels, 
             :label_rels, :url_rels, :track_level_rels, :tags
@@ -135,7 +126,7 @@ module MusicBrainz
       # [:url_rels]     Include url relationships (boolean).
       # [:tags]         Include tags (boolean).
       def initialize(includes)
-        check_options includes, 
+        Utils.check_options includes, 
             :artist, :releases, :puids, :artist_rels, :release_rels, 
             :track_rels, :label_rels, :url_rels, :tags
         @parameters = Array.new
@@ -163,7 +154,7 @@ module MusicBrainz
       # [:url_rels]     Include url relationships (boolean).
       # [:tags]         Include tags (boolean).
       def initialize(includes)
-        check_options includes, 
+        Utils.check_options includes, 
             :aliases, :artist_rels, :release_rels, 
             :track_rels, :label_rels, :url_rels, :tags
         @parameters = Array.new

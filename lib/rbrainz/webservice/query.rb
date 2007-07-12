@@ -186,6 +186,7 @@ module MusicBrainz
       # Available options:
       # [:client_id] a unicode string containing the application's ID
       def initialize(webservice = nil, options={})
+        Utils.check_options options, :client_id
         @webservice = webservice.nil? ? Webservice.new : webservice
         @client_id = options[:client_id] ? options[:client_id] : nil
       end
