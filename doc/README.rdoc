@@ -31,8 +31,9 @@ MusicBrainz::Model::Artist, MusicBrainz::Model::Release,
 MusicBrainz::Model::Track and MusicBrainz::Model::Label
 together with MusicBrainz::Webservice::Query. The Query class
 provides an easy to use interface to query the MusicBrainz webservice.
-It will always return one of the model classes above or an
-array of those classes. The example below should make the usage clear:
+It will always return one of the model classes above or a
+MusicBrainz::Model::ScoredCollection of those classes. The example below
+should make the usage clear:
 
  require 'rbrainz'
  include MusicBrainz

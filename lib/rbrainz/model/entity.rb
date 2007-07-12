@@ -32,8 +32,7 @@ module MusicBrainz
     # - Relation::TO_TRACK
     # - Relation::TO_URL
     #
-    # == See 
-    # Relation
+    # See:: Relation
     #
     class Entity
     

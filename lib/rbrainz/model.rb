@@ -17,11 +17,7 @@ module MusicBrainz
     The most important classes, usually acting as entry points, are
     Artist, Release, and Track.
 
-    == See 
-    Webservice
-
-    == Authors
-    Brian Olsen
+    See:: Webservice
 =end
   module Model
 
