@@ -167,7 +167,7 @@ module MusicBrainz
     
       # Create a new Query object.
       # 
-      # You can pass a custom Webservice
+      # You can pass a custom Webservice[link:classes/MusicBrainz/Webservice/Webservice.html]
       # object. If none is given a default webservice will be used.
       #
       # If the constructor is called without arguments, an instance
