@@ -4,7 +4,6 @@
 # Copyright:: Copyright (c) 2007, Nigel Graham, Philipp Wolfer
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
-#require 'rbrainz/core_ext'
 
 module MusicBrainz
 =begin rdoc
@@ -43,3 +42,4 @@ require 'rbrainz/model/label'
 require 'rbrainz/model/release'
 require 'rbrainz/model/track'
 require 'rbrainz/model/user'
+require 'rbrainz/core_ext'

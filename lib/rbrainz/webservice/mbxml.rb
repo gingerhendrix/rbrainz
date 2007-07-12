@@ -8,7 +8,6 @@
 require 'rbrainz/model'
 require 'rbrainz/model/scored_collection'
 require 'rexml/document'
-include REXML
 
 module MusicBrainz
   module Webservice
@@ -23,7 +22,7 @@ module MusicBrainz
     class MBXML
     
       def initialize(xml)
-        @document = Document.new(xml)
+        @document = REXML::Document.new(xml)
 
         # Already loaded artists, releases, tracks
         # and labels will get cached in these variables
