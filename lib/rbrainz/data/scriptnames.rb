@@ -8,7 +8,7 @@
 module MusicBrainz
   module Data
 
-    scriptNames = {
+    SCRIPT_NAMES = {
     	'Yiii' => 'Yi',
     	'Tel' => 'Telug',
     	'Taml' => 'Tamil',
