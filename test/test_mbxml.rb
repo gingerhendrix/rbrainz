@@ -7,6 +7,7 @@
 
 require 'test/unit'
 require 'rbrainz'
+require 'test_factory'
 include MusicBrainz
 
 # Unit test for the MBXML class.
@@ -558,4 +559,15 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal Model::NS_EXT_1 + 'AutoEditor', users[0].types[0]
     assert_equal Model::NS_EXT_1 + 'RelationshipEditor', users[0].types[1]
   end
+  
+  def test_new_with_factory
+    factory = MyFactory.new
+    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_2.xml'), factory
+    artist = mbxml.get_entity(:artist)
+    assert artist.is_a?(MyArtist)
+    artist.releases.each do |release|
+      assert release.is_a?(MyRelease)
+    end
+  end
+  
 end

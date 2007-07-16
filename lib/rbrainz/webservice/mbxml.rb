@@ -21,8 +21,18 @@ module MusicBrainz
     # information on the MusicBrainz XML Metadata schema.
     class MBXML
     
-      def initialize(xml)
+      # Create a new MBXML instance to parse a MusicBrainz metadata document.
+      # 
+      # Parameters:
+      # [xml]     A MusicBrainz metadata XML document.
+      # [factory] A model factory. An instance of Model::DefaultFactory
+      #           will be used if none is given.
+      def initialize(xml, factory=nil)
         @document = REXML::Document.new(xml)
+        
+        # Set the model factory
+        factory = Model::DefaultFactory.new unless factory
+        @factory = factory
 
         # Already loaded artists, releases, tracks
         # and labels will get cached in these variables
@@ -95,7 +105,7 @@ module MusicBrainz
         if node.attributes['id'] and @artists[node.attributes['id']]
           artist = @artists[node.attributes['id']]
         else
-          artist = Model::Artist.new
+          artist = @factory.new_artist
           @artists[node.attributes['id']] = artist
         end
         
@@ -157,7 +167,7 @@ module MusicBrainz
         if node.attributes['id'] and @releases[node.attributes['id']]
           release = @releases[node.attributes['id']]
         else
-          release = Model::Release.new
+          release = @factory.new_release
           @releases[node.attributes['id']] = release
         end
         
@@ -219,7 +229,7 @@ module MusicBrainz
         if node.attributes['id'] and @tracks[node.attributes['id']]
           track = @tracks[node.attributes['id']]
         else
-          track = Model::Track.new
+          track = @factory.new_track
           @tracks[node.attributes['id']] = track
         end
         
@@ -266,7 +276,7 @@ module MusicBrainz
         if node.attributes['id'] and @labels[node.attributes['id']]
           label = @labels[node.attributes['id']]
         else
-          label = Model::Label.new
+          label = @factory.new_label
           @labels[node.attributes['id']] = label
         end
         
@@ -323,7 +333,7 @@ module MusicBrainz
       
       # Create an +Alias+ object from the given alias node.
       def create_alias(node)
-        alias_model = Model::Alias.new
+        alias_model = @factory.new_alias
         alias_model.name = node.text
         alias_model.type = node.attributes['type']
         alias_model.script = node.attributes['script']
@@ -341,7 +351,7 @@ module MusicBrainz
       
       # Create an +Tag+ object from the given tag node.
       def create_tag(node)
-        tag = Model::Tag.new
+        tag = @factory.new_tag
         tag.text = node.text
         tag.count = node.attributes['count'].to_i if node.attributes['count']
         return tag
@@ -358,7 +368,7 @@ module MusicBrainz
       
       # Create an +ReleaseEvent+ object from the given release event node.
       def create_event(node)
-        event = Model::ReleaseEvent.new
+        event = @factory.new_release_event
         
         # Read all defined data fields
         if node.attributes['date']
@@ -397,7 +407,7 @@ module MusicBrainz
       
       # Create a +Disc+ object from the given disc node.
       def create_disc(node)
-        disc = Model::Disc.new
+        disc = @factory.new_disc
         disc.id = node.attributes['id']
         disc.sectors = node.attributes['sectors'].to_i
         return disc
@@ -415,7 +425,7 @@ module MusicBrainz
       
       # Create a +Relation+ object from the given relation node.
       def create_relation(node, target_type)
-        relation = Model::Relation.new
+        relation = @factory.new_relation
         
         # Read all defined data fields
         if node.attributes['direction']
@@ -448,28 +458,28 @@ module MusicBrainz
           if node.elements['artist']
             target = create_artist node.elements['artist']
           else
-            target = Model::Artist.new
+            target = @factory.new_artist
             target.id = Model::MBID.parse(node.attributes['target'], :artist)
           end
         when Model::Relation::TO_RELEASE
           if node.elements['release']
             target = create_release node.elements['release']
           else
-            target = Model::Release.new
+            target = @factory.new_release
             target.id = Model::MBID.parse(node.attributes['target'], :release)
           end
         when Model::Relation::TO_TRACK
           if node.elements['track']
             target = create_track node.elements['track']
           else
-            target = Model::Track.new
+            target = @factory.new_track
             target.id = Model::MBID.parse(node.attributes['target'], :track)
           end
         when Model::Relation::TO_LABEL
           if node.elements['label']
             target = create_label node.elements['label']
           else
-            target = Model::Label.new
+            target = @factory.new_label
             target.id = Model::MBID.parse(node.attributes['target'], :label)
           end
         when Model::Relation::TO_URL
@@ -488,7 +498,7 @@ module MusicBrainz
       end
 
       def create_user(node)
-        user_model = Model::User.new
+        user_model = @factory.new_user
         # Read the types
         node.attributes['type'].split(' ').each {|type|
           user_model.types << MBXML.add_namespace(type, Model::NS_EXT_1)

@@ -11,29 +11,6 @@ require 'rbrainz/webservice/mbxml'
 module MusicBrainz
   module Webservice
 
-    # Provides an easy to use interface to the MusicBrainz webservice.
-    # 
-    # Basic usage:
-    #  query = Webservice::Query.new
-    #  
-    #  artist_filter = Webservice::ArtistFilter.new(
-    #    :name  => 'Paradise Lost',
-    #    :limit => 10
-    #  )
-    #  
-    #  artist_collection = query.get_artists(artist_filter)
-    #  
-    #  artists.each do |entry|
-    #    print "%s (%i%%)\r\n" % [entry.entity.unique_name, entry.score]
-    #  end
-    #  
-    # User authentication:
-    #  ws = Webservice::Webservice.new(:username=>username, :password=>password)
-    #  query = Webservice::Query.new(ws)
-    #  user = query.get_user_by_name(username)
-
-
-
     # A simple interface to the MusicBrainz web service.
     # 
     # This is a facade which provides a simple interface to the MusicBrainz
@@ -185,10 +162,13 @@ module MusicBrainz
       #
       # Available options:
       # [:client_id] a unicode string containing the application's ID
+      # [:factory]   A model factory. An instance of Model::DefaultFactory
+      #              will be used if none is given.
       def initialize(webservice = nil, options={})
-        Utils.check_options options, :client_id
+        Utils.check_options options, :client_id, :factory
         @webservice = webservice.nil? ? Webservice.new : webservice
         @client_id = options[:client_id] ? options[:client_id] : nil
+        @factory   = options[:factory] ? options[:factory] : nil
       end
       
       def get_artist_by_id(id, includes = nil)
@@ -264,13 +244,13 @@ module MusicBrainz
       # Helper method which will return any entity by ID.
       def get_entity_by_id(entity_type, id, includes)
         xml = @webservice.get(entity_type, :id => id, :include => includes)
-        return MBXML.new(xml).get_entity(entity_type)
+        return MBXML.new(xml, @factory).get_entity(entity_type)
       end
       
       # Helper method which will search for the given entity type.
       def get_entities(entity_type, filter)
         xml = @webservice.get(entity_type, :filter => filter)
-        return MBXML.new(xml).get_entity_list(entity_type)
+        return MBXML.new(xml, @factory).get_entity_list(entity_type)
       end
       
     end

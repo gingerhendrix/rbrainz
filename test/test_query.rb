@@ -8,6 +8,7 @@
 require 'test/unit'
 require 'rbrainz'
 require 'mock_webservice'
+require 'test_factory'
 include MusicBrainz
 
 # Unit test for the Query class.
@@ -89,6 +90,15 @@ class TestQuery < Test::Unit::TestCase
     user = @query.get_user_by_name('matt')
     assert user.is_a?(Model::User)
     assert_equal false, user.show_nag?
+  end
+  
+  def test_factory
+    factory = MyFactory.new
+    query = Webservice::Query.new(@webservice, :factory=>factory)
+    
+    id = '290e10c5-7efc-4f60-ba2c-0dfc0208fbf5'
+    entity = query.get_release_by_id(id)
+    assert entity.is_a?(MyRelease)
   end
   
 end
