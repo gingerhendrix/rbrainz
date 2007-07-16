@@ -18,6 +18,7 @@
 * Full text search (lucene search queries).
 * Support entity tags as defined in the MB metadata scheme 1.2. Currently only
   available on test.musicbrainz.org.
+* New Model::DefaultFactory
 
 == 0.1.1 (2007-05-29)
 * Full support for relations

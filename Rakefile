@@ -33,21 +33,19 @@ spec = Gem::Specification.new do |spec|
   spec.summary = 'Ruby library for the MusicBrainz XML webservice.'
   spec.name = PKG_NAME
   spec.version = PKG_VERSION
-  spec.requirements << 'Optional: mb-discid >= 1.2 (for calculating disc IDs)'
+  spec.requirements << 'Optional: mb-discid >= 0.1.2 (for calculating disc IDs)'
   spec.autorequire = spec.name
   spec.files = PKG_FILES
   spec.description = <<EOF
     RBrainz is a Ruby client library to access the MusicBrainz XML
-    webservice written in pure Ruby.
+    webservice. RBrainz supports the MusicBrainz XML Metadata Version 1.2,
+    including support for labels and extended release events.
     
     RBrainz follows the design of python-musicbrainz2, the reference
     implementation for a MusicBrainz client library. Developers used to
     python-musicbrainz2 should already know most of RBrainz' interface.
     However, RBrainz differs from python-musicbrainz2 wherever it makes
     the library more Ruby like or easier to use.
-    
-    RBrainz supports the MusicBrainz XML Metadata Version 1.1, including
-    support for labels and extended release events.
 EOF
   spec.author = ['Philipp Wolfer', 'Nigel Graham']
   spec.email = 'phw@rubyforge.org'
