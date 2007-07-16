@@ -22,8 +22,7 @@ module MusicBrainz
     #
     # Use the TYPE_PERSON and TYPE_GROUP constants for comparison.
     #
-    # == See
-    # http://musicbrainz.org/doc/Artist.
+    # See:: http://musicbrainz.org/doc/Artist.
     #
     class Artist < Individual
     

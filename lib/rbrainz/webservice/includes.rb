@@ -11,6 +11,9 @@ module MusicBrainz
   module Webservice
 
     # Base class for all include classes.
+    # 
+    # Includes are used to specify which detail information should be returned
+    # for an entity search. There is one include class for each entity type.
     class AbstractIncludes
     
       def initialize(includes)
@@ -27,6 +30,12 @@ module MusicBrainz
 
     end
     
+    # A specification on how much data to return with an artist.
+    # 
+    # The MusicBrainz server only supports some combinations of release types
+    # for the releases and vaReleases include tags. At the moment, not more
+    # than two release types should be selected, while one of them has to be
+    # Release.TYPE_OFFICIAL, Release.TYPE_PROMOTION or Release.TYPE_BOOTLEG.
     class ArtistIncludes < AbstractIncludes
     
       # Includes is a hash with the following fields:
@@ -46,7 +55,7 @@ module MusicBrainz
       # [:url_rels]     Include url relationships (boolean).
       # [:tags]         Include tags (boolean).
       # 
-      # TODO: Check release types. It's possible that :releases
+      # TODO:: Check release types. It's possible that :releases
       # and :va_releases can't be used in parallel.
       def initialize(includes)
         Utils.check_options includes, 
@@ -72,6 +81,7 @@ module MusicBrainz
       
     end
     
+    # A specification on how much data to return with a release.
     class ReleaseIncludes < AbstractIncludes
     
       # Includes is a hash with the following fields:
@@ -113,6 +123,7 @@ module MusicBrainz
     
     end
     
+    # A specification on how much data to return with a track.
     class TrackIncludes < AbstractIncludes
     
       # Includes is a hash with the following fields:
@@ -143,6 +154,7 @@ module MusicBrainz
     
     end
     
+    # A specification on how much data to return with a label.
     class LabelIncludes < AbstractIncludes
     
       # Includes is a hash with the following fields:

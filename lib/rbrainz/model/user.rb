@@ -8,9 +8,7 @@
 module MusicBrainz
   module Model
 
-    # A User.
-    # 
-    # See http://musicbrainz.org/doc/ArtistAlias.
+    # A MusicBrainz user.
     class User
       # The MusicBrainz user name.
       attr_accessor :name

@@ -12,7 +12,7 @@ module MusicBrainz
 
     # A track in the MusicBrainz DB.
     # 
-    # See http://musicbrainz.org/doc/Track.
+    # See:: http://musicbrainz.org/doc/Track.
     class Track < Entity
     
       attr_accessor :title, :duration, :artist

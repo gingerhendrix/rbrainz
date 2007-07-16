@@ -17,7 +17,7 @@ module MusicBrainz
     # web service. It hides all the details like fetching data from a server,
     # parsing the XML and creating an object tree. Using this class, you can
     # request data by ID or search the _collection_ of all resources
-    # (artists, releases, or tracks) to retrieve those matching given
+    # (artists, labels, releases or tracks) to retrieve those matching given
     # criteria. This document contains examples to get you started.
     # 
     # 
@@ -52,9 +52,9 @@ module MusicBrainz
     # authentication data:
     #   require 'rbrainz'
     #   service = MusicBrainz::Webservice::Webservice.new(
-    #     :host=>'test.musicbrainz.org',
-    #     :username=>'whatever', 
-    #     :password=>'secret'
+    #     :host     => 'test.musicbrainz.org',
+    #     :username => 'whatever', 
+    #     :password => 'secret'
     #   )
     #   q = MusicBrainz::Webservice::Query.new(service)
     # 
@@ -62,8 +62,8 @@ module MusicBrainz
     # == Querying for Individual Resources
     # 
     # If the MusicBrainz ID of a resource is known, then the get_artist_by_id,
-    # get_release_by_id, or get_track_by_id method can be used to retrieve
-    # it.
+    # get_label_by_id, get_release_by_id or get_track_by_id method can be used
+    # to retrieve it.
     # 
     # Example:
     #   require 'rbrainz'
@@ -74,8 +74,8 @@ module MusicBrainz
     #   puts artist.type
     #   
     # _produces_:
-    #   'Tori Amos'
-    #   'Amos, Tori'
+    #   Tori Amos
+    #   Amos, Tori
     #   http://musicbrainz.org/ns/mmd-1.0#Person
     # 
     # This returned just the basic artist data, however. To get more detail
@@ -96,9 +96,9 @@ module MusicBrainz
     #   puts release.tracks[0].title
     # 
     # _produces_:
-    #   'Tales of a Librarian'
-    #   'Tori Amos'
-    #   'Precious Things'
+    #   Tales of a Librarian
+    #   Tori Amos
+    #   Precious Things
     # 
     # Note that the query gets more expensive for the server the more
     # data you request, so please be nice.
@@ -125,19 +125,22 @@ module MusicBrainz
     # 
     # _produces_:
     #   100
-    #   'Under the Pink'
+    #   Under the Pink
     #   
     # 
     # The query returns a list of results in a ScoredCollection, 
     # which orders entities by score, with a higher score
     # indicating a better match. Note that those results don't contain
     # all the data about a resource. If you need more detail, you can then
-    # use the get_artist_by_id, get_release_by_id, or get_track_by_id
-    # methods to request the resource.
+    # use the get_artist_by_id, get_label_by_id, get_release_by_id, or
+    # get_track_by_id methods to request the resource.
     # 
     # All filters support the +limit+ argument to limit the number of
     # results returned. This defaults to 25, but the server won't send
-    # more than 100 results to save bandwidth and processing power.
+    # more than 100 results to save bandwidth and processing power. In case
+    # you want to retrieve results above the 100 results limit you can use the
+    # +offset+ argument in the filters. The +offset+ specifies how many entries
+    # at the beginning of the collection should be skipped.
     # 
     # 
     class Query
@@ -171,46 +174,91 @@ module MusicBrainz
         @factory   = options[:factory] ? options[:factory] : nil
       end
       
+      # Returns an artist.
+      # 
+      # If no artist with that ID can be found, include contains invalid tags
+      # or there's a server problem, and exception is raised.
+      # 
+      # Raises:: +ConnectionError+, +RequestError+, +ResourceNotFoundError+
       def get_artist_by_id(id, includes = nil)
         includes = ArtistIncludes.new(includes) unless includes.nil? || includes.is_a?(ArtistIncludes)
         return get_entity_by_id(Model::Artist.entity_type, id, includes)
       end
       
+      # Returns artists matching given criteria.
+      # 
+      # Raises:: +ConnectionError+, +RequestError+
       def get_artists(filter)
         filter = ArtistFilter.new(filter) unless filter.nil? || filter.is_a?(ArtistFilter)
         return get_entities(Model::Artist.entity_type, filter)
       end
       
+      # Returns an release.
+      # 
+      # If no release with that ID can be found, include contains invalid tags
+      # or there's a server problem, and exception is raised.
+      # 
+      # Raises:: +ConnectionError+, +RequestError+, +ResourceNotFoundError+
       def get_release_by_id(id, includes = nil)
         includes = ReleaseIncludes.new(includes) unless includes.nil? || includes.is_a?(ReleaseIncludes)
         return get_entity_by_id(Model::Release.entity_type, id, includes)
       end
       
+      # Returns releases matching given criteria.
+      # 
+      # Raises:: +ConnectionError+, +RequestError+
       def get_releases(filter)
         filter = ReleaseFilter.new(filter) unless filter.nil? || filter.is_a?(ReleaseFilter)
         return get_entities(Model::Release.entity_type, filter)
       end
       
+      # Returns an track.
+      # 
+      # If no track with that ID can be found, include contains invalid tags
+      # or there's a server problem, and exception is raised.
+      # 
+      # Raises:: +ConnectionError+, +RequestError+, +ResourceNotFoundError+
       def get_track_by_id(id, includes = nil)
         includes = TrackIncludes.new(includes) unless includes.nil? || includes.is_a?(TrackIncludes)
         return get_entity_by_id(Model::Track.entity_type, id, includes)
       end
       
+      # Returns tracks matching given criteria.
+      # 
+      # Raises:: +ConnectionError+, +RequestError+
       def get_tracks(filter)
         filter = TrackFilter.new(filter) unless filter.nil? || filter.is_a?(TrackFilter)
         return get_entities(Model::Track.entity_type, filter)
       end
       
+      # Returns an label.
+      # 
+      # If no label with that ID can be found, include contains invalid tags
+      # or there's a server problem, and exception is raised.
+      # 
+      # Raises:: +ConnectionError+, +RequestError+, +ResourceNotFoundError+
       def get_label_by_id(id, includes = nil)
         includes = LabelIncludes.new(includes) unless includes.nil? || includes.is_a?(LabelIncludes)
         return get_entity_by_id(Model::Label.entity_type, id, includes)
       end
       
+      # Returns labels matching given criteria.
+      # 
+      # Raises:: +ConnectionError+, +RequestError+
       def get_labels(filter)
         filter = LabelFilter.new(filter) unless filter.nil? || filter.is_a?(LabelFilter)
         return get_entities(Model::Label.entity_type, filter)
       end
       
+      # Returns information about a MusicBrainz user.
+      # 
+      # You can only request user data if you know the user name and password
+      # for that account. If username and/or password are incorrect, an
+      # AuthenticationError is raised.
+      # 
+      # See the example in Query on how to supply user name and password.
+      # 
+      # Raises:: +ConnectionError+, +RequestError+, +AuthenticationError+
       def get_user_by_name(name)
         xml = @webservice.get(:user, :filter => UserFilter.new(name))
         collection = MBXML.new(xml).get_entity_list(:user, Model::NS_EXT_1)
@@ -220,13 +268,13 @@ module MusicBrainz
       #
       # Submit track to PUID mappings.
       #
-      # The C{tracks2puids} parameter has to be a dictionary, with the
+      # The +tracks2puids+ parameter has to be a dictionary, with the
       # keys being MusicBrainz track IDs (either as absolute URIs or
       # in their 36 character ASCII representation) and the values
       # being PUIDs (ASCII, 36 characters).
       #
       # Note that this method only works if a valid user name and
-      # password have been set. See the example in L{Query} on how
+      # password have been set. See the example in Query on how
       # to supply authentication data.
       #
       # Raises:: +ConnectionError+, +RequestError+, +AuthenticationError+

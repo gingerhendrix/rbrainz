@@ -30,20 +30,22 @@ module MusicBrainz
     # It consists of an URI prefix, the entity type it refers to and an UUID 
     # that identifies the referenced entity. 
     # 
-    # See http://musicbrainz.org/doc/MusicBrainzIdentifier.
+    # Example:
+    #  http://musicbrainz.org/artist/6a2ca1ac-408d-49b0-a7f6-cd608f2f684f
     # 
-    # Example: http://musicbrainz.org/artist/6a2ca1ac-408d-49b0-a7f6-cd608f2f684f.
+    # See:: http://musicbrainz.org/doc/MusicBrainzIdentifier
     class MBID
     
-      attr_reader :entity, :uuid
+      # The entity type (:artist, :label, :release, :track) this MBID references.
+      attr_reader :entity
       
-      module PATTERN
-        # :stopdoc:
-        
+      # The UUID of the referenced entity.
+      attr_reader :uuid
+      
+      module PATTERN #:nodoc:
         UUID = '([a-fA-F0-9]{8}(:?-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12})'
         ENTITY_TYPE = '(artist|release|track|label)'
         ENTITY_URI = "http://musicbrainz\\.org/#{ENTITY_TYPE}/#{UUID}"
-        # :startdoc:
       end
       
       UUID_REGEXP = Regexp.new('^' + PATTERN::UUID + '$')
@@ -52,16 +54,34 @@ module MusicBrainz
       
       ENTITY_URI = 'http://musicbrainz.org/%s/%s'
       
-      class << self
-        def parse(str, entity_type=nil)
-          if str.respond_to? :to_mbid
-            str.to_mbid(entity_type)
-          else
-            MBID.new(str, entity_type)
-          end
+      # Tries to convert +str+ into a MBID using its <tt>to_mbid</tt> method.
+      # 
+      # If +str+ does not respond to <tt>to_mbid</tt> a new MBID is created
+      # using the given parameters.
+      # 
+      # See:: new
+      def self.parse(str, entity_type=nil)
+        if str.respond_to? :to_mbid
+          str.to_mbid(entity_type)
+        else
+          MBID.new(str, entity_type)
         end
       end
-
+      
+      # Create a new MBID.
+      # 
+      # +str+ can be either a complete identifier or just the UUID part of it.
+      # In the latter case the entity type (:artist, :label, :release or :track)
+      # has to be specified as well.
+      # 
+      # Examples:
+      #  require 'rbrainz'
+      #  include MusicBrainz
+      #  id = Model::MBID.new('http://musicbrainz.org/artist/10bf95b6-30e3-44f1-817f-45762cdc0de0')
+      #  id = Model::MBID.new('10bf95b6-30e3-44f1-817f-45762cdc0de0', :artist)
+      #  
+      # Raises:: +UnknownEntityError+, +EntityTypeNotMatchingError+,
+      #          +InvalidMBIDError+
       def initialize(str, entity_type=nil)
         str = str.to_s if str.respond_to? :to_s
         if entity_type && !(entity_type.to_s =~ ENTITY_TYPE_REGEXP )
@@ -86,6 +106,12 @@ module MusicBrainz
         end
       end
       
+      # Returns self.
+      # 
+      # If +entity_type+ is given it must match the entity type of the MBID
+      # or an +EntityTypeNotMatchingError+ will be raised.
+      # 
+      # Raises:: +EntityTypeNotMatchingError+
       def to_mbid(entity_type=nil)
         unless entity_type.nil? || @entity == entity_type
           raise EntityTypeNotMatchingError, "#{self.entity}, #{entity_type}"

@@ -5,8 +5,8 @@
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
  
-module MusicBrainz # :nodoc:
-  module Model # :nodoc:
+module MusicBrainz
+  module Model
 
     ##
     # Represents a relation between two Entities.
@@ -19,8 +19,7 @@ module MusicBrainz # :nodoc:
     # Note that a Relation object only contains the target but not
     # the source end of the relation.
     #
-    # == TODO
-    # Add some examples.
+    # TODO:: Add some examples.
     #
     class Relation
     

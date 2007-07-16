@@ -15,8 +15,8 @@ module MusicBrainz
     # A ScoredCollection is returned as the result of an entity search (e.g. search
     # for an Artist). It contains an ordered list of Entry objects which wrap
     # the entities and a corresponding search score, which indicates how good
-    # the entity matches the search criteria used for search. The entities in a
-    # scored collection are sorted by score (in descending order).
+    # the entity matches the search criteria used for the search. The entities
+    # in a scored collection are sorted by score (in descending order).
     # 
     # A collection object may only store an extract of the complete data
     # available on the server. This is especially the case if the limit or

@@ -12,15 +12,21 @@ require 'net/http'
 module MusicBrainz
   module Webservice
 
+    # An interface all concrete web service classes have to implement.
+    # 
+    # All web service classes have to implement this and follow the method
+    # specifications.
     class IWebservice
       
-      # Query the Webservice with HTTP GET.
+      # Query the web service.
+      # 
       # Must be implemented by the concrete webservices.
       def get(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
         raise NotImplementedError.new('Called abstract method.')
       end
       
-      # Query the Webservice with HTTP POST.
+      # Submit data to the web service.
+      # 
       # Must be implemented by the concrete webservices.
       def post( entity_type, options={:id=>nil, :querystring=>[], :version=>1} )
         raise NotImplementedError.new('Called abstract method.')
@@ -28,7 +34,12 @@ module MusicBrainz
       
     end
     
-    # Webservice class to query the default MusicBrainz server.
+    # An interface to the MusicBrainz XML web service via HTTP.
+    # 
+    # By default, this class uses the MusicBrainz server but may be configured
+    # for accessing other servers as well using the constructor. This implements
+    # IWebService, so additional documentation on method parameters can be found
+    # there.
     class Webservice < IWebservice
     
       # Timeouts for opening and reading connections (in seconds)
@@ -61,7 +72,7 @@ module MusicBrainz
     
       # Query the Webservice with HTTP GET.
       # 
-      # Raises: +RequestError+, +ResourceNotFoundError+, +AuthenticationError+,
+      # Raises:: +RequestError+, +ResourceNotFoundError+, +AuthenticationError+,
       # +ConnectionError+ 
       def get(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
         Utils.check_options options, :id, :include, :filter, :version
@@ -111,11 +122,10 @@ module MusicBrainz
       # Note that this may require authentication. You can set
       # user name, password and realm in the constructor.
       #
-      # Raises: +ConnectionError+, +RequestError+, +AuthenticationError+, 
-      # +ResourceNotFoundError+
+      # Raises:: +ConnectionError+, +RequestError+, +AuthenticationError+, 
+      #          +ResourceNotFoundError+
       #
-      # == See
-      # +IWebService.post+
+      # See:: <tt>IWebService.post</tt>
       #
       def post( entity_type, options={:id=>nil, :querystring=>[], :version=>1} )
         Utils.check_options options, :id, :querystring, :version

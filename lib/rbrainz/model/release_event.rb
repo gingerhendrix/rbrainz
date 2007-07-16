@@ -12,14 +12,13 @@ module MusicBrainz
 
     #
     # A release event in the MusicBrainz DB indicating where and when a release
-    #  took place.
+    # took place.
     # 
     # All country codes used must be valid ISO-3166 country codes (i.e. 'DE',
     # 'UK' or 'FR'). The dates are strings and must have the format 'YYYY',
     # 'YYYY-MM' or 'YYYY-MM-DD'.
     #
-    # == See
-    # http://musicbrainz.org/doc/ReleaseEvent.
+    # See:: http://musicbrainz.org/doc/ReleaseEvent.
     #
     class ReleaseEvent
     

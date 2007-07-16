@@ -11,6 +11,10 @@ module MusicBrainz
   module Webservice
 
     # Base class for all filter classes.
+    # 
+    # Filter classes are initialized with a set of criteria and are then
+    # applied to collections of items. The criteria are usually strings
+    # or integer values, depending on the filter.
     class AbstractFilter
       
       # The parameter +filter+ is a hash with filter options.
@@ -43,10 +47,11 @@ module MusicBrainz
       
     end
     
+    # A filter for the artist collection.
     class ArtistFilter < AbstractFilter
     
       # The parameter +filter+ is a hash with filter options. At least the
-      # <tt>:name<//tt> filter must be specified.
+      # <tt>:name</tt> filter must be specified.
       # 
       # Available filter options:
       # [:name]   Fetch a list of artists with a matching name.
@@ -66,6 +71,7 @@ module MusicBrainz
     
     end
     
+    # A filter for the release collection.
     class ReleaseFilter < AbstractFilter
     
       # The parameter +filter+ is a hash with filter options. At least one
@@ -113,10 +119,11 @@ module MusicBrainz
     
     end
     
+    # A filter for the track collection.
     class TrackFilter < AbstractFilter
     
       # The parameter +filter+ is a hash with filter options. At least the
-      # <tt>:title<//tt> filter must be specified.
+      # <tt>:title</tt> filter must be specified.
       # 
       # Available filter options:
       # [:title]     Fetch a list of tracks with a matching title.
@@ -160,10 +167,11 @@ module MusicBrainz
     
     end
     
+    # A filter for the label collection.
     class LabelFilter < AbstractFilter
     
       # The parameter +filter+ is a hash with filter options. At least the
-      # <tt>:name<//tt> filter must be specified.
+      # <tt>:name</tt> filter must be specified.
       # 
       # Available filter options:
       # [:name]   Fetch a list of labels with a matching name.

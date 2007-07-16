@@ -6,6 +6,7 @@
 #             See LICENSE[file:../LICENSE.html] for permissions.
 # Notes::     Based on http://textsnippets.com/posts/show/1075 and
 #             http://segment7.net/projects/ruby/snippets/digest_auth.rb
+
 require 'digest/md5'
 require 'net/http'
 

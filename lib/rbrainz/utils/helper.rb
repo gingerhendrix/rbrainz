@@ -6,7 +6,7 @@
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
 module MusicBrainz
-  module Utils
+  module Utils #:nodoc:
   
     # Check an options hash for required options.
     # Raises an ArgumentError if unknown options are present in the hash.

@@ -20,11 +20,9 @@ module MusicBrainz
     # singles, compilations, live recordings, official releases, bootlegs
     # etc.
     #
-    # == See
-    # http://musicbrainz.org/doc/Release.
-    # == Note
-    # The current MusicBrainz server implementation supports only a
-    # limited set of types.
+    # See:: http://musicbrainz.org/doc/Release.
+    # Note:: The current MusicBrainz server implementation supports only a
+    #        limited set of types.
     #
     class Release < Entity
     

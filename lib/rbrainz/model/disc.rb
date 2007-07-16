@@ -10,7 +10,7 @@ module MusicBrainz
 
     # Represents an audio CD.
     # 
-    # A disc has a disc id, which is calculated from the
+    # A disc has a disc ID, which is calculated from the
     # CD's table of contents (TOC). It also can include
     # the numbers of sectors on the CD.
     # 
@@ -39,7 +39,7 @@ module MusicBrainz
       # Number of sectors on the disc
       attr_accessor :sectors
       
-      # The MusicBrainz DiscID.A string containing a 28-character DiscID
+      # The MusicBrainz DiscID. A string containing a 28-character DiscID.
       attr_reader :id
       
       def initialize(id=nil)

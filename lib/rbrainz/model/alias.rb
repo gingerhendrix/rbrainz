@@ -19,8 +19,7 @@ module MusicBrainz
     # indicates which script is used for the alias value. To represent the
     # script, ISO-15924 script codes like 'Latn', 'Cyrl', or 'Hebr' are used.
     #
-    # == See
-    # http://musicbrainz.org/doc/ArtistAlias.
+    # See:: http://musicbrainz.org/doc/ArtistAlias.
     class Alias
       # The alias name.
       attr_accessor :name

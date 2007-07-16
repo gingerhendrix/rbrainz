@@ -5,20 +5,18 @@
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
-module MusicBrainz
-=begin rdoc
-    The MusicBrainz domain model.
+module MusicBrainz # :nodoc:
 
-    These classes are part of the MusicBrainz domain model. They may be used
-    by other modules and don't contain any network or other I/O code. If you
-    want to request data from the web service, please have a look at
-    Webservice::Query.
-
-    The most important classes, usually acting as entry points, are
-    Artist, Release, Track and Label.
-
-    See:: Webservice
-=end
+  # The MusicBrainz domain model.
+  # These classes are part of the MusicBrainz domain model. They may be used
+  # by other modules and don't contain any network or other I/O code. If you
+  # want to request data from the web service, please have a look at
+  # Webservice::Query.
+  # 
+  # The most important classes, usually acting as entry points, are
+  # Artist, Release, Track and Label.
+  # 
+  # See:: Webservice
   module Model
 
     # Namespace for all MusicBrainz metadata.

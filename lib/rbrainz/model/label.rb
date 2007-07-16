@@ -12,7 +12,7 @@ module MusicBrainz
 
     # A label in the MusicBrainz DB.
     # 
-    # See http://musicbrainz.org/doc/Label.
+    # See:: http://musicbrainz.org/doc/Label.
     class Label < Individual
     
       TYPE_UNKNOWN             = NS_MMD_1 + 'Unknown'

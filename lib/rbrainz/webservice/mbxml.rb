@@ -47,6 +47,7 @@ module MusicBrainz
       # Read the XML string and create an entity model
       # for the given entity type if it is present in 
       # the document.
+      # 
       # Returns nil if no entity of the given type is present.
       def get_entity(entity_type)
         # Search for the first occuring node of type entity which is a child node
@@ -66,6 +67,7 @@ module MusicBrainz
       # models for the given entity type. There must be
       # an entity-list element as a child of the metadata
       # element in the document.
+      # 
       # Returns nil if no entity list of the given type is present.
       # Returns an empty Collection if the list is empty.
       def get_entity_list(entity_type, ns=Model::NS_MMD_1)

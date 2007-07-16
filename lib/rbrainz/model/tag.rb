@@ -9,8 +9,12 @@ module MusicBrainz
   module Model
 
     #
-    # Represents an tag assigned to an entity.
-    #
+    # Represents a tag assigned to an entity.
+    # 
+    # Tags are arbitrary labels assigned to entities by the users of MusicBrainz.
+    # 
+    # Note:: Tagging is not supported by the current MusicBrainz server but will
+    #        be added in the near future.
     class Tag
       # The tag text.
       attr_accessor :text
