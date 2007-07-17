@@ -31,10 +31,6 @@ module MusicBrainz # :nodoc:
   end 
 end
 
-require 'rbrainz/data/countrynames'
-require 'rbrainz/data/languagenames'
-require 'rbrainz/data/scriptnames'
-
 require 'rbrainz/model/artist'
 require 'rbrainz/model/label'
 require 'rbrainz/model/release'

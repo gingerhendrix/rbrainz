@@ -41,7 +41,7 @@ module MusicBrainz
       # The end date is interpreted differently for bands, individual artists
       # and labels. For bands and labels this is the breakup date, for
       # individual artists it is the date of death.
-      # The begin date is an instance of IncompleteDate.
+      # The end date is an instance of IncompleteDate.
       attr_reader :end_date
       
       # A Collection of releases of this artist or label.

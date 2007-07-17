@@ -8,6 +8,7 @@
 module MusicBrainz
   module Data
 
+    # See Utils#get_script_name
     SCRIPT_NAMES = {
     	'Yiii' => 'Yi',
     	'Tel' => 'Telug',

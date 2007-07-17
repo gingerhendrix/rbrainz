@@ -32,8 +32,9 @@ module MusicBrainz
     #  disc = MusicBrainz::Model::Disc.new
     #  disc.id = discid
     # 
-    # See http://wiki.musicbrainz.org/DiscID for more information about
-    # MusicBrainz disc IDs.
+    # See:: http://wiki.musicbrainz.org/DiscID for more information about
+    #       MusicBrainz disc IDs.
+    # See:: http://rbrainz.rubyforge.org/mbdiscid/api/
     class Disc
     
       # Number of sectors on the disc

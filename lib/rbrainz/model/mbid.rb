@@ -48,10 +48,14 @@ module MusicBrainz
         ENTITY_URI = "http://musicbrainz\\.org/#{ENTITY_TYPE}/#{UUID}"
       end
       
+      # A regular expression describing the format of a UUID.
       UUID_REGEXP = Regexp.new('^' + PATTERN::UUID + '$')
+      # A regular expression to test if a string is a valid entity type.
       ENTITY_TYPE_REGEXP = Regexp.new('^' + PATTERN::ENTITY_TYPE + '$')
+      # A regular expression describing a MusicBrainz identifier URI.
       ENTITY_URI_REGEXP = Regexp.new('^' + PATTERN::ENTITY_URI + '$')
       
+      # The general format of a MusicBrainz identifier URI.
       ENTITY_URI = 'http://musicbrainz.org/%s/%s'
       
       # Tries to convert +str+ into a MBID using its <tt>to_mbid</tt> method.

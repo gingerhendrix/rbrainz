@@ -6,11 +6,11 @@
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
 module MusicBrainz
-  module Utils #:nodoc:
+  module Utils
   
     # Check an options hash for required options.
     # Raises an ArgumentError if unknown options are present in the hash.
-    def self.check_options(options, *optdecl)   #:nodoc:
+    def self.check_options(options, *optdecl)   # :nodoc:
       h = options.dup
       optdecl.each do |name|
         h.delete name

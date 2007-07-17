@@ -8,7 +8,8 @@
 module MusicBrainz
   module Data
 
-	LANGUAGE_NAMES = {
+	# See Utils#get_language_name
+    LANGUAGE_NAMES = {
 		'ART' => 'Artificial (Other)',
 		'ROH' => 'Raeto-Romance',
 		'SCO' => 'Scots',

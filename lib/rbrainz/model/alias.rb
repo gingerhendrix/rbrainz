@@ -25,10 +25,10 @@ module MusicBrainz
       # The alias name.
       attr_accessor :name
 
-      # The alias type. An absolute URI or nil.
+      # The alias type. An absolute URI or +nil+.
       attr_accessor :type
 
-      # The alias script. See SCRIPT_NAMES in Model::Data.
+      # The alias script. See Utils#get_script_name.
       attr_accessor :script
       
       def initialize(name=nil, type=nil, script=nil)

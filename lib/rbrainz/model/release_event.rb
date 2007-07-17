@@ -26,7 +26,7 @@ module MusicBrainz
       # A string containing a ISO 3166 country code like
       # 'GB', 'US' or 'DE'.
       # 
-      # See:: COUNTRY_NAMES in Model::Data
+      # See:: Utils#get_country_name
       # See:: http://musicbrainz.org/doc/ReleaseCountry
       attr_accessor :country
       
