@@ -20,9 +20,9 @@ class TestAlias < Test::Unit::TestCase
   
   def test_new_alias
     assert_nothing_raised {Model::Alias.new}
-    alias_ = Model::Alias.new('Dark Tranquility', 'Misspelling', 'Latn')
+    alias_ = Model::Alias.new('Dark Tranquility', Model::NS_MMD_1 + 'Misspelling', 'Latn')
     assert_equal 'Dark Tranquility', alias_.name
-    assert_equal 'Misspelling', alias_.type
+    assert_equal Model::NS_MMD_1 + 'Misspelling', alias_.type
     alias_.script = 'Latn'
   end
   
@@ -34,8 +34,8 @@ class TestAlias < Test::Unit::TestCase
   
   def test_type
     alias_ = Model::Alias.new
-    alias_.type = 'Misspelling'
-    assert_equal 'Misspelling', alias_.type
+    alias_.type = Model::NS_MMD_1 + 'Misspelling'
+    assert_equal Model::NS_MMD_1 + 'Misspelling', alias_.type
   end
   
   def test_script
@@ -48,7 +48,7 @@ class TestAlias < Test::Unit::TestCase
     alias_ = Model::Alias.new
     assert_equal '', alias_.to_s
     alias_.name = 'Dark Tranquility'
-    alias_.type = 'Misspelling'
+    alias_.type = Model::NS_MMD_1 + 'Misspelling'
     alias_.script = 'Latn'
     assert_equal 'Dark Tranquility', alias_.to_s
   end

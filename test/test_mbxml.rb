@@ -173,7 +173,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'Myra Amos', artist.aliases[1].name
     assert_equal 'Torie Amos', artist.aliases[2].name
     assert_equal 'Latn', artist.aliases[2].script
-    assert_equal 'Misspelling', artist.aliases[2].type
+    assert_equal Model::NS_MMD_1 + 'Misspelling', artist.aliases[2].type
   end
 
   def test_artist_tori_amos_5

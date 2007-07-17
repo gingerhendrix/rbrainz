@@ -337,7 +337,9 @@ module MusicBrainz
       def create_alias(node)
         alias_model = @factory.new_alias
         alias_model.name = node.text
-        alias_model.type = node.attributes['type']
+        if node.attributes['type']
+          alias_model.type = MBXML.add_namespace(node.attributes['type'], Model::NS_MMD_1)
+        end
         alias_model.script = node.attributes['script']
         return alias_model
       end

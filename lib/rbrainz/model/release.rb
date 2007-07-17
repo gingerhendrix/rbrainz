@@ -63,6 +63,8 @@ module MusicBrainz
       #
       # Note that this refers to release and track <i>titles</i>, not
       # lyrics.
+      # 
+      # See:: LANGUAGE_NAMES in Model::Data.
       attr_accessor :text_language
 
       # The script used in release and track titles.
@@ -72,6 +74,8 @@ module MusicBrainz
       #
       # Note that this refers to release and track <i>titles</i>, not
       # lyrics.
+      # 
+      # See:: SCRIPT_NAMES in Model::Data.
       attr_accessor :text_script
                     
       # The list of tracks.

@@ -33,7 +33,19 @@ module MusicBrainz
       TYPE_BOOTLEG_PRODUCTION  = NS_MMD_1 + 'BootlegProduction'
       TYPE_REISSUE_PRODUCTION  = NS_MMD_1 + 'ReissueProduction'
       
-      attr_accessor :code, :country
+      # The code of the label.
+      # 
+      # See:: http://musicbrainz.org/doc/LabelCode
+      attr_accessor :code
+      
+      # The country in which the company was founded.
+      # 
+      # A string containing a ISO 3166 country code like
+      # 'GB', 'US' or 'DE'.
+      # 
+      # See:: COUNTRY_NAMES in Model::Data
+      # See:: http://musicbrainz.org/doc/LabelCountry
+      attr_accessor :country
       
     end
     
