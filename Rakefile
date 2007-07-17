@@ -107,10 +107,10 @@ def egrep(pattern)
     count = 0
     open(fn) do |f|
       while line = f.gets
-	count += 1
-	if line =~ pattern
-	  puts "#{fn}:#{count}:#{line}"
-	end
+    	count += 1
+    	if line =~ pattern
+    	  puts "#{fn}:#{count}:#{line}"
+    	end
       end
     end
   end

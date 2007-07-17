@@ -41,6 +41,7 @@ class TestMBID < Test::Unit::TestCase
       'http://musicbrainz.org/artist/9d30e408-1559-448b-b491-2f8de1583ccf',
       :label )
     }
+    assert_equal Model::VARIOUS_ARTISTS_ID, Model::MBID.parse('http://musicbrainz.org/artist/89ad4ac3-39f7-470e-963a-56509c546377')
   end
   
   def test_from_uri

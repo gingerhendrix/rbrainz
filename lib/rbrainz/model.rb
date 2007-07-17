@@ -27,15 +27,19 @@ module MusicBrainz # :nodoc:
     
     # Namespace for MusicBrainz extensions.
     NS_EXT_1 = 'http://musicbrainz.org/ns/ext-1.0#'
+   
+    require 'rbrainz/model/artist'
+    require 'rbrainz/model/label'
+    require 'rbrainz/model/release'
+    require 'rbrainz/model/track'
+    require 'rbrainz/model/user'
+    require 'rbrainz/model/default_factory'
+    require 'rbrainz/utils'
+    require 'rbrainz/core_ext'
     
+    # The ID of the special 'Various Artists' artist. This is an instance of MBID.
+    # See:: http://musicbrainz.org/doc/VariousArtists
+    VARIOUS_ARTISTS_ID = MBID.new('89ad4ac3-39f7-470e-963a-56509c546377', Artist.entity_type)
+  
   end 
 end
-
-require 'rbrainz/model/artist'
-require 'rbrainz/model/label'
-require 'rbrainz/model/release'
-require 'rbrainz/model/track'
-require 'rbrainz/model/user'
-require 'rbrainz/model/default_factory'
-require 'rbrainz/utils'
-require 'rbrainz/core_ext'
