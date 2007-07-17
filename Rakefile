@@ -96,7 +96,8 @@ Rake::RDocTask.new do |rdoc|
   rdoc.main     = 'doc/README.rdoc'
   rdoc.rdoc_dir = 'doc/api'
   rdoc.rdoc_files.include('lib/**/*.rb', PKG_EXTRA_RDOC_FILES)
-  rdoc.options << '--inline-source' << '--line-numbers' #<< '--diagram'
+  rdoc.options << '--inline-source' << '--line-numbers' \
+               << '--charset=UTF-8' #<< '--diagram'
 end
 
 # Other tasks: -----------------------------------------------------------

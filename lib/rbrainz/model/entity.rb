@@ -36,7 +36,12 @@ module MusicBrainz
     # See:: Relation
     #
     class Entity
-    
+      
+      # The entity type of this entity. Must be set by child classes correctly.
+      # 
+      # Use #entity_type to query the type.
+      ENTITY_TYPE = nil # :nodoc:
+      
       # The MusicBrainz ID. A MBID containing an absolute URI.
       attr_reader :id
       
@@ -79,7 +84,7 @@ module MusicBrainz
       # Depending on the class this is <tt>:artist</tt>, <tt>:release</tt>,
       # <tt>:track</tt> or <tt>:label</tt>.
       def self.entity_type
-        self.name.sub('MusicBrainz::Model::', '').downcase.to_sym
+        self::ENTITY_TYPE
       end
       
       # Returns the entity type of the instance.

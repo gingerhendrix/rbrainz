@@ -15,9 +15,23 @@ module MusicBrainz
     # See:: http://musicbrainz.org/doc/Track.
     class Track < Entity
     
-      attr_accessor :title, :duration, :artist
-                    
-      attr_reader :puids, :releases
+      # See Entity::ENTITY_TYPE.
+      ENTITY_TYPE = :track # :nodoc:
+      
+      # The track's title.
+      attr_accessor :title
+      
+      # The duration in milliseconds.
+      attr_accessor :duration
+      
+      # The track's main artist.
+      attr_accessor :artist
+      
+      # The list of associated PUIDs.           
+      attr_reader :puids
+      
+      # The releases on which this track appears.
+      attr_reader :releases
       
       def initialize(id=nil, title=nil)
         super id
@@ -26,7 +40,7 @@ module MusicBrainz
         @releases = Collection.new
       end
       
-      # Returns the string representation for this individual.
+      # Returns the string representation for this track.
       # 
       # Returns #title converted into a string.
       def to_s

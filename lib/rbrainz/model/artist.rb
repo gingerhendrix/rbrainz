@@ -26,8 +26,16 @@ module MusicBrainz
     # See:: http://musicbrainz.org/doc/Artist.
     class Artist < Individual
     
-      TYPE_PERSON = NS_MMD_1 + 'Person'
-      TYPE_GROUP  = NS_MMD_1 + 'Group'
+      # Used if the type of the artist is unknown.
+      TYPE_UNKNOWN = NS_MMD_1 + 'Unknown'
+      # This indicates an individual person.
+      TYPE_PERSON  = NS_MMD_1 + 'Person'
+      # This indicates a group of people that may or may
+      # not have a distinctive name.
+      TYPE_GROUP   = NS_MMD_1 + 'Group'
+    
+      # See Entity::ENTITY_TYPE.
+      ENTITY_TYPE = :artist # :nodoc:
       
     end
 

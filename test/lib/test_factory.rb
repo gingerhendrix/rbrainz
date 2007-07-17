@@ -6,27 +6,15 @@
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
 class MyArtist < Model::Artist
-  def self.entity_type
-    :artist
-  end
 end
 
 class MyLabel < Model::Label
-  def self.entity_type
-    :label
-  end
 end
 
 class MyRelease < Model::Release
-  def self.entity_type
-    :release
-  end
 end
 
 class MyTrack < Model::Track
-  def self.entity_type
-    :track
-  end
 end
 
 class MyAlias < Model::Alias

@@ -26,12 +26,25 @@ module MusicBrainz
     # See:: http://musicbrainz.org/doc/Label.
     class Label < Individual
     
+      # Used if the type of the label is unknown.
       TYPE_UNKNOWN             = NS_MMD_1 + 'Unknown'
+      # Companies mainly distributing other labels production,
+      # usually in a specific region of the world.
       TYPE_DISTRIBUTOR         = NS_MMD_1 + 'Distributor'
+      # Holdings, conglomerates or other financial entities whose main
+      # activity is not to produce records, but to manage a large set of
+      # recording labels owned by them.
       TYPE_HOLDING             = NS_MMD_1 + 'Holding'
+      # Recording labels producing entirely new releases.
       TYPE_ORIGINAL_PRODUCTION = NS_MMD_1 + 'OriginalProduction'
+      # Bootlegs companies (as in "not sanctioned by the rights owner(s)
+      # of the released work")
       TYPE_BOOTLEG_PRODUCTION  = NS_MMD_1 + 'BootlegProduction'
+      # Labels specializing in catalog reissues.
       TYPE_REISSUE_PRODUCTION  = NS_MMD_1 + 'ReissueProduction'
+      
+      # See Entity::ENTITY_TYPE.
+      ENTITY_TYPE = :label # :nodoc:
       
       # The code of the label.
       # 
@@ -39,7 +52,6 @@ module MusicBrainz
       attr_accessor :code
       
       # The country in which the company was founded.
-      # 
       # A string containing a ISO 3166 country code like
       # 'GB', 'US' or 'DE'.
       # 

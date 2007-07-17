@@ -109,7 +109,7 @@ module MusicBrainz
     # For each resource type (artist, release, and track), there is one
     # collection which contains all resources of a type. You can search
     # these collections using the get_artists, get_releases, and
-    # +get_tracks+ methods. The collections are huge, so you have to
+    # get_tracks methods. The collections are huge, so you have to
     # use filters (ArtistFilter, ReleaseFilter, TrackFilter or LabelFilter)
     # to retrieve only resources matching given criteria.
     # As with includes it is also possible to use a Hash as the filter where
@@ -142,7 +142,6 @@ module MusicBrainz
     # +offset+ argument in the filters. The +offset+ specifies how many entries
     # at the beginning of the collection should be skipped.
     # 
-    # 
     class Query
     
       # Create a new Query object.
@@ -164,7 +163,7 @@ module MusicBrainz
       # number which may not include a '-' character.
       #
       # Available options:
-      # [:client_id] a unicode string containing the application's ID
+      # [:client_id] a unicode string containing the application's ID.
       # [:factory]   A model factory. An instance of Model::DefaultFactory
       #              will be used if none is given.
       def initialize(webservice = nil, options={})
@@ -265,7 +264,6 @@ module MusicBrainz
         return collection ? collection[0].entity : nil
       end
       
-      #
       # Submit track to PUID mappings.
       #
       # The +tracks2puids+ parameter has to be a dictionary, with the

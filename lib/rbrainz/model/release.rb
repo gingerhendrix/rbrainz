@@ -43,6 +43,9 @@ module MusicBrainz
       TYPE_SOUNDTRACK     = NS_MMD_1 + 'Soundtrack' 
       TYPE_SPOKENWORD     = NS_MMD_1 + 'Spokenword' 
       
+      # See Entity::ENTITY_TYPE.
+      ENTITY_TYPE = :release # :nodoc:
+      
       # The title of this release.
       attr_accessor :title
 
@@ -123,7 +126,7 @@ module MusicBrainz
           tracks.all {|track| !track.artist || track.artist.id == artist.id }
       end
     
-      # Returns the string representation for this individual.
+      # Returns the string representation for this release.
       # 
       # Returns #title converted into a string.
       def to_s

@@ -36,6 +36,7 @@ module MusicBrainz
       TO_RELEASE = NS_REL_1 + 'Release'
       # Identifies relations linking to a track.
       TO_TRACK   = NS_REL_1 + 'Track'
+      # Identifies relations linking to a label.
       TO_LABEL   = NS_REL_1 + 'Label'
       # Identifies relations linking to an URL.
       TO_URL     = NS_REL_1 + 'Url'
@@ -99,10 +100,11 @@ module MusicBrainz
       # The type of target this relation points to.
       #
       # For MusicBrainz data, the following target types are defined:
-      # - artists: TO_ARTIST
-      # - releases: TO_RELEASE
-      # - tracks: TO_TRACK
-      # - urls: TO_URL
+      # - artists: #TO_ARTIST
+      # - labels: #TO_LABEL
+      # - releases: #TO_RELEASE
+      # - tracks: #TO_TRACK
+      # - urls: #TO_URL
       def target_type
         if @target.is_a? Model::Entity
           case @target.entity_type
