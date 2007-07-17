@@ -67,6 +67,7 @@ class TestArtist < Test::Unit::TestCase
     artist.name = 'Paradise Lost'
     artist.disambiguation = 'British metal / hard rock band'
     assert_equal 'Paradise Lost (British metal / hard rock band)', artist.unique_name
+    assert_equal 'Paradise Lost (British metal / hard rock band)', artist.to_s
   end
   
   def test_type

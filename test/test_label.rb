@@ -67,6 +67,7 @@ class TestLabel < Test::Unit::TestCase
     label.name = 'EMI'
     label.disambiguation = 'Taiwan'
     assert_equal 'EMI (Taiwan)', label.unique_name
+    assert_equal 'EMI (Taiwan)', label.to_s
   end
   
   def test_code

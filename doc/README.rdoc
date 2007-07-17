@@ -53,11 +53,23 @@ should make the usage clear:
    :url_rels     => true
  )
  
- # Query the webservice for the artist with the above ID
- # The result will contain all the information specified
- # in artist_includes.
+ # Query the webservice for the artist with the above ID. The result
+ # will contain all the information specified in artist_includes.
  q = Webservice::Query.new
  artist = q.get_artist_by_id(mbid, artist_includes)
+ 
+ # Display the fetched artist data together with all unique release titles.
+ print <<EOF
+ ID            : #{artist.id.uuid}
+ Name          : #{artist.name}
+ Sort name     : #{artist.sort_name}
+ Disambiguation: #{artist.disambiguation}
+ Type          : #{artist.type}
+ Begin date    : #{artist.begin_date}
+ End date      : #{artist.end_date}
+ Aliases       : #{artist.aliases.to_a.join('; ')}
+ Releases      : #{artist.releases.map{|r| r.title}.uniq.join("\r\n                ")}
+ EOF
 
 == The MusicBrainz webservice
 For more information about the MusicBrainz webservice visit the

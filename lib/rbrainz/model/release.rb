@@ -118,6 +118,14 @@ module MusicBrainz
           raise 'Release Artist may not be None!' unless artist
           tracks.all {|track| !track.artist || track.artist.id == artist.id }
       end
+    
+      # Returns the string representation for this individual.
+      # 
+      # Returns #title converted into a string.
+      def to_s
+        title.to_s
+      end
+      
     end
     
   end    

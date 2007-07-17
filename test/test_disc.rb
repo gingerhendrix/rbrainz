@@ -30,6 +30,7 @@ class TestDisc < Test::Unit::TestCase
     assert disc.id.nil?
     assert_nothing_raised {disc.id = 'Tit3F0Do_sZ_7NbfM_1vlEbF0wo-'}
     assert_equal 'Tit3F0Do_sZ_7NbfM_1vlEbF0wo-', disc.id
+    assert_equal 'Tit3F0Do_sZ_7NbfM_1vlEbF0wo-', disc.to_s
   end
 
   def test_sectors

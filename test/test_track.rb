@@ -45,6 +45,7 @@ class TestTrack < Test::Unit::TestCase
     assert track.title.nil?
     assert_nothing_raised {track.title = 'Indifferent Suns'}
     assert_equal 'Indifferent Suns', track.title
+    assert_equal 'Indifferent Suns', track.to_s
   end
   
   # Duration is given in milliseconds.

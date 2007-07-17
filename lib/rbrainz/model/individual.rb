@@ -34,6 +34,7 @@ module MusicBrainz
         @sort_name = sort_name
         @aliases   = Collection.new
         @releases  = Collection.new
+        @disambiguation = nil
       end
                     
       # Set the begin date of this individual.
@@ -61,11 +62,18 @@ module MusicBrainz
       # The unique name ist the individual's name together with the
       # disambiguation attribute in parenthesis if it exists. 
       #
-      # Example: 'Paradise Lost  (British metal / hard rock band)'.
+      # Example:: 'Paradise Lost  (British metal / hard rock band)'.
       def unique_name
         unique_name = @name
-        unique_name += ' (%s)' % @disambiguation if @disambiguation
+        unique_name += " (#{@disambiguation})" if @disambiguation
         return unique_name
+      end
+      
+      # Returns the string representation for this individual.
+      # 
+      # Returns #unique_name converted into a string.
+      def to_s
+        unique_name.to_s
       end
       
     end

@@ -51,6 +51,6 @@ Disambiguation: #{artist.disambiguation}
 Type          : #{artist.type}
 Begin date    : #{artist.begin_date}
 End date      : #{artist.end_date}
-Aliases       : #{artist.aliases.join('; ')}
+Aliases       : #{artist.aliases.to_a.join('; ')}
 Releases      : #{artist.releases.map{|r| r.title}.uniq.join("\r\n                ")}
 EOF

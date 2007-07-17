@@ -53,6 +53,13 @@ module MusicBrainz
         @id = disc_id.to_s
       end
       
+      # Convert the Disc into a string.
+      # 
+      # Returns #id converted into a string.
+      def to_s
+        id.to_s
+      end
+      
     end
 
   end

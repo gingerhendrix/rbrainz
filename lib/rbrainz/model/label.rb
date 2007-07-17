@@ -12,6 +12,17 @@ module MusicBrainz
 
     # A label in the MusicBrainz DB.
     # 
+    # Labels in MusicBrainz can have a type. Currently, the following types
+    # are supported
+    # 
+    # - http://musicbrainz.org/ns/mmd-1.0#Unknown
+    # - http://musicbrainz.org/ns/mmd-1.0#Distributor
+    # - http://musicbrainz.org/ns/mmd-1.0#Holding
+    # - http://musicbrainz.org/ns/mmd-1.0#OriginalProduction
+    # - http://musicbrainz.org/ns/mmd-1.0#BootlegProduction
+    # - http://musicbrainz.org/ns/mmd-1.0#ReissueProduction
+    #
+    # See:: Individual
     # See:: http://musicbrainz.org/doc/Label.
     class Label < Individual
     

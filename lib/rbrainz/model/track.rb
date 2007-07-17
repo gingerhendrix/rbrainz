@@ -26,6 +26,13 @@ module MusicBrainz
         @releases = Collection.new
       end
       
+      # Returns the string representation for this individual.
+      # 
+      # Returns #title converted into a string.
+      def to_s
+        title.to_s
+      end
+      
     end
 
   end

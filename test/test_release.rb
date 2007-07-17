@@ -43,6 +43,7 @@ class TestRelease < Test::Unit::TestCase
     assert release.title.nil?
     assert_nothing_raised {release.title = 'Draconian Times'}
     assert_equal 'Draconian Times', release.title
+    assert_equal 'Draconian Times', release.to_s
   end
 
   def test_asin
