@@ -26,7 +26,7 @@ class TestMBXML < Test::Unit::TestCase
   
   def test_empty
     # The first test result is completely empty
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/empty_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/empty_1.xml')
     assert_equal nil, mbxml.get_entity(:artist)
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
@@ -37,7 +37,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity_list(:label)
     
     # The second contains an empty artist list
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/empty_2.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/empty_2.xml')
     assert_equal nil, mbxml.get_entity(:artist)
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
@@ -49,7 +49,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_artist_search
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/search_result_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/search_result_1.xml')
     assert_equal nil, mbxml.get_entity(:artist)
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
@@ -71,7 +71,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_artist_tchaikovsky_1
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tchaikovsky-1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tchaikovsky-1.xml')
     artist = mbxml.get_entity(:artist)
     
     assert_equal '9ddd7abc-9e1b-471d-8031-583bc6bc8be9', artist.id.uuid
@@ -84,7 +84,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_artist_tchaikovsky_2
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tchaikovsky-2.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tchaikovsky-2.xml')
     artist = mbxml.get_entity(:artist)
     
     assert_equal '9ddd7abc-9e1b-471d-8031-583bc6bc8be9', artist.id.uuid
@@ -102,7 +102,7 @@ class TestMBXML < Test::Unit::TestCase
   end
  
   def test_artist_tori_amos_1
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_1.xml')
     artist = mbxml.get_entity(:artist)
     
     assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist.id.uuid
@@ -113,7 +113,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_artist_tori_amos_2
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_2.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_2.xml')
     artist = mbxml.get_entity(:artist)
     
     assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist.id.uuid
@@ -134,7 +134,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_artist_tori_amos_3
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_3.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_3.xml')
     artist = mbxml.get_entity(:artist)
     
     assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist.id.uuid
@@ -159,7 +159,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_artist_tori_amos_4
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_4.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_4.xml')
     artist = mbxml.get_entity(:artist)
     
     assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist.id.uuid
@@ -177,7 +177,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_artist_tori_amos_5
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_5.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_5.xml')
     artist = mbxml.get_entity(:artist)
     
     assert_equal 'c0b2500e-0cef-4130-869d-732b23ed9df5', artist.id.uuid
@@ -195,7 +195,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_release_search
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/search_result_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/search_result_1.xml')
     assert_equal nil, mbxml.get_entity(:artist)
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
@@ -218,7 +218,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_release_highway_61_revisited_1
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Highway_61_Revisited_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Highway_61_Revisited_1.xml')
     release = mbxml.get_entity(:release)
     
     assert_equal 'd61a2bd9-81ac-4023-bd22-1c884d4a176c', release.id.uuid
@@ -250,7 +250,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_release_highway_61_revisited_2
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Highway_61_Revisited_2.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Highway_61_Revisited_2.xml')
     release = mbxml.get_entity(:release)
     
     assert_equal 'd61a2bd9-81ac-4023-bd22-1c884d4a176c', release.id.uuid
@@ -269,7 +269,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_release_little_earthquakes_1
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Little_Earthquakes_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Little_Earthquakes_1.xml')
     release = mbxml.get_entity(:release)
     
     assert_equal '02232360-337e-4a3f-ad20-6cdd4c34288c', release.id.uuid
@@ -288,7 +288,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_release_little_earthquakes_2
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Little_Earthquakes_2.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Little_Earthquakes_2.xml')
     release = mbxml.get_entity(:release)
     
     assert_equal '02232360-337e-4a3f-ad20-6cdd4c34288c', release.id.uuid
@@ -312,7 +312,7 @@ class TestMBXML < Test::Unit::TestCase
 
   # This is a various artist release.
   def test_release_mission_impossible_2
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Mission_Impossible_2.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Mission_Impossible_2.xml')
     release = mbxml.get_entity(:release)
     
     assert_equal '81683d13-e014-4d35-9774-6f536f4ef557', release.id.uuid
@@ -332,7 +332,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_release_under_the_pink_1
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Under_the_Pink_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Under_the_Pink_1.xml')
     release = mbxml.get_entity(:release)
     
     assert_equal '290e10c5-7efc-4f60-ba2c-0dfc0208fbf5', release.id.uuid
@@ -351,7 +351,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_release_under_the_pink_2
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Under_the_Pink_2.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Under_the_Pink_2.xml')
     release = mbxml.get_entity(:release)
     
     assert_equal '290e10c5-7efc-4f60-ba2c-0dfc0208fbf5', release.id.uuid
@@ -366,7 +366,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_release_under_the_pink_3
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'release/Under_the_Pink_3.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Under_the_Pink_3.xml')
     release = mbxml.get_entity(:release)
     
     assert_equal '290e10c5-7efc-4f60-ba2c-0dfc0208fbf5', release.id.uuid
@@ -384,7 +384,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_track_search
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'track/search_result_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/search_result_1.xml')
     assert_equal nil, mbxml.get_entity(:artist)
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
@@ -407,7 +407,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_track_silent_all_these_years_1
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'track/Silent_All_These_Years_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/Silent_All_These_Years_1.xml')
     track = mbxml.get_entity(:track)
     
     assert_equal 'd6118046-407d-4e06-a1ba-49c399a4c42f', track.id.uuid
@@ -416,7 +416,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_track_silent_all_these_years_2
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'track/Silent_All_These_Years_2.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/Silent_All_These_Years_2.xml')
     track = mbxml.get_entity(:track)
     
     assert_equal 'd6118046-407d-4e06-a1ba-49c399a4c42f', track.id.uuid
@@ -433,7 +433,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_track_silent_all_these_years_3
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'track/Silent_All_These_Years_3.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/Silent_All_These_Years_3.xml')
     track = mbxml.get_entity(:track)
     
     assert_equal 'd6118046-407d-4e06-a1ba-49c399a4c42f', track.id.uuid
@@ -445,7 +445,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_track_silent_all_these_years_4
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'track/Silent_All_These_Years_4.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/Silent_All_These_Years_4.xml')
     track = mbxml.get_entity(:track)
     
     assert_equal 'd6118046-407d-4e06-a1ba-49c399a4c42f', track.id.uuid
@@ -462,7 +462,7 @@ class TestMBXML < Test::Unit::TestCase
   # This test is similiar to silent_all_these_years_3, but it includes an
   # schema exctension which mustn't disturb the parsing.
   def test_track_silent_all_these_years_5
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'track/Silent_All_These_Years_5.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/Silent_All_These_Years_5.xml')
     track = mbxml.get_entity(:track)
     
     assert_equal 'd6118046-407d-4e06-a1ba-49c399a4c42f', track.id.uuid
@@ -474,7 +474,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_track_silent_all_these_years_6
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'track/Silent_All_These_Years_6.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/Silent_All_These_Years_6.xml')
     track = mbxml.get_entity(:track)
     
     assert_equal 'd6118046-407d-4e06-a1ba-49c399a4c42f', track.id.uuid
@@ -484,7 +484,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_label_search
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'label/search_result_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'label/search_result_1.xml')
     assert_equal nil, mbxml.get_entity(:artist)
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
@@ -508,7 +508,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_label_atlantic_records_1
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'label/Atlantic_Records_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'label/Atlantic_Records_1.xml')
     label = mbxml.get_entity(:label)
     
     assert_equal '50c384a2-0b44-401b-b893-8181173339c7', label.id.uuid
@@ -520,7 +520,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_label_atlantic_records_2
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'label/Atlantic_Records_2.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'label/Atlantic_Records_2.xml')
     label = mbxml.get_entity(:label)
     
     assert_equal Model::Label::TYPE_DISTRIBUTOR, label.type
@@ -536,7 +536,7 @@ class TestMBXML < Test::Unit::TestCase
   end
 
   def test_label_atlantic_records_3
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'label/Atlantic_Records_3.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'label/Atlantic_Records_3.xml')
     label = mbxml.get_entity(:label)
     
     assert_equal '50c384a2-0b44-401b-b893-8181173339c7', label.id.uuid
@@ -549,7 +549,7 @@ class TestMBXML < Test::Unit::TestCase
   end
   
   def test_user_1
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'user/User_1.xml')
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'user/User_1.xml')
     users = mbxml.get_entity_list(:user, Model::NS_EXT_1).entities
     
     assert_equal 1, users.size
@@ -562,7 +562,7 @@ class TestMBXML < Test::Unit::TestCase
   
   def test_new_with_factory
     factory = MyFactory.new
-    mbxml = Webservice::MBXML.new IO.read(DATA_PATH + 'artist/Tori_Amos_2.xml'), factory
+    mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_2.xml'), factory
     artist = mbxml.get_entity(:artist)
     assert artist.is_a?(MyArtist)
     artist.releases.each do |release|

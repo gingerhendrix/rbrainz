@@ -21,7 +21,7 @@ PKG_VERSION = '0.2.0'
 PKG_FILES = FileList[
   "Rakefile", "LICENSE", "README", "TODO", "CHANGES",
   "doc/README.rdoc",
-  "examples/**/*",
+  "examples/**/*.rb",
   "lib/**/*.rb",
   "test/**/*.rb",
   "test/test-data/**/*"

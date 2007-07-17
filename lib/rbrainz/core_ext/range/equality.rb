@@ -219,7 +219,7 @@ Allready exists in Range so we can't define it in the module
 =end
 
         protected
-        def open_end
+        def open_end # :nodoc:
           if self.exclude_end?
             self.end
           else

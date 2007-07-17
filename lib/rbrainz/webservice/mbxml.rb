@@ -24,11 +24,11 @@ module MusicBrainz
       # Create a new MBXML instance to parse a MusicBrainz metadata document.
       # 
       # Parameters:
-      # [xml]     A MusicBrainz metadata XML document.
+      # [stream]  An IO object to read the MusicBrainz metadata XML document from.
       # [factory] A model factory. An instance of Model::DefaultFactory
       #           will be used if none is given.
-      def initialize(xml, factory=nil)
-        @document = REXML::Document.new(xml)
+      def initialize(stream, factory=nil)
+        @document = REXML::Document.new(stream)
         
         # Set the model factory
         factory = Model::DefaultFactory.new unless factory
@@ -68,8 +68,8 @@ module MusicBrainz
       # an entity-list element as a child of the metadata
       # element in the document.
       # 
-      # Returns nil if no entity list of the given type is present.
       # Returns an empty Collection if the list is empty.
+      # Returns nil if no entity list of the given type is present.
       def get_entity_list(entity_type, ns=Model::NS_MMD_1)
         # Search for the first occuring node of type entity which is a child node
         # of the metadata element.

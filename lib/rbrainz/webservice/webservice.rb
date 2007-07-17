@@ -8,6 +8,7 @@
 require 'rbrainz/webservice/includes'
 require 'rbrainz/webservice/filter'
 require 'net/http'
+require 'stringio'
 
 module MusicBrainz
   module Webservice
@@ -20,15 +21,28 @@ module MusicBrainz
       
       # Query the web service.
       # 
-      # Must be implemented by the concrete webservices.
-      def get(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
+      # This method must be implemented by the concrete webservices and
+      # should return an IO object on success.
+      # 
+      # Options:
+      # [:id]      A MBID if querying for a single ressource.
+      # [:include] An include object (see AbstractInclude).
+      # [:filter]  A filter object (see AbstractFilter).
+      # [:version] The version of the webservice to use. Defaults to 1.
+      def get(entity_type, options={ :id=>nil, :include=>nil, :filter=>nil, :version=>1 })
         raise NotImplementedError.new('Called abstract method.')
       end
       
       # Submit data to the web service.
+      #
+      # This method must be implemented by the concrete webservices and
+      # should return an IO object on success.
       # 
-      # Must be implemented by the concrete webservices.
-      def post( entity_type, options={:id=>nil, :querystring=>[], :version=>1} )
+      # Options:
+      # [:id]      A MBID if querying for a single ressource.
+      # [:querystring] A string containing the data to post.
+      # [:version] The version of the webservice to use. Defaults to 1.
+      def post(entity_type, options={ :id=>nil, :querystring=>[], :version=>1 })
         raise NotImplementedError.new('Called abstract method.')
       end
       
@@ -57,24 +71,32 @@ module MusicBrainz
       #                the server. Defaults to '/ws'.
       # [:username] The username to authenticate with.
       # [:password] The password to authenticate with.
-      # [:user_agent] Value sent in the User-Agent HTTP header. Defaults to 'rbrainz/2.0'
-      def initialize(options = {:host => nil, :port => nil, :path_prefix => nil, :username=>nil, :password=>nil})
+      # [:user_agent] Value sent in the User-Agent HTTP header. Defaults to 'rbrainz/0.2'
+      def initialize(options={ :host=>nil, :port=>nil, :path_prefix=>'/ws', :username=>nil, :password=>nil, :user_agent=>'rbrainz/0.2' })
         Utils.check_options options, :host, :port, :path_prefix, :username, :password, :user_agent
         @host = options[:host] ? options[:host] : 'musicbrainz.org'
         @port = options[:port] ? options[:port] : 80
         @path_prefix = options[:path_prefix] ? options[:path_prefix] : '/ws'
         @username = options[:username]
         @password = options[:password]
-        @user_agent = options[:user_agent] ? options[:user_agent] : 'rbrainz/2.0'
+        @user_agent = options[:user_agent] ? options[:user_agent] : 'rbrainz/0.2'
         @open_timeout = nil
         @read_timeout = nil
       end
     
       # Query the Webservice with HTTP GET.
       # 
+      # Returns an IO object on success.
+      # 
+      # Options:
+      # [:id]      A MBID if querying for a single ressource.
+      # [:include] An include object (see AbstractInclude).
+      # [:filter]  A filter object (see AbstractFilter).
+      # [:version] The version of the webservice to use. Defaults to 1.
+      # 
       # Raises:: +RequestError+, +ResourceNotFoundError+, +AuthenticationError+,
-      # +ConnectionError+ 
-      def get(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
+      #          +ConnectionError+ 
+      def get(entity_type, options={ :id=>nil, :include=>nil, :filter=>nil, :version=>1 })
         Utils.check_options options, :id, :include, :filter, :version
         url = URI.parse(create_uri(entity_type, options))
         request = Net::HTTP::Get.new(url.request_uri)
@@ -114,7 +136,7 @@ module MusicBrainz
           raise ConnectionError.new(response.class.name)
         end
         
-        return response.body
+        return ::StringIO.new(response.body)
       end
       
       # Send data to the web service via HTTP-POST.
@@ -122,12 +144,18 @@ module MusicBrainz
       # Note that this may require authentication. You can set
       # user name, password and realm in the constructor.
       #
+      # Returns an IO object on success.
+      #
+      # Options:
+      # [:id]      A MBID if querying for a single ressource.
+      # [:querystring] A string containing the data to post.
+      # [:version] The version of the webservice to use. Defaults to 1.
+      #
       # Raises:: +ConnectionError+, +RequestError+, +AuthenticationError+, 
       #          +ResourceNotFoundError+
       #
       # See:: <tt>IWebService.post</tt>
-      #
-      def post( entity_type, options={:id=>nil, :querystring=>[], :version=>1} )
+      def post(entity_type, options={:id=>nil, :querystring=>[], :version=>1})
         Utils.check_options options, :id, :querystring, :version
         url = URI.parse(create_uri(entity_type, options))
         request = Net::HTTP::Post.new(url.request_uri)
@@ -170,7 +198,7 @@ module MusicBrainz
           raise ConnectionError.new(response.class.name)
         end
         
-        return response.body
+        return ::StringIO.new(response.body)
       end
       
       private # ----------------------------------------------------------------
