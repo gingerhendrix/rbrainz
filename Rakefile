@@ -9,6 +9,7 @@ require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/testtask'
 require 'rake/rdoctask'
+require './lib/rbrainz/version'
 
 task :default do
   puts "Please see 'rake --tasks' for an overview of the available tasks."
@@ -17,7 +18,7 @@ end
 # Packaging tasks: -------------------------------------------------------
 
 PKG_NAME = 'rbrainz'
-PKG_VERSION = '0.2.0'
+PKG_VERSION = MusicBrainz::RBRAINZ_VERSION
 PKG_FILES = FileList[
   "Rakefile", "LICENSE", "README", "TODO", "CHANGES",
   "doc/README.rdoc",
@@ -119,4 +120,9 @@ end
 desc "Look for TODO and FIXME tags in the code"
 task :todo do
   egrep(/#.*(FIXME|TODO)/)
+end
+
+desc "Print version information"
+task :version do
+  puts "%s %s" % [PKG_NAME, PKG_VERSION]
 end

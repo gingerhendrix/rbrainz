@@ -28,11 +28,6 @@ module MusicBrainz # :nodoc:
     # Namespace for MusicBrainz extensions.
     NS_EXT_1 = 'http://musicbrainz.org/ns/ext-1.0#'
    
-    require 'rbrainz/model/artist'
-    require 'rbrainz/model/label'
-    require 'rbrainz/model/release'
-    require 'rbrainz/model/track'
-    require 'rbrainz/model/user'
     require 'rbrainz/model/default_factory'
     require 'rbrainz/utils'
     require 'rbrainz/core_ext'
