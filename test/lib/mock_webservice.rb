@@ -18,6 +18,8 @@ class MockWebservice < MusicBrainz::Webservice::IWebservice
         case options[:id]
         when '00000000-0000-0000-0000-000000000000'
           file = 'invalid/artist/basic_1.xml'
+        when '11111111-1111-1111-1111-111111111111'
+          file = 'valid/artist/empty_1.xml'
         else
           file = 'valid/artist/Tori_Amos_1.xml'
         end

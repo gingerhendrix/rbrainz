@@ -181,7 +181,7 @@ module MusicBrainz
       # If no artist with that ID can be found, include contains invalid tags
       # or there's a server problem, and exception is raised.
       # 
-      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError, ResponseError
       def get_artist_by_id(id, includes = nil)
         includes = ArtistIncludes.new(includes) unless includes.nil? || includes.is_a?(ArtistIncludes)
         return get_entity_by_id(Model::Artist.entity_type, id, includes)
@@ -192,7 +192,7 @@ module MusicBrainz
       # The parameter _filter_ must be an instance of ArtistFilter
       # or a options hash as expected by ArtistFilter.
       # 
-      # Raises:: ConnectionError, RequestError
+      # Raises:: ConnectionError, RequestError, ResponseError
       def get_artists(filter)
         filter = ArtistFilter.new(filter) unless filter.nil? || filter.is_a?(ArtistFilter)
         return get_entities(Model::Artist.entity_type, filter)
@@ -206,7 +206,7 @@ module MusicBrainz
       # If no release with that ID can be found, include contains invalid tags
       # or there's a server problem, and exception is raised.
       # 
-      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError, ResponseError
       def get_release_by_id(id, includes = nil)
         includes = ReleaseIncludes.new(includes) unless includes.nil? || includes.is_a?(ReleaseIncludes)
         return get_entity_by_id(Model::Release.entity_type, id, includes)
@@ -217,7 +217,7 @@ module MusicBrainz
       # The parameter _filter_ must be an instance of ReleaseFilter
       # or a options hash as expected by ReleaseFilter.
       # 
-      # Raises:: ConnectionError, RequestError
+      # Raises:: ConnectionError, RequestError, ResponseError
       def get_releases(filter)
         filter = ReleaseFilter.new(filter) unless filter.nil? || filter.is_a?(ReleaseFilter)
         return get_entities(Model::Release.entity_type, filter)
@@ -231,7 +231,7 @@ module MusicBrainz
       # If no track with that ID can be found, include contains invalid tags
       # or there's a server problem, and exception is raised.
       # 
-      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError, ResponseError
       def get_track_by_id(id, includes = nil)
         includes = TrackIncludes.new(includes) unless includes.nil? || includes.is_a?(TrackIncludes)
         return get_entity_by_id(Model::Track.entity_type, id, includes)
@@ -242,7 +242,7 @@ module MusicBrainz
       # The parameter _filter_ must be an instance of TrackFilter
       # or a options hash as expected by TrackFilter.
       # 
-      # Raises:: ConnectionError, RequestError
+      # Raises:: ConnectionError, RequestError, ResponseError
       def get_tracks(filter)
         filter = TrackFilter.new(filter) unless filter.nil? || filter.is_a?(TrackFilter)
         return get_entities(Model::Track.entity_type, filter)
@@ -256,7 +256,7 @@ module MusicBrainz
       # If no label with that ID can be found, include contains invalid tags
       # or there's a server problem, and exception is raised.
       # 
-      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError, ResponseError
       def get_label_by_id(id, includes = nil)
         includes = LabelIncludes.new(includes) unless includes.nil? || includes.is_a?(LabelIncludes)
         return get_entity_by_id(Model::Label.entity_type, id, includes)
@@ -267,7 +267,7 @@ module MusicBrainz
       # The parameter _filter_ must be an instance of LabelFilter
       # or a options hash as expected by LabelFilter.
       # 
-      # Raises:: ConnectionError, RequestError
+      # Raises:: ConnectionError, RequestError, ResponseError
       def get_labels(filter)
         filter = LabelFilter.new(filter) unless filter.nil? || filter.is_a?(LabelFilter)
         return get_entities(Model::Label.entity_type, filter)
@@ -318,7 +318,7 @@ module MusicBrainz
       
       # Helper method which will return any entity by ID.
       # 
-      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError, ResponseError
       def get_entity_by_id(entity_type, id, includes)
         stream = @webservice.get(entity_type, :id => id, :include => includes)
         begin
@@ -327,7 +327,7 @@ module MusicBrainz
           raise ResponseError.new(e.to_s)
         end
         unless entity
-          raise ResponseError("server didn't return #{entity_type.to_s}")
+          raise ResponseError.new("server didn't return #{entity_type.to_s} with the MBID #{id.to_s}")
         else
           return entity
         end
@@ -335,7 +335,7 @@ module MusicBrainz
       
       # Helper method which will search for the given entity type.
       # 
-      # Raises:: ConnectionError, RequestError
+      # Raises:: ConnectionError, RequestError, ResponseError
       def get_entities(entity_type, filter)
         stream = @webservice.get(entity_type, :filter => filter)
         begin
