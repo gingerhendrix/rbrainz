@@ -20,6 +20,8 @@ module MusicBrainz
         raise 'Tried to initialize abstract class.'
       end 
       
+      # Returns the includes as a parameter that can be used in a MusicBrainz
+      # XML web service URI.
       def to_s
         if @parameters.size > 0
           return 'inc=' + URI.escape(@parameters.join(' '))

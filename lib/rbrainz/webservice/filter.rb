@@ -17,7 +17,7 @@ module MusicBrainz
     # or integer values, depending on the filter.
     class AbstractFilter
       
-      # The parameter +filter+ is a hash with filter options.
+      # The parameter _filter_ is a hash with filter options.
       # See the concrete classes for a description of those
       # options.
       # 
@@ -37,8 +37,7 @@ module MusicBrainz
         @filter[:query]  = filter[:query]  if filter[:query]
       end
       
-      # Returns the filter list as a query string
-      # (without leading +&+).
+      # Returns the filter list as a query string (without leading <em>&</em>).
       def to_s
         @filter.to_a.map {|name, value|
           '%s=%s' % [URI.escape(name.to_s), URI.escape(value.to_s)]
@@ -50,7 +49,7 @@ module MusicBrainz
     # A filter for the artist collection.
     class ArtistFilter < AbstractFilter
     
-      # The parameter +filter+ is a hash with filter options. At least the
+      # The parameter _filter_ is a hash with filter options. At least the
       # <tt>:name</tt> filter must be specified.
       # 
       # Available filter options:
@@ -74,7 +73,7 @@ module MusicBrainz
     # A filter for the release collection.
     class ReleaseFilter < AbstractFilter
     
-      # The parameter +filter+ is a hash with filter options. At least one
+      # The parameter _filter_ is a hash with filter options. At least one
       # filter despite <tt>:limit</tt> and <tt>:offset</tt> must be specified.
       # 
       # Available filter options:
@@ -122,7 +121,7 @@ module MusicBrainz
     # A filter for the track collection.
     class TrackFilter < AbstractFilter
     
-      # The parameter +filter+ is a hash with filter options. At least the
+      # The parameter _filter_ is a hash with filter options. At least the
       # <tt>:title</tt> filter must be specified.
       # 
       # Available filter options:
@@ -170,7 +169,7 @@ module MusicBrainz
     # A filter for the label collection.
     class LabelFilter < AbstractFilter
     
-      # The parameter +filter+ is a hash with filter options. At least the
+      # The parameter _filter_ is a hash with filter options. At least the
       # <tt>:name</tt> filter must be specified.
       # 
       # Available filter options:
@@ -191,14 +190,14 @@ module MusicBrainz
     
     end
     
+    # A filter to query a user by his username.
     class UserFilter
       def initialize(name=nil)
         @filter = Hash.new
         @filter[:name] = name if name
       end
       
-      # Returns the filter list as a query string
-      # (without leading +&+).
+      # Returns the filter list as a query string (without leading <em>&</em>).
       def to_s
         @filter.to_a.map {|name, value|
           '%s=%s' % [URI.escape(name.to_s), URI.escape(value.to_s)]

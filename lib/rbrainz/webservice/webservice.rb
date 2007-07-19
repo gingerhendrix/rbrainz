@@ -26,7 +26,7 @@ module MusicBrainz
       # 
       # Options:
       # [:id]      A MBID if querying for a single ressource.
-      # [:include] An include object (see AbstractInclude).
+      # [:include] An include object (see AbstractIncludes).
       # [:filter]  A filter object (see AbstractFilter).
       # [:version] The version of the webservice to use. Defaults to 1.
       def get(entity_type, options={ :id=>nil, :include=>nil, :filter=>nil, :version=>1 })
@@ -90,12 +90,13 @@ module MusicBrainz
       # 
       # Options:
       # [:id]      A MBID if querying for a single ressource.
-      # [:include] An include object (see AbstractInclude).
+      # [:include] An include object (see AbstractIncludes).
       # [:filter]  A filter object (see AbstractFilter).
       # [:version] The version of the webservice to use. Defaults to 1.
       # 
       # Raises:: RequestError, ResourceNotFoundError, AuthenticationError,
       #          ConnectionError 
+      # See:: IWebservice#get
       def get(entity_type, options={ :id=>nil, :include=>nil, :filter=>nil, :version=>1 })
         Utils.check_options options, :id, :include, :filter, :version
         url = URI.parse(create_uri(entity_type, options))
@@ -154,7 +155,7 @@ module MusicBrainz
       # Raises:: ConnectionError, RequestError, AuthenticationError, 
       #          ResourceNotFoundError
       #
-      # See:: IWebService.post
+      # See:: IWebservice#post
       def post(entity_type, options={:id=>nil, :querystring=>[], :version=>1})
         Utils.check_options options, :id, :querystring, :version
         url = URI.parse(create_uri(entity_type, options))

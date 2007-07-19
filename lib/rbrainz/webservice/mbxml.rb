@@ -21,7 +21,7 @@ module MusicBrainz
     # information on the MusicBrainz XML Metadata schema.
     class MBXML
     
-      # Exception to be raised if a parse error occurs.
+      # Exception to be raised if a parse error occurs in MBXML.
       class ParseError < Exception
       end
     
