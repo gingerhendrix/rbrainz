@@ -21,19 +21,29 @@ module MusicBrainz
     # information on the MusicBrainz XML Metadata schema.
     class MBXML
     
+      # Exception to be raised if a parse error occurs.
+      class ParseError < Exception
+      end
+    
       # Create a new MBXML instance to parse a MusicBrainz metadata document.
       # 
       # Parameters:
       # [stream]  An IO object to read the MusicBrainz metadata XML document from.
       # [factory] A model factory. An instance of Model::DefaultFactory
       #           will be used if none is given.
+      #           
+      # Raises:: MBXML::ParseError
       def initialize(stream, factory=nil)
-        @document = REXML::Document.new(stream)
+        begin
+          @document = REXML::Document.new(stream)
+        rescue REXML::ParseException => e
+          raise ParseError.new(e.to_s)
+        end
         
         # Set the model factory
         factory = Model::DefaultFactory.new unless factory
         @factory = factory
-
+        
         # Already loaded artists, releases, tracks and labels will get cached
         # in these variables to link to them if they occure multiple times
         # inside the same document.
@@ -66,7 +76,9 @@ module MusicBrainz
       # +metadata+ element in the document.
       # 
       # Returns an empty Collection if the list is empty.
-      # Returns nil if no entity list of the given type is present.
+      # Raises a MBXML::ParseError if no entity-list element can be found.
+      # 
+      # Raises:: MBXML::ParseError
       def get_entity_list(entity_type, ns=Model::NS_MMD_1)
         # Search for the first occuring node of type entity which is a child node
         # of the metadata element.
@@ -84,6 +96,8 @@ module MusicBrainz
           read_list_method.call(entity_list, collection, true) if read_list_method
           
           return collection
+        else
+          raise ParseError.new("no element %s-list found" % entity_type)
         end
         return nil
       end

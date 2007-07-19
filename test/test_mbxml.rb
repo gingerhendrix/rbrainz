@@ -31,10 +31,10 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
     assert_equal nil, mbxml.get_entity(:label)
-    assert_equal nil, mbxml.get_entity_list(:artist)
-    assert_equal nil, mbxml.get_entity_list(:release)
-    assert_equal nil, mbxml.get_entity_list(:track)
-    assert_equal nil, mbxml.get_entity_list(:label)
+    assert_raise(Webservice::MBXML::ParseError) { mbxml.get_entity_list(:artist) }
+    assert_raise(Webservice::MBXML::ParseError) { mbxml.get_entity_list(:release) }
+    assert_raise(Webservice::MBXML::ParseError) { mbxml.get_entity_list(:track) }
+    assert_raise(Webservice::MBXML::ParseError) { mbxml.get_entity_list(:label) }
     
     # The second contains an empty artist list
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/empty_2.xml')
@@ -43,9 +43,9 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity(:track)
     assert_equal nil, mbxml.get_entity(:label)
     assert mbxml.get_entity_list(:artist).empty?
-    assert_equal nil, mbxml.get_entity_list(:release)
-    assert_equal nil, mbxml.get_entity_list(:track)
-    assert_equal nil, mbxml.get_entity_list(:label)
+    assert_raise(Webservice::MBXML::ParseError) { mbxml.get_entity_list(:release) }
+    assert_raise(Webservice::MBXML::ParseError) { mbxml.get_entity_list(:track) }
+    assert_raise(Webservice::MBXML::ParseError) { mbxml.get_entity_list(:label) }
   end
   
   def test_artist_search

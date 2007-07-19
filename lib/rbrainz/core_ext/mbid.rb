@@ -11,7 +11,7 @@
 class String
   # Convert a string into a MBID object of the given type.
   # 
-  # Raises:: +EntityTypeNotMatchingError+
+  # Raises:: EntityTypeNotMatchingError
   def to_mbid(entity_type=nil)
     ::MusicBrainz::Model::MBID.new(self, entity_type)
   end
@@ -22,7 +22,7 @@ module URI #:nodoc:
   class HTTP
     # Create a MBID from a HTTP object of the given type.
     # 
-    # Raises:: +EntityTypeNotMatchingError+
+    # Raises:: EntityTypeNotMatchingError
     def to_mbid(entity_type=nil)
       ::MusicBrainz::Model::MBID.new(self.to_s, entity_type)
     end

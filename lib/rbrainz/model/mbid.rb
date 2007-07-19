@@ -11,15 +11,23 @@ module MusicBrainz
   module Model
 
     # The format of a MusicBrainz identifier was wrong.
+    # 
+    # See:: MBID
     class InvalidMBIDError < Exception
     end
     
     # An unknown entity was encountered.
-    # Valid entities are only :artist, :release, :track and :label.
+    # 
+    # Valid entities are only <tt>:artist</tt>, <tt>:release</tt>,
+    # <tt>:track</tt> and <tt>:label</tt>.
+    # 
+    # See:: MBID
     class UnknownEntityError < Exception
     end
     
     # The entity type of a MBID didn't match the type of the entity.
+    # 
+    # See:: MBID
     class EntityTypeNotMatchingError < Exception
     end
 

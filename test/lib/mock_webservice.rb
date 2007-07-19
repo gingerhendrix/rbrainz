@@ -9,36 +9,41 @@ require 'rbrainz/webservice/webservice'
 
 class MockWebservice < MusicBrainz::Webservice::IWebservice
   
-  DATA_PATH = 'test/test-data/valid/'
+  DATA_PATH = 'test/test-data/'
   
   def get(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
     case entity_type
     when :artist
       if options[:id]
-        file = 'artist/Tori_Amos_1.xml'
+        case options[:id]
+        when '00000000-0000-0000-0000-000000000000'
+          file = 'invalid/artist/basic_1.xml'
+        else
+          file = 'valid/artist/Tori_Amos_1.xml'
+        end
       else
-        file = 'artist/search_result_1.xml'
+        file = 'valid/artist/search_result_1.xml'
       end
     when :release
       if options[:id]
-        file = 'release/Under_the_Pink_1.xml'
+        file = 'valid/release/Under_the_Pink_1.xml'
       else
-        file = 'release/search_result_1.xml'
+        file = 'valid/release/search_result_1.xml'
       end
     when :track
       if options[:id]
-        file = 'track/Silent_All_These_Years_1.xml'
+        file = 'valid/track/Silent_All_These_Years_1.xml'
       else
-        file = 'track/search_result_1.xml'
+        file = 'valid/track/search_result_1.xml'
       end
     when :label
       if options[:id]
-        file = 'label/Atlantic_Records_1.xml'
+        file = 'valid/label/Atlantic_Records_1.xml'
       else
-        file = 'label/search_result_1.xml'
+        file = 'valid/label/search_result_1.xml'
       end
     when :user
-      file = 'user/User_1.xml'
+      file = 'valid/user/User_1.xml'
     end
     return File.read(DATA_PATH + file)
   end

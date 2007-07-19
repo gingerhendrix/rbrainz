@@ -101,4 +101,8 @@ class TestQuery < Test::Unit::TestCase
     assert entity.is_a?(MyRelease)
   end
   
+  def test_parser_error
+    assert_raise(Webservice::ResponseError){@query.get_artist_by_id('00000000-0000-0000-0000-000000000000')}
+  end
+  
 end

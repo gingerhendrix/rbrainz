@@ -281,11 +281,15 @@ module MusicBrainz
       # 
       # See the example in Query on how to supply user name and password.
       # 
-      # Raises:: ConnectionError, RequestError, AuthenticationError
+      # Raises:: ConnectionError, RequestError, AuthenticationError, ResponseError
       def get_user_by_name(name)
         xml = @webservice.get(:user, :filter => UserFilter.new(name))
         collection = MBXML.new(xml).get_entity_list(:user, Model::NS_EXT_1)
-        return collection ? collection[0].entity : nil
+        unless collection and collection.size > 0
+          raise ResponseError("response didn't contain user data")
+        else
+          return collection[0].entity
+        end
       end
       
       # Submit track to PUID mappings.
@@ -313,15 +317,33 @@ module MusicBrainz
       private # ----------------------------------------------------------------
       
       # Helper method which will return any entity by ID.
+      # 
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
       def get_entity_by_id(entity_type, id, includes)
         stream = @webservice.get(entity_type, :id => id, :include => includes)
-        return MBXML.new(stream, @factory).get_entity(entity_type)
+        begin
+          entity = MBXML.new(stream, @factory).get_entity(entity_type)
+        rescue MBXML::ParseError => e
+          raise ResponseError.new(e.to_s)
+        end
+        unless entity
+          raise ResponseError("server didn't return #{entity_type.to_s}")
+        else
+          return entity
+        end
       end
       
       # Helper method which will search for the given entity type.
+      # 
+      # Raises:: ConnectionError, RequestError
       def get_entities(entity_type, filter)
         stream = @webservice.get(entity_type, :filter => filter)
-        return MBXML.new(stream, @factory).get_entity_list(entity_type)
+        begin
+          collection = MBXML.new(stream, @factory).get_entity_list(entity_type)
+        rescue MBXML::ParseError => e
+          raise ResponseError.new(e.to_s)
+        end
+        return collection
       end
       
     end

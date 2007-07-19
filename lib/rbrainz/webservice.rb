@@ -29,7 +29,10 @@ module MusicBrainz # :nodoc:
     class ConnectionError < Exception
     end
     
-    # An invalid request was made (invalid IDs or parameters).
+    # An invalid request was made.
+    # 
+    # This exception is raised if the client made an invalid request. That could
+    # be syntactically invalid identifiers or unknown or invalid parameter values.
     class RequestError < Exception
     end
     
@@ -43,6 +46,14 @@ module MusicBrainz # :nodoc:
     
     # The requested resource doesn't exist.
     class ResourceNotFoundError < Exception
+    end
+
+    # The returned resource was invalid.
+    # 
+    # This may be due to a malformed XML document or if the requested data
+    # wasn't part of the response. It can only occur in case of bugs in the web
+    # service itself.
+    class ResponseError < Exception
     end
     
   end 
