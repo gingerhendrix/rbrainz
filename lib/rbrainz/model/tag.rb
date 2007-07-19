@@ -24,8 +24,8 @@ module MusicBrainz
       attr_accessor :count
       
       def initialize(text=nil, count=nil)
-        @text  = text
-        @count = count
+        self.text  = text
+        self.count = count
       end
       
       # Convert this tag into a String. Will return text.

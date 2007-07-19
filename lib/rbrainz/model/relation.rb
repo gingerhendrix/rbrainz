@@ -87,7 +87,7 @@ module MusicBrainz
       
       # Set the target of this relation.
       # 
-      # The target can either be a object of the type Model::Entity
+      # The _target_ can either be a object of the type Model::Entity
       # or a URL.
       def target=(target)
         if target.is_a? Entity
@@ -122,7 +122,7 @@ module MusicBrainz
         end  
       end
       
-      # Set the begin date of this relation.
+      # Set the begin date of this relation to _date_.
       # 
       # Should be an IncompleteDate object or
       # a date string, which will get converted
@@ -132,7 +132,7 @@ module MusicBrainz
         @begin_date = date
       end
       
-      # Set the end date of this relation.
+      # Set the end date of this relation to _date_.
       # 
       # Should be an IncompleteDate object or
       # a date string, which will get converted

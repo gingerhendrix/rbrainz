@@ -24,7 +24,8 @@ module MusicBrainz
       # - 'http://musicbrainz.org/ns/ext-1.0#NotNaggable'
       attr_reader :types
       
-      def initialize
+      def initialize(name=nil)
+        self.name = name
         @types = []
       end
       

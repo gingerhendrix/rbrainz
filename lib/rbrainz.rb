@@ -2,7 +2,7 @@
 #
 # This is actually just a convenient shortcut that allows
 # the user to use RBrainz by just using <tt>require 'rbrainz'</tt>.
-# This will include the whole RBrainz webservice library, which 
+# This will include the whole RBrainz web service library, which 
 # should be ok most of the time.
 # 
 # If you want only the models use <tt>require 'rbrainz/model'</tt>.

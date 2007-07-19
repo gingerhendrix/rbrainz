@@ -48,8 +48,10 @@ module MusicBrainz
       # A Collection of Tag objects assigned to this entity.
       attr_reader :tags
       
-      def initialize(id=nil)
-        @id = id
+      # Create a new Entity. You can assign a MusicBrainz identifier to the
+      # created entity with the parameter _mbid_ (see id=).
+      def initialize(mbid=nil)
+        self.id = mbid
         @tags = Collection.new
         @relations = {
           Relation::TO_ARTIST  => Collection.new,
@@ -62,15 +64,15 @@ module MusicBrainz
       
       # Set the MBID.
       # 
-      # +mbid+ should be an instance of +MBID+ or a string
+      # _mbid_ should be an instance of MBID or a string
       # representing either a complete MBID URI or just the
       # UUID part of it. If it is a complete URI the entity
       # part of the URI must match the entity type returned
-      # by +entity_type+ or an +EntityTypeNotMatchingError+
+      # by +entity_type+ or an EntityTypeNotMatchingError
       # will be raised.
       # 
-      # Raises: +UnknownEntityError+, +InvalidMBIDError+,
-      # +EntityTypeNotMatchingError+
+      # Raises: UnknownEntityError, InvalidMBIDError,
+      # EntityTypeNotMatchingError
       def id=(mbid)
         if mbid
           @id = MBID.parse(mbid, entity_type)
@@ -98,7 +100,7 @@ module MusicBrainz
       #
       # Adds a relation.
       #
-      # This method adds +relation+ to the list of relations. The
+      # This method adds _relation_ to the list of relations. The
       # given relation has to be initialized, at least the target
       # type has to be set.
       #
@@ -109,7 +111,7 @@ module MusicBrainz
       #
       # Returns a list of relations.
       #
-      # If +target_type+ is given, only relations of that target
+      # If _target_type_ is given, only relations of that target
       # type are returned. For MusicBrainz, the following target
       # types are defined:
       # - Relation::TO_ARTIST
@@ -117,16 +119,16 @@ module MusicBrainz
       # - Relation::TO_TRACK
       # - Relation::TO_URL
       # 
-      # If +target_type+ is Relation::TO_ARTIST, for example,
+      # If _target_type_ is Relation::TO_ARTIST, for example,
       # this method returns all relations between this Entity and
       # artists.
       #
-      # You may use the +relation_type+ parameter to further restrict
+      # You may use the _relation_type_ parameter to further restrict
       # the selection. If it is set, only relations with the given
-      # relation type are returned. The +required_attributes+ sequence
+      # relation type are returned. The _required_attributes_ sequence
       # lists attributes that have to be part of all returned relations.
       #
-      # If +direction+ is set, only relations with the given reading
+      # If _direction_ is set, only relations with the given reading
       # direction are returned. You can use the Relation::DIR_FORWARD,
       # Relation::DIR_BACKWARD, and Relation::DIR_BOTH constants
       # for this.

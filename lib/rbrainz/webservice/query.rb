@@ -38,7 +38,7 @@ module MusicBrainz
     # 
     # == Creating a Query Object
     # 
-    # In most cases, creating a +Query+ object is as simple as this:
+    # In most cases, creating a Query object is as simple as this:
     #   require 'rbrainz'
     #   q = MusicBrainz::Webservice::Query.new
     # 
@@ -79,10 +79,10 @@ module MusicBrainz
     #   http://musicbrainz.org/ns/mmd-1.0#Person
     # 
     # This returned just the basic artist data, however. To get more detail
-    # about a resource, the +includes+ parameters may be used 
+    # about a resource, the _includes_ parameters may be used 
     # which expect an ArtistIncludes, ReleaseIncludes, TrackIncludes or
     # LabelIncludes object, depending on the resource type.
-    # It is also possible to use a Hash for the +includes+ parameter where it
+    # It is also possible to use a Hash for the _includes_ parameter where it
     # will then get automaticly wrapped in the appropriate includes class.
     # 
     # To get data about a release which also includes the main artist
@@ -135,11 +135,11 @@ module MusicBrainz
     # use the get_artist_by_id, get_label_by_id, get_release_by_id, or
     # get_track_by_id methods to request the resource.
     # 
-    # All filters support the +limit+ argument to limit the number of
+    # All filters support the _limit_ argument to limit the number of
     # results returned. This defaults to 25, but the server won't send
     # more than 100 results to save bandwidth and processing power. In case
     # you want to retrieve results above the 100 results limit you can use the
-    # +offset+ argument in the filters. The +offset+ specifies how many entries
+    # _offset_ argument in the filters. The _offset_ specifies how many entries
     # at the beginning of the collection should be skipped.
     # 
     class Query
@@ -154,7 +154,7 @@ module MusicBrainz
       # server. This should be enough for most users.
       #
       # If you want to use queries which require authentication you
-      # have to pass a +WebService+ instance where user name and
+      # have to pass a Webservice instance where user name and
       # password have been set.
       #
       # The _client_id_ option is required for data submission.
@@ -166,19 +166,22 @@ module MusicBrainz
       # [:client_id] a unicode string containing the application's ID.
       # [:factory]   A model factory. An instance of Model::DefaultFactory
       #              will be used if none is given.
-      def initialize(webservice = nil, options={})
+      def initialize(webservice = nil, options={ :client_id=>nil, :factory=>nil })
         Utils.check_options options, :client_id, :factory
         @webservice = webservice.nil? ? Webservice.new : webservice
-        @client_id = options[:client_id] ? options[:client_id] : nil
-        @factory   = options[:factory] ? options[:factory] : nil
+        @client_id  = options[:client_id] ? options[:client_id] : nil
+        @factory    = options[:factory] ? options[:factory] : nil
       end
       
       # Returns an artist.
       # 
+      # The parameter _includes_ must be an instance of ArtistIncludes
+      # or a options hash as expected by ArtistIncludes.
+      # 
       # If no artist with that ID can be found, include contains invalid tags
       # or there's a server problem, and exception is raised.
       # 
-      # Raises:: +ConnectionError+, +RequestError+, +ResourceNotFoundError+
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
       def get_artist_by_id(id, includes = nil)
         includes = ArtistIncludes.new(includes) unless includes.nil? || includes.is_a?(ArtistIncludes)
         return get_entity_by_id(Model::Artist.entity_type, id, includes)
@@ -186,7 +189,10 @@ module MusicBrainz
       
       # Returns artists matching given criteria.
       # 
-      # Raises:: +ConnectionError+, +RequestError+
+      # The parameter _filter_ must be an instance of ArtistFilter
+      # or a options hash as expected by ArtistFilter.
+      # 
+      # Raises:: ConnectionError, RequestError
       def get_artists(filter)
         filter = ArtistFilter.new(filter) unless filter.nil? || filter.is_a?(ArtistFilter)
         return get_entities(Model::Artist.entity_type, filter)
@@ -194,10 +200,13 @@ module MusicBrainz
       
       # Returns an release.
       # 
+      # The parameter _includes_ must be an instance of ReleaseIncludes
+      # or a options hash as expected by ReleaseIncludes.
+      # 
       # If no release with that ID can be found, include contains invalid tags
       # or there's a server problem, and exception is raised.
       # 
-      # Raises:: +ConnectionError+, +RequestError+, +ResourceNotFoundError+
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
       def get_release_by_id(id, includes = nil)
         includes = ReleaseIncludes.new(includes) unless includes.nil? || includes.is_a?(ReleaseIncludes)
         return get_entity_by_id(Model::Release.entity_type, id, includes)
@@ -205,7 +214,10 @@ module MusicBrainz
       
       # Returns releases matching given criteria.
       # 
-      # Raises:: +ConnectionError+, +RequestError+
+      # The parameter _filter_ must be an instance of ReleaseFilter
+      # or a options hash as expected by ReleaseFilter.
+      # 
+      # Raises:: ConnectionError, RequestError
       def get_releases(filter)
         filter = ReleaseFilter.new(filter) unless filter.nil? || filter.is_a?(ReleaseFilter)
         return get_entities(Model::Release.entity_type, filter)
@@ -213,10 +225,13 @@ module MusicBrainz
       
       # Returns an track.
       # 
+      # The parameter _includes_ must be an instance of TrackIncludes
+      # or a options hash as expected by TrackIncludes.
+      # 
       # If no track with that ID can be found, include contains invalid tags
       # or there's a server problem, and exception is raised.
       # 
-      # Raises:: +ConnectionError+, +RequestError+, +ResourceNotFoundError+
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
       def get_track_by_id(id, includes = nil)
         includes = TrackIncludes.new(includes) unless includes.nil? || includes.is_a?(TrackIncludes)
         return get_entity_by_id(Model::Track.entity_type, id, includes)
@@ -224,7 +239,10 @@ module MusicBrainz
       
       # Returns tracks matching given criteria.
       # 
-      # Raises:: +ConnectionError+, +RequestError+
+      # The parameter _filter_ must be an instance of TrackFilter
+      # or a options hash as expected by TrackFilter.
+      # 
+      # Raises:: ConnectionError, RequestError
       def get_tracks(filter)
         filter = TrackFilter.new(filter) unless filter.nil? || filter.is_a?(TrackFilter)
         return get_entities(Model::Track.entity_type, filter)
@@ -232,10 +250,13 @@ module MusicBrainz
       
       # Returns an label.
       # 
+      # The parameter _includes_ must be an instance of LabelIncludes
+      # or a options hash as expected by LabelIncludes.
+      # 
       # If no label with that ID can be found, include contains invalid tags
       # or there's a server problem, and exception is raised.
       # 
-      # Raises:: +ConnectionError+, +RequestError+, +ResourceNotFoundError+
+      # Raises:: ConnectionError, RequestError, ResourceNotFoundError
       def get_label_by_id(id, includes = nil)
         includes = LabelIncludes.new(includes) unless includes.nil? || includes.is_a?(LabelIncludes)
         return get_entity_by_id(Model::Label.entity_type, id, includes)
@@ -243,7 +264,10 @@ module MusicBrainz
       
       # Returns labels matching given criteria.
       # 
-      # Raises:: +ConnectionError+, +RequestError+
+      # The parameter _filter_ must be an instance of LabelFilter
+      # or a options hash as expected by LabelFilter.
+      # 
+      # Raises:: ConnectionError, RequestError
       def get_labels(filter)
         filter = LabelFilter.new(filter) unless filter.nil? || filter.is_a?(LabelFilter)
         return get_entities(Model::Label.entity_type, filter)
@@ -257,7 +281,7 @@ module MusicBrainz
       # 
       # See the example in Query on how to supply user name and password.
       # 
-      # Raises:: +ConnectionError+, +RequestError+, +AuthenticationError+
+      # Raises:: ConnectionError, RequestError, AuthenticationError
       def get_user_by_name(name)
         xml = @webservice.get(:user, :filter => UserFilter.new(name))
         collection = MBXML.new(xml).get_entity_list(:user, Model::NS_EXT_1)
@@ -266,16 +290,17 @@ module MusicBrainz
       
       # Submit track to PUID mappings.
       #
-      # The +tracks2puids+ parameter has to be a dictionary, with the
+      # The <em>tracks2puids</em> parameter has to be a dictionary, with the
       # keys being MusicBrainz track IDs (either as absolute URIs or
       # in their 36 character ASCII representation) and the values
       # being PUIDs (ASCII, 36 characters).
       #
       # Note that this method only works if a valid user name and
-      # password have been set. See the example in Query on how
-      # to supply authentication data.
+      # password have been set. If username and/or password are incorrect,
+      # an AuthenticationError is raised. See the example in Query on
+      # how to supply authentication data.
       #
-      # Raises:: +ConnectionError+, +RequestError+, +AuthenticationError+
+      # Raises:: ConnectionError, RequestError, AuthenticationError
       def submit_puids(tracks2puids)
         raise RequestError, 'Please supply a client ID' unless @client_id
         params = [['client', @client_id.to_s]] # Encoded as utf-8

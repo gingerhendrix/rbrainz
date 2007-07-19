@@ -1,11 +1,11 @@
 = Changelog
 
-== 0.2.0 (not yet released)
+== 0.2.0 (2007-07-19)
 * Querying of collections implemented
 * Collection class to store search results (with support for search score and offset)
 * User authentication
 * Querying of user information
-* Support POST in webservice to submit information.
+* Support POST in Webservice class to submit information.
 * PUID submission.
 * Made IncompleteDate behave like a range with corresponding equality operations
 * Restructured MBID to use a ducktyping approach

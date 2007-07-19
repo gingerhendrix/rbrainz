@@ -12,13 +12,14 @@ p, ul {
 	line-height: 1.2em;
 }
 
+img { border: 0 }
+
 strong { font-weight: bold; }
 em     { font-style: italic; }
 kbd    { font-family: monospace; }
 
-kbd.command {
-	display: block;
-	font-size: 1.1em;
+pre {
+    font-size: 1.1em;
 	color: black;
 	background-color: rgb(235, 235, 235);
 	border: .1em dashed rgb(255, 180, 15);

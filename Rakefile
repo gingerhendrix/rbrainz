@@ -31,7 +31,7 @@ PKG_EXTRA_RDOC_FILES = ['doc/README.rdoc', 'LICENSE', 'TODO', 'CHANGES']
 
 spec = Gem::Specification.new do |spec|
   spec.platform = Gem::Platform::RUBY
-  spec.summary = 'Ruby library for the MusicBrainz XML webservice.'
+  spec.summary = 'Ruby library for the MusicBrainz XML web service.'
   spec.name = PKG_NAME
   spec.version = PKG_VERSION
   spec.requirements << 'Optional: mb-discid >= 0.1.2 (for calculating disc IDs)'
@@ -39,7 +39,7 @@ spec = Gem::Specification.new do |spec|
   spec.files = PKG_FILES
   spec.description = <<EOF
     RBrainz is a Ruby client library to access the MusicBrainz XML
-    webservice. RBrainz supports the MusicBrainz XML Metadata Version 1.2,
+    web service. RBrainz supports the MusicBrainz XML Metadata Version 1.2,
     including support for labels and extended release events.
     
     RBrainz follows the design of python-musicbrainz2, the reference

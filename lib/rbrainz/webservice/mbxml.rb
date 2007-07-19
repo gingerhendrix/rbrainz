@@ -13,7 +13,7 @@ module MusicBrainz
   module Webservice
 
     # Class to read the XML data returned by the MusicBrainz
-    # webservice and create the corresponding model classes.
+    # web service and create the corresponding model classes.
     # The class understands the MusicBrainz XML Metadata Version 1.0
     # schema.
     # 
@@ -34,9 +34,8 @@ module MusicBrainz
         factory = Model::DefaultFactory.new unless factory
         @factory = factory
 
-        # Already loaded artists, releases, tracks
-        # and labels will get cached in these variables
-        # to link to them if they occure multiple times
+        # Already loaded artists, releases, tracks and labels will get cached
+        # in these variables to link to them if they occure multiple times
         # inside the same document.
         @artists  = Hash.new
         @releases = Hash.new
@@ -44,9 +43,8 @@ module MusicBrainz
         @labels   = Hash.new
       end
       
-      # Read the XML string and create an entity model
-      # for the given entity type if it is present in 
-      # the document.
+      # Read the XML string and create an entity model for the given entity
+      # type if it is present in the document.
       # 
       # Returns nil if no entity of the given type is present.
       def get_entity(entity_type)
@@ -63,10 +61,9 @@ module MusicBrainz
         end
       end
       
-      # Read the XML string and create a list of entity
-      # models for the given entity type. There must be
-      # an entity-list element as a child of the metadata
-      # element in the document.
+      # Read the XML string and create a list of entity models for the given
+      # entity type. There must be an entity-list element as a child of the
+      # +metadata+ element in the document.
       # 
       # Returns an empty Collection if the list is empty.
       # Returns nil if no entity list of the given type is present.

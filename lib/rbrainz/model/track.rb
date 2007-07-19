@@ -35,9 +35,9 @@ module MusicBrainz
       
       def initialize(id=nil, title=nil)
         super id
-        @title    = title
-        @puids    = Collection.new
-        @releases = Collection.new
+        self.title = title
+        @puids     = Collection.new
+        @releases  = Collection.new
       end
       
       # Returns the string representation for this track.

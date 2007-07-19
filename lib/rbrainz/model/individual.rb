@@ -53,29 +53,26 @@ module MusicBrainz
     
       def initialize(id=nil, type=nil, name=nil, sort_name=nil)
         super id
-        @type      = type
-        @name      = name
-        @sort_name = sort_name
-        @aliases   = Collection.new
-        @releases  = Collection.new
-        @disambiguation = nil
+        self.type       = type
+        self.name       = name
+        self.sort_name  = sort_name
+        @aliases        = Collection.new
+        @releases       = Collection.new
       end
                     
-      # Set the begin date of this individual.
+      # Set the begin date of this individual to _date_.
       # 
-      # Should be an IncompleteDate object or
-      # a date string, which will get converted
-      # into an IncompleteDate.
+      # Should be an IncompleteDate object or a date string, which will
+      # get converted into an IncompleteDate.
       def begin_date=(date)
         date = IncompleteDate.new date unless date.is_a? IncompleteDate
         @begin_date = date
       end
       
-      # Set the end date of this individual.
+      # Set the end date of this individual to _date_.
       # 
-      # Should be an IncompleteDate object or
-      # a date string, which will get converted
-      # into an IncompleteDate.
+      # Should be an IncompleteDate object or a date string, which will
+      # get converted into an IncompleteDate.
       def end_date=(date)
         date = IncompleteDate.new date unless date.is_a? IncompleteDate
         @end_date = date

@@ -1,5 +1,5 @@
 = RBrainz - Ruby MusicBrainz library
-RBrainz is a Ruby client library to access the MusicBrainz XML webservice,
+RBrainz is a Ruby client library to access the MusicBrainz XML web service,
 which can be used to query the MusicBrainz database.
 
 RBrainz is written in Ruby and follows the design of
@@ -55,8 +55,8 @@ should make the usage clear:
  
  # Query the webservice for the artist with the above ID. The result
  # will contain all the information specified in artist_includes.
- q = Webservice::Query.new
- artist = q.get_artist_by_id(mbid, artist_includes)
+ query = Webservice::Query.new
+ artist = query.get_artist_by_id(mbid, artist_includes)
  
  # Display the fetched artist data together with all unique release titles.
  print <<EOF

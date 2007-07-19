@@ -94,8 +94,8 @@ module MusicBrainz
       # [:filter]  A filter object (see AbstractFilter).
       # [:version] The version of the webservice to use. Defaults to 1.
       # 
-      # Raises:: +RequestError+, +ResourceNotFoundError+, +AuthenticationError+,
-      #          +ConnectionError+ 
+      # Raises:: RequestError, ResourceNotFoundError, AuthenticationError,
+      #          ConnectionError 
       def get(entity_type, options={ :id=>nil, :include=>nil, :filter=>nil, :version=>1 })
         Utils.check_options options, :id, :include, :filter, :version
         url = URI.parse(create_uri(entity_type, options))
@@ -151,10 +151,10 @@ module MusicBrainz
       # [:querystring] A string containing the data to post.
       # [:version] The version of the webservice to use. Defaults to 1.
       #
-      # Raises:: +ConnectionError+, +RequestError+, +AuthenticationError+, 
-      #          +ResourceNotFoundError+
+      # Raises:: ConnectionError, RequestError, AuthenticationError, 
+      #          ResourceNotFoundError
       #
-      # See:: <tt>IWebService.post</tt>
+      # See:: IWebService.post
       def post(entity_type, options={:id=>nil, :querystring=>[], :version=>1})
         Utils.check_options options, :id, :querystring, :version
         url = URI.parse(create_uri(entity_type, options))

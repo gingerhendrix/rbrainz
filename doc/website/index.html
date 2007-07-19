@@ -4,8 +4,8 @@
     <head>
         <title>RBrainz - Ruby MusicBrainz library</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-        <meta name="description" content="A Ruby client library to query the MusicBrainz webservice" />
-        <meta name="keywords" content="RBrainz Ruby MusicBrainz webservice MB-DiscID libdiscid" />
+        <meta name="description" content="A Ruby client library to query the MusicBrainz web service" />
+        <meta name="keywords" content="RBrainz Ruby MusicBrainz web service MB-DiscID libdiscid" />
         <link rel="stylesheet" type="text/css" media="all" href="screen.css" />
         <link rel="alternate" type="application/rss+xml" title="RSS" href="http://rubyforge.org/export/rss_sfnews.php?group_id=3677" />
         
@@ -31,29 +31,69 @@
             <div id="news">
                 <h3>Project News</h3>
             </div>
+            
+            <a href="http://www.musicbrainz.org"><img src="./img/musicbrainz_logo.png" alt="MusicBrainz logo" style="width:10em;" /></a>
         </div>
                 
         <div id="content">
             <h1>RBrainz - Ruby MusicBrainz library</h1>
             <p>
                 RBrainz is a <a href="http://www.ruby-lang.org" rel="external">Ruby</a> client library to query the <a href="http://www.musicbrainz.org" rel="external">MusicBrainz</a> database using the MusicBrainz
-                <a href="http://musicbrainz.org/doc/XMLWebService" rel="external">XML webservice</a>. RBrainz' design follows the <a href="http://musicbrainz.org/doc/XMLWebService#head-cc8dabb2e24c89550074ba740fa0323c5e044ba8" rel="external">reference implementation</a> for a MusicBrainz
-                client library and supports the MusicBrainz <a href="http://musicbrainz.org/doc/MusicBrainzXMLMetaData" rel="external">XML Metadata Schema</a> Version 1.1.
+                <a href="http://musicbrainz.org/doc/XMLWebService" rel="external">XML web service</a>.
+                RBrainz follows the design of the MusicBrainz client library <a href="http://musicbrainz.org/doc/XMLWebService#head-cc8dabb2e24c89550074ba740fa0323c5e044ba8" rel="external">reference implementation</a>
+                and supports the MusicBrainz <a href="http://musicbrainz.org/doc/MusicBrainzXMLMetaData" rel="external">XML Metadata Schema</a> Version 1.2.
             </p>
             
             <h2>Download</h2>
             <p>
                 RBrainz can be downloaded from the <a href="http://rubyforge.org/frs/?group_id=3677">release page</a>. You can also install RBrainz with <a href="http://rubygems.org" rel="external">RubyGems</a>:
             </p>
-            <p>
-                <kbd class="command">gem install rbrainz</kbd>
-            </p>
+            <pre><kbd>gem install rbrainz</kbd></pre>
             <p>
                 If you want to calculate MusicBrainz <a href="http://musicbrainz.org/doc/DiscID" rel="external">Disc IDs</a> you will have to install MB-DiscID as well. MB-DiscID provides Ruby bindings for <a href="http://musicbrainz.org/doc/libdiscid" rel="external">libdiscid</a>. MB-DiscID too can be installed with RubyGems:
             </p>
+            <pre><kbd>gem install mb-discid</kbd></pre>
+            
+            <h2>Usage</h2>
             <p>
-                <kbd class="command">gem install mb-discid</kbd>
+                A simple example on how to use RBrainz is shown below. For more detailed instructions see the <a href="./api/">API documentation</a>.
             </p>
+            <pre><code>require 'rbrainz'
+include MusicBrainz
+
+# With the ArtistInclude object we can control what
+# kind of information the MusicBrainz server will
+# include in its answer.
+artist_includes = Webservice::ArtistIncludes.new(
+  :aliases      => true,
+  :releases     => ['Album', 'Official'],
+  :artist_rels  => true,
+  :release_rels => true,
+  :track_rels   => true,
+  :label_rels   => true,
+  :url_rels     => true
+)
+
+# Query the webservice for the artist with a given ID.
+# The result will contain all the information
+# specified in artist_includes.
+query = Webservice::Query.new
+id = 'c0b2500e-0cef-4130-869d-732b23ed9df5'
+artist = query.get_artist_by_id(id, artist_includes)
+
+# Display the fetched artist data together with
+# all release titles.
+print &lt;&lt;EOF
+ID            : #{artist.id.uuid}
+Name          : #{artist.name}
+Sort name     : #{artist.sort_name}
+Disambiguation: #{artist.disambiguation}
+Type          : #{artist.type}
+Begin date    : #{artist.begin_date}
+End date      : #{artist.end_date}
+Aliases       : #{artist.aliases.to_a.join('; ')}
+Releases      : #{artist.releases.to_a.join('; ')}
+EOF</code></pre>
             
             <h2>Contact</h2>
             <p>

@@ -32,7 +32,7 @@ artist_includes = Webservice::ArtistIncludes.new(
 )
 
 # Create a new Query object which will provide
-# us an interface to the MusicBrainz webservice.
+# us an interface to the MusicBrainz web service.
 query = Webservice::Query.new
 
 # Now query the MusicBrainz database for the artist

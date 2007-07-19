@@ -105,11 +105,11 @@ module MusicBrainz
       
       def initialize(id=nil, title=nil)
         super id
-        @title  = title
-        @tracks = Collection.new
+        self.title      = title
+        @tracks         = Collection.new
         @release_events = Collection.new
-        @discs  = Collection.new
-        @types  = Array.new
+        @discs          = Collection.new
+        @types          = Array.new
       end
 
       #

@@ -17,6 +17,8 @@ module MusicBrainz
     class IncompleteDate < ::Range
       attr_reader :year, :month, :day
 
+      # Create a new IncompleteDate. The parameter _date_ must be a String in
+      # the form <em>YYYY</em>, <em>YYYY-MM</em> or <em>YYYY-MM-DD</em>.
       def initialize(date)
         date = date.to_s if date.respond_to? :to_s
         if date =~ /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/

@@ -43,11 +43,11 @@ module MusicBrainz
       # [:releases]     Array of release types that should be included
       #                 in the result. All releases of the artist that match
       #                 all of those types will be included. Use the constants
-      #                 defined in Model::Releases for the release types.
+      #                 defined in Model::Release for the release types.
       # [:va_releases]  Array of release types. All various artist releases
       #                 the artist appears on and that match all of those
       #                 types will be included. Use the constants
-      #                 defined in Model::Releases for the release types.
+      #                 defined in Model::Release for the release types.
       # [:artist_rels]  Include artist relationships (boolean).
       # [:release_rels] Include release relationships (boolean).
       # [:track_rels]   Include track relationships (boolean).
@@ -55,8 +55,10 @@ module MusicBrainz
       # [:url_rels]     Include url relationships (boolean).
       # [:tags]         Include tags (boolean).
       # 
+      #--
       # TODO:: Check release types. It's possible that :releases
-      # and :va_releases can't be used in parallel.
+      #        and :va_releases can't be used in parallel.
+      #++
       def initialize(includes)
         Utils.check_options includes, 
           :aliases, :artist_rels, :release_rels, :track_rels, 

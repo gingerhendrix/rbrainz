@@ -32,9 +32,9 @@ module MusicBrainz
       attr_accessor :script
       
       def initialize(name=nil, type=nil, script=nil)
-        @name   = name
-        @type   = type
-        @script = script
+        self.name   = name
+        self.type   = type
+        self.script = script
       end
       
       def to_s
