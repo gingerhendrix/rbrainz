@@ -53,15 +53,36 @@ class TestIncompleteDate < Test::Unit::TestCase
   
   def test_range
     assert_equal Date.civil(1980,8,22), @date_year_month_day.begin
-    assert_equal Date.civil(1980,8,23), @date_year_month_day.end
-    assert @date_year_month_day.exclude_end?
+    assert_equal Date.civil(1980,8,22), @date_year_month_day.end
+    assert !@date_year_month_day.exclude_end?
     
     assert_equal Date.civil(1980, 8, 1), @date_year_month.begin
-    assert_equal Date.civil(1980, 9, 1), @date_year_month.end
-    assert @date_year_month.exclude_end?
+    assert_equal Date.civil(1980, 8, 31), @date_year_month.end
+    assert !@date_year_month.exclude_end?
 
     assert_equal Date.civil(1980, 1, 1), @date_year.begin
-    assert_equal Date.civil(1981, 1, 1), @date_year.end
-    assert @date_year.exclude_end?
+    assert_equal Date.civil(1980, 12, 31), @date_year.end, @date_year.end.to_s
+    assert !@date_year.exclude_end?
   end
+  
+  def test_eql
+    assert @date_year.eql?(@date_year)
+    assert @date_year_month.eql?(Date.civil(1980, 8, 1)..Date.civil(1980, 8, 31))
+    assert @date_year_month_day.eql?(Date.civil(1980, 8, 22))
+    assert !@date_year.eql?(@date_year_month_day)
+  end
+
+  def test_include
+    assert @date_year.include?(@date_year)
+    assert @date_year.include?(@date_year_month)
+    assert @date_year.include?(@date_year_month_day)
+    assert @date_year_month.include?(Date.civil(1980, 8, 1))
+    assert @date_year_month.include?(Date.civil(1980, 8, 22))
+    assert @date_year_month.include?(Date.civil(1980, 8, 31))
+    assert @date_year_month.include?(Date.civil(1980, 8, 1)..Date.civil(1980, 8, 31))
+    assert !@date_year_month.include?(Date.civil(1980, 8, 1)..Date.civil(1980, 9, 1))
+    assert !@date_year_month.include?(Date.civil(1980, 7, 30))
+    assert !@date_year_month.include?(Date.civil(1980, 9, 1))
+  end
+  
 end

@@ -70,7 +70,6 @@ class TestRangeEquality < Test::Unit::TestCase
   OPERATIONS = [
       :before?,
       :after?,
-      :eql?,
       :meets_beginning_of?,
       :meets_end_of?,
       :overlaps_beginning_of?,
@@ -132,13 +131,13 @@ class TestRangeEquality < Test::Unit::TestCase
     end
   end
 
-  def test_include
-    TESTSET.each do |a,b,op|
-      if op == :started_by? || op == :contains? || op == :eql? || op == :finished_by?
-        assert a.include?(b), a.inspect + ".include? " + b.inspect
-      else
-        assert !a.include?(b), '!' + a.inspect + ".include? " + b.inspect + ''
-      end
-    end
-  end
+  #def test_include
+  #  TESTSET.each do |a,b,op|
+  #    if op == :started_by? || op == :contains? || op == :eql? || op == :finished_by?
+  #      assert a.include?(b), a.inspect + ".include? " + b.inspect
+  #    else
+  #      assert !a.include?(b), '!' + a.inspect + ".include? " + b.inspect + ''
+  #    end
+  #  end
+  #end
 end

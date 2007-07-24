@@ -211,13 +211,6 @@ Allready exists in Range so we can't define it in the module
           self.starts?(b) || self.during?(b) || self.finishes?(b)
         end
 
-=begin comment
-Allready exists in Range so we can't define it in the module
-        def include?(b)
-          self.started_by?(b) || self.contains?(b) || self.eql?(b) || self.finished_by?(b)
-        end
-=end
-
         protected
         def open_end # :nodoc:
           if self.exclude_end?

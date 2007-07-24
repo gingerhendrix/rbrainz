@@ -6,6 +6,10 @@
 * MBXML#get_entity_list now returns an ScoredCollection even if no list-element
   is present in the XML. This is due to the fact that musicbrainz.org always
   returns an empty result <metadata/> if no matching entities were found.
+* Removed custom eql? and include? methods from Range and added them to
+  IncompleteDate. Those methods changed the behaviour of Range which might lead
+  to unexcpected results in programs using RBrainz.
+* Changed IncompleteDate to include its end value.
 * Added additional examples
 
 == 0.2.0 (2007-07-19)
