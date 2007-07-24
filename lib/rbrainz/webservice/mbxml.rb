@@ -75,10 +75,8 @@ module MusicBrainz
       # entity type. There must be an entity-list element as a child of the
       # +metadata+ element in the document.
       # 
-      # Returns an empty Collection if the list is empty.
-      # Raises a MBXML::ParseError if no entity-list element can be found.
-      # 
-      # Raises:: MBXML::ParseError
+      # Returns an empty ScoredCollection if the list is empty or if no
+      # entity-list element can be found.
       def get_entity_list(entity_type, ns=Model::NS_MMD_1)
         # Search for the first occuring node of type entity which is a child node
         # of the metadata element.
@@ -97,9 +95,8 @@ module MusicBrainz
           
           return collection
         else
-          raise ParseError.new("no element %s-list found" % entity_type)
+          return Model::ScoredCollection.new
         end
-        return nil
       end
       
       private # ----------------------------------------------------------------
