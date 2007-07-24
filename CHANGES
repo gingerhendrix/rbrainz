@@ -1,6 +1,6 @@
 = Changelog
 
-== 0.2.1 (not yet released)
+== 0.2.1 (2007-07-24)
 * Erroneous date strings in the XML are ignored. No error is raised and nil
   is set for the date.
 * MBXML#get_entity_list now returns an ScoredCollection even if no list-element
