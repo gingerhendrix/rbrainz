@@ -1,5 +1,13 @@
 = Changelog
 
+== 0.2.1 (not yet released)
+* Erroneous date strings in the XML are ignored. No error is raised and nil
+  is set for the date.
+* MBXML#get_entity_list now returns an ScoredCollection even if no list-element
+  is present in the XML. This is due to the fact that musicbrainz.org always
+  returns an empty result <metadata/> if no matching entities were found.
+* Added additional examples
+
 == 0.2.0 (2007-07-19)
 * Querying of collections implemented
 * Collection class to store search results (with support for search score and offset)
