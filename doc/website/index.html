@@ -32,6 +32,8 @@
                 <h3>Project News</h3>
             </div>
             
+            <p><a href="http://rubyforge.org/news/?group_id=3677">older news...</a></p>
+            
             <a href="http://www.musicbrainz.org"><img src="./img/musicbrainz_logo.png" alt="MusicBrainz logo" style="width:10em;" /></a>
         </div>
                 
@@ -58,32 +60,32 @@
             <p>
                 A simple example on how to use RBrainz is shown below. For more detailed instructions see the <a href="./api/">API documentation</a>.
             </p>
-            <pre><code>require 'rbrainz'
-include MusicBrainz
+            <pre><code class="ruby"><span class="keyword">require</span> <span class="string">'rbrainz'</span>
+<span class="keyword">include</span> MusicBrainz
 
-# With the ArtistInclude object we can control what
+<span class="comment"># With the ArtistInclude object we can control what
 # kind of information the MusicBrainz server will
-# include in its answer.
+# include in its answer.</span>
 artist_includes = Webservice::ArtistIncludes.new(
-  :aliases      => true,
-  :releases     => ['Album', 'Official'],
-  :artist_rels  => true,
-  :release_rels => true,
-  :track_rels   => true,
-  :label_rels   => true,
-  :url_rels     => true
+  <span class="symbol">:aliases</span>      => <span class="keyword">true</span>,
+  <span class="symbol">:releases</span>     => [<span class="string">'Album'</span>, <span class="string">'Official'</span>],
+  <span class="symbol">:artist_rels</span>  => <span class="keyword">true</span>,
+  <span class="symbol">:release_rels</span> => <span class="keyword">true</span>,
+  <span class="symbol">:track_rels</span>   => <span class="keyword">true</span>,
+  <span class="symbol">:label_rels</span>   => <span class="keyword">true</span>,
+  <span class="symbol">:url_rels</span>     => <span class="keyword">true</span>
 )
 
-# Query the webservice for the artist with a given ID.
+<span class="comment"># Query the webservice for the artist with a given ID.
 # The result will contain all the information
-# specified in artist_includes.
-query = Webservice::Query.new
-id = 'c0b2500e-0cef-4130-869d-732b23ed9df5'
+# specified in artist_includes.</span>
+query  = Webservice::Query.new
+id     = <span class="string">'c0b2500e-0cef-4130-869d-732b23ed9df5'</span>
 artist = query.get_artist_by_id(id, artist_includes)
 
-# Display the fetched artist data together with
-# all release titles.
-print &lt;&lt;EOF
+<span class="comment"># Display the fetched artist data together with
+# all release titles.</span>
+print <span class="string">&lt;&lt;EOF
 ID            : #{artist.id.uuid}
 Name          : #{artist.name}
 Sort name     : #{artist.sort_name}
@@ -93,7 +95,7 @@ Begin date    : #{artist.begin_date}
 End date      : #{artist.end_date}
 Aliases       : #{artist.aliases.to_a.join('; ')}
 Releases      : #{artist.releases.to_a.join('; ')}
-EOF</code></pre>
+EOF</span></code></pre>
             
             <h2>Contact</h2>
             <p>

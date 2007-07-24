@@ -23,7 +23,7 @@ pre {
 	color: black;
 	background-color: rgb(235, 235, 235);
 	border: .1em dashed rgb(255, 180, 15);
-	padding: .2em;
+	padding: .2em .6em;
 }
 
 h1, h2, h3 {
@@ -62,6 +62,8 @@ a[rel="external"] {
 	width: 10em;
 	margin-left: 2em;
 }
+
+#sidebar p { font-size: .9em; }
 
 #navigation ul {
   margin: 0;
@@ -102,3 +104,11 @@ a[rel="external"] {
 #news h3 { font-size: 1.2em; margin: 1.2em 0 0; }
 #news h4 { font-size: .9em; margin: .6em 0 .1em; }
 #news .date { color: rgb(90, 90, 90); }
+
+/* Syntax highlighting */
+code.ruby .fixnum  { color: rgb(  0, 128, 255); font-weight: bold; }
+code.ruby .keyword { color: rgb(164,  53, 122); font-weight: bold; }
+code.ruby .string  { color: rgb( 42,   0, 255); }
+code.ruby .symbol  { color: rgb(255,  64,  64); font-weight: bold; }
+code.ruby .comment { color: rgb( 63, 127,  95); }
+
