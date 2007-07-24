@@ -65,7 +65,7 @@ module MusicBrainz
       # Should be an IncompleteDate object or a date string, which will
       # get converted into an IncompleteDate.
       def begin_date=(date)
-        date = IncompleteDate.new date unless date.is_a? IncompleteDate
+        date = IncompleteDate.new date unless date.is_a? IncompleteDate or date.nil?
         @begin_date = date
       end
       
@@ -74,7 +74,7 @@ module MusicBrainz
       # Should be an IncompleteDate object or a date string, which will
       # get converted into an IncompleteDate.
       def end_date=(date)
-        date = IncompleteDate.new date unless date.is_a? IncompleteDate
+        date = IncompleteDate.new date unless date.is_a? IncompleteDate or date.nil?
         @end_date = date
       end
       

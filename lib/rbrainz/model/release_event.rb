@@ -44,7 +44,7 @@ module MusicBrainz
       
       def initialize(country=nil, date=nil)
         self.country = country
-        self.date    = date if date
+        self.date    = date
       end
       
       # Set the date the release took place.
@@ -53,7 +53,7 @@ module MusicBrainz
       # a date string, which will get converted
       # into an IncompleteDate.
       def date=(date)
-        date = IncompleteDate.new date unless date.is_a? IncompleteDate
+        date = IncompleteDate.new date unless date.is_a? IncompleteDate or date.nil?
         @date = date
       end
       

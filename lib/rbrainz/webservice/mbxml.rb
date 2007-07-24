@@ -133,12 +133,8 @@ module MusicBrainz
         artist.disambiguation = node.elements['disambiguation'].text if node.elements['disambiguation']
         
         if life_span = node.elements['life-span']
-          if life_span.attributes['begin']
-            artist.begin_date = Model::IncompleteDate.new life_span.attributes['begin']
-          end
-          if life_span.attributes['end']
-            artist.end_date = Model::IncompleteDate.new life_span.attributes['end']
-          end
+          artist.begin_date = read_date_attribute(life_span, 'begin')
+          artist.end_date   = read_date_attribute(life_span, 'end')
         end
         
         # Read the alias list
@@ -306,12 +302,8 @@ module MusicBrainz
         label.country = node.elements['country'].text if node.elements['country']
         
         if life_span = node.elements['life-span']
-          if life_span.attributes['begin']
-            label.begin_date = Model::IncompleteDate.new life_span.attributes['begin']
-          end
-          if life_span.attributes['end']
-            label.end_date = Model::IncompleteDate.new life_span.attributes['end']
-          end
+          label.begin_date = read_date_attribute(life_span, 'begin')
+          label.end_date   = read_date_attribute(life_span, 'end')
         end
         
         # Read the alias list
@@ -386,9 +378,7 @@ module MusicBrainz
         event = @factory.new_release_event
         
         # Read all defined data fields
-        if node.attributes['date']
-          event.date = Model::IncompleteDate.new node.attributes['date']
-        end
+        event.date = read_date_attribute(node, 'date')
         event.country = node.attributes['country']
         event.catalog_number = node.attributes['catalog-number']
         event.barcode = node.attributes['barcode']
@@ -451,9 +441,7 @@ module MusicBrainz
           relation.type = MBXML.add_namespace(node.attributes['type'], Model::NS_REL_1)
         end
         
-        if node.attributes['begin']
-          relation.begin_date = Model::IncompleteDate.new node.attributes['begin']
-        end
+        relation.begin_date = read_date_attribute(node, 'begin')
         
         if node.attributes['end']
           relation.begin_end = Model::IncompleteDate.new node.attributes['end']
@@ -565,6 +553,19 @@ module MusicBrainz
       def self.each_element(node, local_name, ns, &block)
         node.elements.each("*[local-name() = '#{local_name}' and namespace-uri()='#{ns}']", &block)
       end
+      
+      # Read a date attribute from node. Returns an IncompleteDate or nil
+      # if the attribute was not set or contained an invalid date.
+      def read_date_attribute(node, attr_name)
+        if node.attributes[attr_name]
+          begin
+            Model::IncompleteDate.new node.attributes[attr_name]
+          rescue ArgumentError
+            nil
+          end
+        end
+      end
+      
     end
 
   end
