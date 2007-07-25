@@ -122,7 +122,7 @@ module MusicBrainz
         # Read all defined data fields
         artist.id = node.attributes['id']
         if node.attributes['type']
-          artist.type = MBXML.add_namespace(node.attributes['type'], Model::NS_MMD_1)
+          artist.type = Utils.add_namespace(node.attributes['type'])
         end
         
         artist.name = node.elements['name'].text if node.elements['name']
@@ -185,7 +185,7 @@ module MusicBrainz
         
         # Read the types
         node.attributes['type'].split(' ').each {|type|
-          release.types << MBXML.add_namespace(type, Model::NS_MMD_1)
+          release.types << Utils.add_namespace(type)
         } if node.attributes['type']
         
         # Read the text representation information.
@@ -289,7 +289,7 @@ module MusicBrainz
         # Read all defined data fields
         label.id = node.attributes['id']
         if node.attributes['type']
-          label.type = MBXML.add_namespace(node.attributes['type'], Model::NS_MMD_1)
+          label.type = Utils.add_namespace(node.attributes['type'])
         end
         
         label.name = node.elements['name'].text if node.elements['name']
@@ -338,7 +338,7 @@ module MusicBrainz
         alias_model = @factory.new_alias
         alias_model.name = node.text
         if node.attributes['type']
-          alias_model.type = MBXML.add_namespace(node.attributes['type'], Model::NS_MMD_1)
+          alias_model.type = Utils.add_namespace(node.attributes['type'])
         end
         alias_model.script = node.attributes['script']
         return alias_model
@@ -419,7 +419,7 @@ module MusicBrainz
       # 
       # The node must be of the type <em>relation-list</em>.
       def read_relation_list(node)
-        target_type = MBXML.add_namespace(node.attributes['target-type'], Model::NS_REL_1)
+        target_type = Utils.add_namespace(node.attributes['target-type'], Model::NS_REL_1)
         node.elements.each('relation') {|child|
           yield create_relation(child, target_type)
         }
@@ -435,18 +435,15 @@ module MusicBrainz
         end
         
         if node.attributes['type']
-          relation.type = MBXML.add_namespace(node.attributes['type'], Model::NS_REL_1)
+          relation.type = Utils.add_namespace(node.attributes['type'], Model::NS_REL_1)
         end
         
         relation.begin_date = read_date_attribute(node, 'begin')
-        
-        if node.attributes['end']
-          relation.begin_end = Model::IncompleteDate.new node.attributes['end']
-        end
+        relation.end_date   = read_date_attribute(node, 'end')
         
         if node.attributes['attributes']
           node.attributes['attributes'].split(' ').each {|attribute|
-            relation.attributes << MBXML.add_namespace(attribute, Model::NS_REL_1)
+            relation.attributes << Utils.add_namespace(attribute, Model::NS_REL_1)
           }
         end
         
@@ -501,7 +498,7 @@ module MusicBrainz
         user_model = @factory.new_user
         # Read the types
         node.attributes['type'].split(' ').each {|type|
-          user_model.types << MBXML.add_namespace(type, Model::NS_EXT_1)
+          user_model.types << Utils.add_namespace(type, Model::NS_EXT_1)
         } if node.attributes['type']
 
         user_model.name = node.elements['name'].text
@@ -527,19 +524,6 @@ module MusicBrainz
             target_collection << entry
             yield entry if block_given?
           end
-        end
-      end
-      
-      # Helper method which will return the given property
-      # extended by the namespace. If the property
-      # already includes the namespace it will be returned
-      # unchanged.
-      def self.add_namespace(property, namespace)
-        regex = Regexp.new("/#{namespace}[a-z-]/i")
-        unless property =~ regex
-          return namespace + property
-        else
-          return property
         end
       end
       

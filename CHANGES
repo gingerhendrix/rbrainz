@@ -1,5 +1,10 @@
 = Changelog
 
+== 0.2.2
+* BUG: Relation end date was not set correctly in MBXML
+* NEW: Allow release type constants to be passed to ArtistIncludes
+* NEW: Methods Utils.add_namespace and Utils.remove_namespace
+
 == 0.2.1 (2007-07-24)
 * Erroneous date strings in the XML are ignored. No error is raised and nil
   is set for the date.

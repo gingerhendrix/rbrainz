@@ -75,11 +75,11 @@ module MusicBrainz
         @parameters << 'tags'         if includes[:tags]
         
         includes[:releases].each {|release_type|
-          @parameters << 'sa-' + release_type.to_s
+          @parameters << 'sa-' + Utils.remove_namespace(release_type.to_s)
         } if includes[:releases]
         
         includes[:va_releases].each {|release_type|
-          @parameters << 'va-' + release_type.to_s
+          @parameters << 'va-' + Utils.remove_namespace(release_type.to_s)
         } if includes[:va_releases]
       end
       

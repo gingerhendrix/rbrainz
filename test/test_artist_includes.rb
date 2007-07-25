@@ -26,8 +26,8 @@ class TestArtistIncludes < Test::Unit::TestCase
       :track_rels => true,
       :label_rels => true,
       :url_rels => true,
-      :releases => ['Album', 'Official'],
-      :va_releases => ['Album', 'Official'],
+      :releases => [Model::Release::TYPE_ALBUM, 'Official'],
+      :va_releases => ['Album', Model::Release::TYPE_OFFICIAL],
       :tags => true
       )
     result_string = includes.to_s
