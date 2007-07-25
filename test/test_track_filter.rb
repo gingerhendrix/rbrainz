@@ -55,6 +55,15 @@ class TestTrackFilter < Test::Unit::TestCase
     assert_equal @filter_hash[:query].to_s, result_hash['query'], filter_string
   end
   
+  def test_release_type_as_constant
+    filter = Webservice::TrackFilter.new(:releasetype => Model::Release::TYPE_ALBUM)
+    filter_string = filter.to_s
+    assert_not_equal '&', filter_string[0]
+    
+    result_hash = query_string_to_hash filter_string
+    assert_equal 'Album', result_hash['releasetype'], filter_string
+  end
+  
   def test_empty_filter
     filter = Webservice::TrackFilter.new({})
     assert_equal '', filter.to_s

@@ -84,8 +84,9 @@ module MusicBrainz
       #              (36 character ASCII representation). If this is given,
       #              the artist parameter is ignored.
       # [:releasetypes] The returned releases must match all of the given
-      #                 release types. This is a list of space separated values
-      #                 like Official, Bootleg, Album, Compilation, etc.
+      #                 release types. This is either an array of release types
+      #                 as defined in Model::Release or a string of space separated
+      #                 values like Official, Bootleg, Album, Compilation etc.
       # [:count]     Number of tracks in the release.
       # [:date]      Earliest release date for the release.
       # [:asin]      The Amazon ASIN.
@@ -108,12 +109,20 @@ module MusicBrainz
         @filter[:discid]       = filter[:discid]    if filter[:discid]
         @filter[:artist]       = filter[:artist]    if filter[:artist]
         @filter[:artistid]     = filter[:artistid]  if filter[:artistid]
-        @filter[:releasetypes] = filter[:releasetypes] if filter[:releasetypes]
         @filter[:count]        = filter[:count]     if filter[:count]
         @filter[:date]         = filter[:date]      if filter[:date]
         @filter[:asin]         = filter[:asin]      if filter[:asin]
         @filter[:lang]         = filter[:lang]      if filter[:lang]
         @filter[:script]       = filter[:script]    if filter[:script]
+        
+        if releasetypes = filter[:releasetypes]
+          if releasetypes.respond_to?(:to_a)
+            releasetypes = releasetypes.to_a.map do |type|
+              Utils.remove_namespace(type)
+            end.join(' ')
+          end
+          @filter[:releasetypes] = releasetypes
+        end
       end
     
     end
@@ -138,7 +147,8 @@ module MusicBrainz
       #              parameter is ignored.
       # [:puid]      The returned tracks have to match the given PUID.
       # [:count]     Number of tracks on the release.
-      # [:releasetype] The type of the release this track appears on
+      # [:releasetype] The type of the release this track appears on. See
+      #                Model::Release for possible values.
       # [:limit]     The maximum number of tracks returned. Defaults
       #              to 25, the maximum allowed value is 100. 
       # [:offset]    Return search results starting at a given offset. Used
@@ -161,7 +171,9 @@ module MusicBrainz
         @filter[:releaseid]   = filter[:releaseid] if filter[:releaseid]
         @filter[:puid]        = filter[:puid]      if filter[:puid]
         @filter[:count]       = filter[:count]     if filter[:count]
-        @filter[:releasetype] = filter[:releasetype] if filter[:releasetype]
+        if filter[:releasetype]
+          @filter[:releasetype] = Utils.remove_namespace(filter[:releasetype])
+        end
       end
     
     end
