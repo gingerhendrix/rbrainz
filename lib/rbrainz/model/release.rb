@@ -126,6 +126,27 @@ module MusicBrainz
           tracks.all {|track| !track.artist || track.artist.id == artist.id }
       end
     
+      # Returns the earliest release date as an IncompleteDate or +nil+.
+      # 
+      # See:: earliest_release_date
+      def earliest_release_event
+        earliest_event = nil
+        release_events.each do |event|
+          if earliest_event.nil? or (event.date and event.date < earliest_event.date)
+            earliest_event = event
+          end
+        end
+        return earliest_event
+      end
+      
+      # Returns the earliest release event or +nil+.
+      # 
+      # See:: earliest_release_event
+      def earliest_release_date
+        event = earliest_release_event
+        event ? event.date : nil
+      end
+    
       # Returns the string representation for this release.
       # 
       # Returns #title converted into a string.

@@ -4,6 +4,7 @@
 * BUG: Relation end date was not set correctly in MBXML.
 * NEW: Allow release type constants to be passed to include and filter objects.
 * NEW: Methods Utils.add_namespace and Utils.remove_namespace.
+* NEW: Methods Release#earliest_release_event and Release#earliest_release_date
 
 == 0.2.1 (2007-07-24)
 * Erroneous date strings in the XML are ignored. No error is raised and nil

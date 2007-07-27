@@ -14,7 +14,7 @@ class TestRelease < Test::Unit::TestCase
     @tested_class = Model::Release
     @invalid_entity_types = [:artist, :track, :label]
     @tracks = [Model::Track.new, Model::Track.new]
-    @release_events = [Model::ReleaseEvent.new, Model::ReleaseEvent.new]
+    @release_events = [Model::ReleaseEvent.new('DE', 2007), Model::ReleaseEvent.new('GB', 1996)]
     @discs = [Model::Disc.new, Model::Disc.new]
   end
 
@@ -121,11 +121,18 @@ class TestRelease < Test::Unit::TestCase
   # Many release events can be added
   def test_add_and_remove_release_events
     release = Model::Release.new
+    
+    assert_equal nil, release.earliest_release_event
+    assert_equal nil, release.earliest_release_date
+    
     assert_equal 0, release.release_events.size
     assert_nothing_raised {release.release_events << @release_events[0]}
     assert_equal 1, release.release_events.size
     assert_nothing_raised {release.release_events << @release_events[1]}
     assert_equal 2, release.release_events.size
+    
+    assert_equal @release_events[1], release.earliest_release_event
+    assert_equal release.earliest_release_event.date, release.earliest_release_date
     
     assert_nothing_raised {release.release_events.delete @release_events[1]}
     assert_equal 1, release.release_events.size

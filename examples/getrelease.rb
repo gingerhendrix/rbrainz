@@ -27,7 +27,8 @@ mbid = Model::MBID.parse(id, :release)
 # on the release will be fetched as well.
 release_includes = Webservice::ReleaseIncludes.new(
   :artist => true,
-  :tracks => true
+  :tracks => true,
+  :release_events => true
 )
 
 # Create a new Query object which will provide
@@ -47,4 +48,9 @@ ID            : #{release.id.uuid}
 Title         : #{release.title}
 Artist        : #{release.artist.unique_name}
 Tracks        : #{release.tracks.to_a.join("\r\n                ")}
+Release Events:
 EOF
+
+release.release_events.each do |event|
+  puts "#{event.date} #{Utils.get_country_name(event.country)}"
+end
