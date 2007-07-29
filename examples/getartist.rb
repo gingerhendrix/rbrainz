@@ -28,7 +28,7 @@ mbid = Model::MBID.parse(id, :artist)
 # fetched.
 artist_includes = Webservice::ArtistIncludes.new(
   :aliases => true,
-  :releases => ['Album', 'Official']
+  :releases => [Model::Release::TYPE_ALBUM, Model::Release::TYPE_OFFICIAL]
 )
 
 # Create a new Query object which will provide

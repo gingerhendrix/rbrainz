@@ -137,8 +137,9 @@ module MusicBrainz
                                    :required_attributes => [], :direction => nil})
         Utils.check_options options, 
             :target_type, :relation_type, :required_attributes, :direction
-        target_type = options[:target_type]
-        relation_type = options[:relation_type]
+        
+        target_type   = Utils.add_namespace(options[:target_type], NS_REL_1)
+        relation_type = Utils.add_namespace(options[:relation_type], NS_REL_1)
         required_attributes = 
           options[:required_attributes] ? options[:required_attributes] : []
         direction = options[:direction]
@@ -160,7 +161,7 @@ module MusicBrainz
         
         # Filter for attributes
         #
-        required = required_attributes.to_set
+        required = required_attributes.map{|a| Utils.add_namespace(a, NS_REL_1)}.to_set
         result.find_all do |r|
              required.subset?( r.attributes.to_set )
         end

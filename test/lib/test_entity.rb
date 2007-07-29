@@ -60,16 +60,16 @@ module TestEntity
     artist_rel.target = Model::Artist.new
     artist_rel.type = Model::NS_REL_1 + 'Vocal'
     artist_rel.direction = Model::Relation::DIR_BACKWARD
-    artist_rel.attributes << 'Guest'
-    artist_rel.attributes << 'Lead'
+    artist_rel.attributes << Model::NS_REL_1 + 'Guest'
+    artist_rel.attributes << Model::NS_REL_1 + 'Lead'
     assert_nothing_raised {entity.add_relation artist_rel}
     
     track_rel = Model::Relation.new
     track_rel.target = Model::Track.new
     track_rel.type = Model::NS_REL_1 + 'Vocal'
     track_rel.direction = Model::Relation::DIR_FORWARD
-    track_rel.attributes << 'Lead'
-    track_rel.attributes << 'Guest'
+    track_rel.attributes << Model::NS_REL_1 + 'Lead'
+    track_rel.attributes << Model::NS_REL_1 + 'Guest'
     assert_nothing_raised {entity.add_relation track_rel}
     
     url_rel = Model::Relation.new
@@ -91,15 +91,27 @@ module TestEntity
     assert_equal 1, rel_list.size
     assert rel_list.include?(artist_rel)
     
+    # Get only artist relation by target type (without namespace)
+    assert_nothing_raised {rel_list = entity.get_relations(
+                             :target_type => 'Artist')}
+    assert_equal 1, rel_list.size
+    assert rel_list.include?(artist_rel)
+    
     # Get only url relation type
     assert_nothing_raised {rel_list = entity.get_relations(
                              :relation_type => Model::NS_REL_1 + 'OfficialHomepage')}
     assert_equal 1, rel_list.size
     assert rel_list.include?(url_rel)
     
+    # Get only url relation type (without namespace)
+    assert_nothing_raised {rel_list = entity.get_relations(
+                             :relation_type => 'OfficialHomepage')}
+    assert_equal 1, rel_list.size
+    assert rel_list.include?(url_rel)
+    
     # Get only artist and track relation by attribute
     assert_nothing_raised {rel_list = entity.get_relations(
-                             :required_attributes => ['Guest', 'Lead'])}
+                             :required_attributes => ['Guest', Model::NS_REL_1 + 'Lead'])}
     assert_equal 2, rel_list.size
     assert rel_list.include?(artist_rel)
     assert rel_list.include?(track_rel)
