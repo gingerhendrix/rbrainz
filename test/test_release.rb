@@ -14,7 +14,8 @@ class TestRelease < Test::Unit::TestCase
     @tested_class = Model::Release
     @invalid_entity_types = [:artist, :track, :label]
     @tracks = [Model::Track.new, Model::Track.new]
-    @release_events = [Model::ReleaseEvent.new('DE', 2007), Model::ReleaseEvent.new('GB', 1996)]
+    @release_events = [Model::ReleaseEvent.new('DE', 2007), Model::ReleaseEvent.new('GB', 1996),
+                       Model::ReleaseEvent.new('GB', '1996-06-01'), Model::ReleaseEvent.new('GB', '1996-06')]
     @discs = [Model::Disc.new, Model::Disc.new]
   end
 
@@ -130,10 +131,18 @@ class TestRelease < Test::Unit::TestCase
     assert_equal 1, release.release_events.size
     assert_nothing_raised {release.release_events << @release_events[1]}
     assert_equal 2, release.release_events.size
+    assert_nothing_raised {release.release_events << @release_events[2]}
+    assert_equal 3, release.release_events.size
+    assert_nothing_raised {release.release_events << @release_events[3]}
+    assert_equal 4, release.release_events.size
     
-    assert_equal @release_events[1], release.earliest_release_event
+    assert_equal @release_events[2], release.earliest_release_event
     assert_equal release.earliest_release_event.date, release.earliest_release_date
     
+    assert_nothing_raised {release.release_events.delete @release_events[2]}
+    assert_equal 3, release.release_events.size
+    assert_nothing_raised {release.release_events.delete @release_events[3]}
+    assert_equal 2, release.release_events.size
     assert_nothing_raised {release.release_events.delete @release_events[1]}
     assert_equal 1, release.release_events.size
     assert_nothing_raised {release.release_events.delete @release_events[0]}
