@@ -22,26 +22,58 @@ module MusicBrainz
     #
     # See:: http://musicbrainz.org/doc/Release.
     # Note:: The current MusicBrainz server implementation supports only a
-    #        limited set of types.
-    #
+    #        limited set of types. See http://wiki.musicbrainz.org/ReleaseAttribute
+    #        for more information.
     class Release < Entity
     
-      TYPE_ALBUM          = NS_MMD_1 + 'Album'
-      TYPE_AUDIOBOOK      = NS_MMD_1 + 'Audiobook'
-      TYPE_BOOTLEG        = NS_MMD_1 + 'Bootleg'
-      TYPE_COMPILATION    = NS_MMD_1 + 'Compilation'
-      TYPE_EP             = NS_MMD_1 + 'EP'
-      TYPE_INTERVIEW      = NS_MMD_1 + 'Interview'
-      TYPE_LIVE           = NS_MMD_1 + 'Live'
+      # A type for not a type. Currently unsupported by MusicBrainz
       TYPE_NONE           = NS_MMD_1 + 'None'
-      TYPE_OFFICIAL       = NS_MMD_1 + 'Official'
-      TYPE_OTHER          = NS_MMD_1 + 'Other'
-      TYPE_PROMOTION      = NS_MMD_1 + 'Promotion'
-      TYPE_PSEUDO_RELEASE = NS_MMD_1 + 'Pseudo-Release'
+      
+      # An album, perhaps better defined as a "Long Play" (LP) release,
+      # generally consists of previously unreleased material. This includes
+      # release re-issues, with or without bonus tracks.
+      TYPE_ALBUM          = NS_MMD_1 + 'Album'
+      # An audiobook is a book read by a narrator without music.
+      TYPE_AUDIOBOOK      = NS_MMD_1 + 'Audiobook'
+      # A compilation is a collection of previously released tracks by one or
+      # more artists. Please note that this is a simplified description of a
+      # compilation.
+      TYPE_COMPILATION    = NS_MMD_1 + 'Compilation'
+      # An EP is a so-called "Extended Play" release and often contains the
+      # letters EP in the title.
+      TYPE_EP             = NS_MMD_1 + 'EP'
+      # An interview release contains an interview, generally with an Artist.
+      TYPE_INTERVIEW      = NS_MMD_1 + 'Interview'
+      # A release that was recorded live.
+      TYPE_LIVE           = NS_MMD_1 + 'Live'
+      # A release that primarily contains remixed material.
       TYPE_REMIX          = NS_MMD_1 + 'Remix'
+      # A single typically has one main song and possibly a handful of
+      # additional tracks or remixes of the main track. A single is usually
+      # named after its main song.
       TYPE_SINGLE         = NS_MMD_1 + 'Single'
+      # A soundtrack is the musical score to a movie, TV series, stage show,
+      # computer game etc.
       TYPE_SOUNDTRACK     = NS_MMD_1 + 'Soundtrack'
+      # Non-music spoken word releases.
       TYPE_SPOKENWORD     = NS_MMD_1 + 'Spokenword'
+      # Any release that does not fit or can't decisively be placed in any of
+      # the categories above.
+      TYPE_OTHER          = NS_MMD_1 + 'Other'
+      
+      # Any release officially sanctioned by the artist and/or their record
+      # company. (Most releases will fit into this category.)
+      TYPE_OFFICIAL       = NS_MMD_1 + 'Official'
+      # A giveaway release or a release intended to promote an upcoming official
+      # release. (e.g. prerelease albums or releases included with a magazine,
+      # versions supplied to radio DJs for air-play, etc).
+      TYPE_PROMOTION      = NS_MMD_1 + 'Promotion'
+      # An unofficial/underground release that was not sanctioned by the artist
+      # and/or the record company.
+      TYPE_BOOTLEG        = NS_MMD_1 + 'Bootleg'
+      # A pseudo-release is a duplicate release for translation/transliteration
+      # purposes.
+      TYPE_PSEUDO_RELEASE = NS_MMD_1 + 'Pseudo-Release'
       
       # See Entity::ENTITY_TYPE.
       ENTITY_TYPE = :release # :nodoc:
