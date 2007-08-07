@@ -1,6 +1,6 @@
 = Changelog
 
-== 0.2.2 (not yet released)
+== 0.3.0 (2007-08-07)
 * BUG: Relation end date was not set correctly in MBXML.
 * NEW: Allow release type constants to be passed to include and filter objects.
 * NEW: Methods Utils.add_namespace and Utils.remove_namespace.
