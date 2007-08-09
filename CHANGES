@@ -7,6 +7,7 @@
 * NEW: Methods Release#earliest_release_event and Release#earliest_release_date
 * NEW: Entity#get_relations allows string with or without namespace for
   target_type, relation_type and required_attributes
+* BUG: Corrected constant TYPE_PSEUDO_RELEASE
 
 == 0.2.1 (2007-07-24)
 * Erroneous date strings in the XML are ignored. No error is raised and nil
