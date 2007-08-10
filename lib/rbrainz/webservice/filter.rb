@@ -50,7 +50,7 @@ module MusicBrainz
     class ArtistFilter < AbstractFilter
     
       # The parameter _filter_ is a hash with filter options. At least the
-      # <tt>:name</tt> filter must be specified.
+      # <tt>:name</tt> or <tt>:query</tt> filter must be specified.
       # 
       # Available filter options:
       # [:name]   Fetch a list of artists with a matching name.
@@ -131,7 +131,7 @@ module MusicBrainz
     class TrackFilter < AbstractFilter
     
       # The parameter _filter_ is a hash with filter options. At least the
-      # <tt>:title</tt> filter must be specified.
+      # <tt>:title</tt>, <tt>:puid</tt> or <tt>:query</tt> filter must be specified.
       # 
       # Available filter options:
       # [:title]     Fetch a list of tracks with a matching title.
@@ -182,7 +182,7 @@ module MusicBrainz
     class LabelFilter < AbstractFilter
     
       # The parameter _filter_ is a hash with filter options. At least the
-      # <tt>:name</tt> filter must be specified.
+      # <tt>:name</tt> or <tt>:query</tt> filter must be specified.
       # 
       # Available filter options:
       # [:name]   Fetch a list of labels with a matching name.
