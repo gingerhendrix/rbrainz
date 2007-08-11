@@ -294,24 +294,73 @@ module MusicBrainz
       
       # Submit track to PUID mappings.
       #
-      # The <em>tracks2puids</em> parameter has to be a dictionary, with the
-      # keys being MusicBrainz track IDs (either as absolute URIs or
-      # in their 36 character ASCII representation) and the values
-      # being PUIDs (ASCII, 36 characters).
+      # The <em>tracks2puids</em> parameter has to be a Hash or Array
+      # with track ID/PUID pairs. The track IDs are either instances of MBID,
+      # absolute URIs or the 36 character ASCII representation. PUIDs are 
+      # 36 characters ASCII strings.
+      # 
+      # Example:
+      #  ws = Webservice::Webservice.new(
+      #         :host     => 'test.musicbrainz.org',
+      #         :username => 'outsidecontext',
+      #         :password => 'secret'
+      #  ) 
+      #  
+      #  query = Webservice::Query.new(ws, :client_id=>'My Tagging App 1.0')
+      #  
+      #  query.submit_puids([
+      #    ['90a56b15-4259-4a33-be13-20d5513504d5', '09ff336b-79e7-1303-f613-7f1cd0d5a346'],
+      #    ['90a56b15-4259-4a33-be13-20d5513504d5', '18fd245f-bc0c-3361-9d61-61a225ed8c79'],
+      #    ['6d9276af-b990-41b6-ad14-de2f128437ea', '3b633298-e671-957a-1f74-83fe71969ad0']
+      #  ])
       #
       # Note that this method only works if a valid user name and
       # password have been set. If username and/or password are incorrect,
       # an AuthenticationError is raised. See the example in Query on
       # how to supply authentication data.
       #
+      # See:: http://test.musicbrainz.org/doc/PUID
       # Raises:: ConnectionError, RequestError, AuthenticationError
       def submit_puids(tracks2puids)
         raise RequestError, 'Please supply a client ID' unless @client_id
         params = [['client', @client_id.to_s]] # Encoded as utf-8
 
-        tracks2puids.each {|track_id, puid| params << ['puid', track_id + ' ' + puid ]}
+        tracks2puids.each do |track_id, puid|
+          track_id = Model::MBID.parse(track_id, :track).uuid
+          params << ['puid', track_id + ' ' + puid ]
+        end
 
-        @webservice.post('track', :querystring=>params)
+        @webservice.post(:track, :params=>params)
+      end
+      
+      # Submit tags for an entity. _user_ should be the username of the user
+      # submitting the tags. _mbid_ must be an instance of MBID identifying the
+      # entity the tag should applied to and _tags_ is either an array or
+      # Collection of Tag objects or a string with comma separated tags.
+      # 
+      # Example:
+      #  ws = Webservice::Webservice.new(
+      #         :host     => 'test.musicbrainz.org',
+      #         :username => 'outsidecontext',
+      #         :password => 'secret'
+      #  ) 
+      #  
+      #  query = Webservice::Query.new(ws)
+      #
+      #  mbid = Model::MBID.new('http://musicbrainz.org/track/90a56b15-4259-4a33-be13-20d5513504d5')
+      #  query.tag('outsidecontext', mbid, 'melodic death metal')
+      # 
+      # Note that this method only works if a valid user name and
+      # password have been set. If username and/or password are incorrect,
+      # an AuthenticationError is raised. See the example in Query on
+      # how to supply authentication data.
+      #
+      # See:: Model::Tag
+      # Raises:: ConnectionError, RequestError, AuthenticationError
+      def tag(user, mbid, tags)
+        tag_string = tags.respond_to?(:to_ary) ? tags.to_ary.join(',') : tags.to_s
+        params = {:user=>user, :entity=>mbid.entity, :id=>mbid.uuid, :tags=>tag_string}
+        @webservice.post(:tag, :params=>params)
       end
       
       private # ----------------------------------------------------------------

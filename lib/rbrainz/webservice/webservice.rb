@@ -40,9 +40,9 @@ module MusicBrainz
       # 
       # Options:
       # [:id]      A MBID if querying for a single ressource.
-      # [:querystring] A string containing the data to post.
+      # [:params]  A Hash or Array containing the data to post as key/value pairs.
       # [:version] The version of the webservice to use. Defaults to 1.
-      def post(entity_type, options={ :id=>nil, :querystring=>[], :version=>1 })
+      def post(entity_type, options={ :id=>nil, :params=>[], :version=>1 })
         raise NotImplementedError.new('Called abstract method.')
       end
       
@@ -71,15 +71,15 @@ module MusicBrainz
       #                the server. Defaults to '/ws'.
       # [:username] The username to authenticate with.
       # [:password] The password to authenticate with.
-      # [:user_agent] Value sent in the User-Agent HTTP header. Defaults to 'rbrainz/0.2'
-      def initialize(options={ :host=>nil, :port=>nil, :path_prefix=>'/ws', :username=>nil, :password=>nil, :user_agent=>'rbrainz/0.2' })
+      # [:user_agent] Value sent in the User-Agent HTTP header. Defaults to "rbrainz/#{RBRAINZ_VERSION}"
+      def initialize(options={ :host=>nil, :port=>nil, :path_prefix=>'/ws', :username=>nil, :password=>nil, :user_agent=>"rbrainz/#{RBRAINZ_VERSION}" })
         Utils.check_options options, :host, :port, :path_prefix, :username, :password, :user_agent
         @host = options[:host] ? options[:host] : 'musicbrainz.org'
         @port = options[:port] ? options[:port] : 80
         @path_prefix = options[:path_prefix] ? options[:path_prefix] : '/ws'
         @username = options[:username]
         @password = options[:password]
-        @user_agent = options[:user_agent] ? options[:user_agent] : 'rbrainz/0.2'
+        @user_agent = options[:user_agent] ? options[:user_agent] : "rbrainz/#{RBRAINZ_VERSION}"
         @open_timeout = nil
         @read_timeout = nil
       end
@@ -99,7 +99,7 @@ module MusicBrainz
       # See:: IWebservice#get
       def get(entity_type, options={ :id=>nil, :include=>nil, :filter=>nil, :version=>1 })
         Utils.check_options options, :id, :include, :filter, :version
-        url = URI.parse(create_uri(entity_type, options))
+        url = URI.parse(create_uri(entity_type, options.merge({:type=>'xml'})))
         request = Net::HTTP::Get.new(url.request_uri)
         request['User-Agent'] = @user_agent
         connection = Net::HTTP.new(url.host, url.port)
@@ -149,19 +149,19 @@ module MusicBrainz
       #
       # Options:
       # [:id]      A MBID if querying for a single ressource.
-      # [:querystring] A string containing the data to post.
+      # [:params]  A Hash or Array containing the data to post as key/value pairs.
       # [:version] The version of the webservice to use. Defaults to 1.
       #
       # Raises:: ConnectionError, RequestError, AuthenticationError, 
       #          ResourceNotFoundError
       #
       # See:: IWebservice#post
-      def post(entity_type, options={:id=>nil, :querystring=>[], :version=>1})
-        Utils.check_options options, :id, :querystring, :version
+      def post(entity_type, options={ :id=>nil, :params=>[], :version=>1 })
+        Utils.check_options options, :id, :params, :version
         url = URI.parse(create_uri(entity_type, options))
         request = Net::HTTP::Post.new(url.request_uri)
         request['User-Agent'] = @user_agent
-        request.set_form_data(options[:querystring])
+        request.set_form_data(options[:params])
         connection = Net::HTTP.new(url.host, url.port)
         
         # Set timeouts
@@ -177,7 +177,7 @@ module MusicBrainz
               request = Net::HTTP::Post.new(url.request_uri)
               request['User-Agent'] = @user_agent
               request.digest_auth @username, @password, response
-              request.set_form_data(options[:querystring])
+              request.set_form_data(options[:params])
               response = http.request(request)
             end
             response
@@ -205,7 +205,7 @@ module MusicBrainz
       private # ----------------------------------------------------------------
       
       # Builds a request URI for querying the webservice.
-      def create_uri(entity_type, options = {:id => nil, :include => nil, :filter => nil, :version => 1})
+      def create_uri(entity_type, options = {:id=>nil, :include=>nil, :filter=>nil, :version=>1, :type=>nil})
         # Make sure the version is set
         options[:version] = 1 if options[:version].nil?
         
@@ -217,16 +217,19 @@ module MusicBrainz
             id = Model::MBID.parse(id, entity_type)
           end
         
-          uri = 'http://%s:%d%s/%d/%s/%s?type=%s' %
-                [@host, @port, @path_prefix, options[:version],
-                 entity_type, id.uuid, 'xml']
+          uri = 'http://%s:%d%s/%d/%s/%s' %
+                [@host, @port, @path_prefix, options[:version], entity_type, id.uuid]
         else
-          uri = 'http://%s:%d%s/%d/%s/?type=%s' %
-                [@host, @port, @path_prefix, options[:version],
-                 entity_type, 'xml']
+          uri = 'http://%s:%d%s/%d/%s/' %
+                [@host, @port, @path_prefix, options[:version], entity_type]
         end
-        uri += '&' + options[:include].to_s unless options[:include].nil?
-        uri += '&' + options[:filter].to_s unless options[:filter].nil?
+        
+        # Append the querystring
+        querystring = []
+        querystring << 'type=' + URI.escape(options[:type]) unless options[:type].nil?
+        querystring << options[:include].to_s unless options[:include].nil?
+        querystring << options[:filter].to_s unless options[:filter].nil?
+        uri += '?' + querystring.join('&') unless querystring.empty? 
         return uri
       end
     

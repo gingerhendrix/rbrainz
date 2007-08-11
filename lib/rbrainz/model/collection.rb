@@ -93,6 +93,7 @@ module MusicBrainz
       end
       alias to_ary to_a
       
+      # Duplicate this collection.
       def dup
         Collection.new(self.count, self.offset, @entries)
       end
