@@ -73,7 +73,7 @@ module MusicBrainz
       TYPE_BOOTLEG        = NS_MMD_1 + 'Bootleg'
       # A pseudo-release is a duplicate release for translation/transliteration
       # purposes.
-      TYPE_PSEUDO_RELEASE = NS_MMD_1 + 'PseudoRelease'
+      TYPE_PSEUDO_RELEASE = NS_MMD_1 + 'Pseudo-Release'
       
       # See Entity::ENTITY_TYPE.
       ENTITY_TYPE = :release # :nodoc:
