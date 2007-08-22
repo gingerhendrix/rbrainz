@@ -72,10 +72,11 @@ module MusicBrainz
       end
       
       # Read the XML string and create a list of entity models for the given
-      # entity type. There must be an entity-list element as a child of the
-      # +metadata+ element in the document.
+      # entity type. The list is returned as a Model::ScoredCollection. There
+      # must be an entity-list element as a child of the +metadata+ element in
+      # the document.
       # 
-      # Returns an empty ScoredCollection if the list is empty or if no
+      # Returns an empty Model::ScoredCollection if the list is empty or if no
       # entity-list element can be found.
       def get_entity_list(entity_type, ns=Model::NS_MMD_1)
         # Search for the first occuring node of type entity which is a child node
