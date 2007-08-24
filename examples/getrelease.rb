@@ -16,7 +16,7 @@ include MusicBrainz
 # The release's MusicBrainz ID.
 # Either read it from the command line as the first
 # parameter or use a default one for demonstration.
-id = $*[0] ? $*[0] : 'b413313a-dfb7-485a-8f98-eb1ad2d26fe2'#'6785cad0-159c-40ec-9ee4-30d8745dd7f9'
+id = $*[0] ? $*[0] : '6785cad0-159c-40ec-9ee4-30d8745dd7f9'
 
 # Generate a new release MBID object from the ID:
 mbid = Model::MBID.parse(id, :release)

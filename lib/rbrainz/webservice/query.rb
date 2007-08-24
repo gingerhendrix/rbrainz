@@ -356,7 +356,7 @@ module MusicBrainz
       # 
       # See:: Model::Tag
       # Raises:: ConnectionError, RequestError, AuthenticationError
-      def set_tags(mbid, tags)
+      def submit_user_tags(mbid, tags)
         mbid = Model::MBID.parse(mbid)
         tag_string = tags.respond_to?(:to_ary) ? tags.to_ary.join(',') : tags.to_s
         params = {:entity=>mbid.entity, :id=>mbid.uuid, :tags=>tag_string}
@@ -386,7 +386,7 @@ module MusicBrainz
       # 
       # See:: Model::Tag
       # Raises:: ConnectionError, RequestError, ResponseError, AuthenticationError
-      def get_tags(mbid)
+      def get_user_tags(mbid)
         mbid = Model::MBID.parse(mbid)
         return get_entities(:tag, "entity=#{mbid.entity}&id=#{mbid.uuid}").to_collection
       end
