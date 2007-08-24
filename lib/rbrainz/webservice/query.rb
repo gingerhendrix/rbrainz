@@ -333,11 +333,15 @@ module MusicBrainz
         @webservice.post(:track, :params=>params)
       end
       
-      # Submit tags for an entity. _user_ should be the username of the user
-      # submitting the tags. _mbid_ must be an instance of MBID identifying the
-      # entity the tag should applied to and _tags_ is either an array or
+      # Submit tags for an entity. _mbid_ must be an instance of MBID identifying
+      # the entity the tag should applied to and _tags_ is either and array or
       # Collection of Tag objects or a string with comma separated tags.
       # 
+      # Note that this method only works if a valid user name and password have
+      # been set. The tags will be applied for the authenticated user. If
+      # username and/or password are incorrect, an AuthenticationError is raised.
+      # See the example in Query on how to supply authentication data.
+      #
       # Example:
       #  ws = Webservice::Webservice.new(
       #         :host     => 'test.musicbrainz.org',
@@ -347,20 +351,44 @@ module MusicBrainz
       #  
       #  query = Webservice::Query.new(ws)
       #
-      #  mbid = Model::MBID.new('http://musicbrainz.org/track/90a56b15-4259-4a33-be13-20d5513504d5')
-      #  query.tag('outsidecontext', mbid, 'melodic death metal')
+      #  mbid = Model::MBID.new('http://musicbrainz.org/artist/10bf95b6-30e3-44f1-817f-45762cdc0de0')
+      #  query.set_tags(mbid, 'doom metal, british')
       # 
-      # Note that this method only works if a valid user name and
-      # password have been set. If username and/or password are incorrect,
-      # an AuthenticationError is raised. See the example in Query on
-      # how to supply authentication data.
-      #
       # See:: Model::Tag
       # Raises:: ConnectionError, RequestError, AuthenticationError
-      def tag(user, mbid, tags)
+      def set_tags(mbid, tags)
+        mbid = Model::MBID.parse(mbid)
         tag_string = tags.respond_to?(:to_ary) ? tags.to_ary.join(',') : tags.to_s
-        params = {:user=>user, :entity=>mbid.entity, :id=>mbid.uuid, :tags=>tag_string}
+        params = {:entity=>mbid.entity, :id=>mbid.uuid, :tags=>tag_string}
         @webservice.post(:tag, :params=>params)
+      end
+      
+      # Returns a Model::Collection of tags a user has applied to the entity
+      # identified by _mbid_.
+      # 
+      # Note that this method only works if a valid user name and password have
+      # been set. Only the tags the authenticated user apllied to the entity will
+      # be returned. If username and/or password are incorrect, an
+      # AuthenticationError is raised. See the example in Query on how to supply
+      # authentication data.
+      #
+      # Example:
+      #  ws = Webservice::Webservice.new(
+      #         :host     => 'test.musicbrainz.org',
+      #         :username => 'outsidecontext',
+      #         :password => 'secret'
+      #  ) 
+      #  
+      #  query = Webservice::Query.new(ws)
+      #
+      #  mbid = Model::MBID.new('http://musicbrainz.org/artist/10bf95b6-30e3-44f1-817f-45762cdc0de0')
+      #  query.get_tags(mbid)
+      # 
+      # See:: Model::Tag
+      # Raises:: ConnectionError, RequestError, ResponseError, AuthenticationError
+      def get_tags(mbid)
+        mbid = Model::MBID.parse(mbid)
+        return get_entities(:tag, "entity=#{mbid.entity}&id=#{mbid.uuid}").to_collection
       end
       
       private # ----------------------------------------------------------------

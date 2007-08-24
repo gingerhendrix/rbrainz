@@ -99,7 +99,7 @@ module MusicBrainz
       # See:: IWebservice#get
       def get(entity_type, options={ :id=>nil, :include=>nil, :filter=>nil, :version=>1 })
         Utils.check_options options, :id, :include, :filter, :version
-        url = URI.parse(create_uri(entity_type, options.merge({:type=>'xml'})))
+        url = URI.parse(create_uri(entity_type, options))
         request = Net::HTTP::Get.new(url.request_uri)
         request['User-Agent'] = @user_agent
         connection = Net::HTTP.new(url.host, url.port)
@@ -208,6 +208,7 @@ module MusicBrainz
       def create_uri(entity_type, options = {:id=>nil, :include=>nil, :filter=>nil, :version=>1, :type=>nil})
         # Make sure the version is set
         options[:version] = 1 if options[:version].nil?
+        options[:type] = 'xml' if options[:type].nil?
         
         # Build the URI
         if options[:id]

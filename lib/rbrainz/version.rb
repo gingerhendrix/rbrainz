@@ -10,6 +10,6 @@
 module MusicBrainz
 
   # The version of the RBrainz library.
-  RBRAINZ_VERSION = '0.3.0'
+  RBRAINZ_VERSION = '0.4.0'
 
 end

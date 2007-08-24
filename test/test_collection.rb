@@ -36,8 +36,7 @@ class TestCollection < Test::Unit::TestCase
     # Fill the collection
     assert_nothing_raised {
       collection << @artist_one
-      collection << @artist_two
-      collection << @artist_three
+      collection << @artist_two << @artist_three
     }
     assert_equal 3, collection.size
     assert !collection.empty?

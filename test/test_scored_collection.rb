@@ -83,4 +83,15 @@ class TestScoredCollection < Test::Unit::TestCase
     assert_equal @artist_three, collection.entities[2]
   end
 
+  def test_to_collection
+    scored_collection = Model::ScoredCollection.new(102, 8)
+    scored_collection << @artist_one << @artist_two << @artist_three
+    
+    collection = scored_collection.to_collection
+    assert_equal scored_collection.count, collection.count
+    assert_equal scored_collection.offset, collection.offset
+    assert_equal scored_collection.size, collection.size
+    assert_equal scored_collection.entities, collection.entries
+  end
+
 end

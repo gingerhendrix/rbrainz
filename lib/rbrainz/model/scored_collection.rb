@@ -55,7 +55,7 @@ module MusicBrainz
         return map {|entry| entry.entity}
       end
       
-      # Add a new entry to the collection.
+      # Add a new entry to the collection. . Returns self.
       # 
       # You may either add a ScoredCollection::Entry, just an Model::Entity
       # or an object responding to +first+ and +last+ where +first+ must
@@ -68,6 +68,9 @@ module MusicBrainz
       #  collection << Model::ScoredCollection::Entry.new(artist, 100)
       #  collection << [artist, 100]
       #  collection << artist
+      #  
+      #  # Add several entities in one line
+      #  collection << artist_one << artist_two
       def <<(entry)
         super wrap(entry)
       end
@@ -79,6 +82,11 @@ module MusicBrainz
       # return the entity and +last+ the score.
       def []=(index, entry)
         super wrap(entry)
+      end
+
+      # Convert this ScoredCollection into a Collection without the scores.      
+      def to_collection
+        Collection.new(count, offset, entities)
       end
       
       private #-----------------------------------------------------------------

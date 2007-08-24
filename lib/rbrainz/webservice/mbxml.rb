@@ -348,8 +348,8 @@ module MusicBrainz
       # Iterate over a list of tags and add them to the target collection.
       # 
       # The node must be of the type <em>tag-list</em>.
-      def read_tag_list(list_node, target_collection)
-        read_list(list_node, target_collection, 'tag') do |a|
+      def read_tag_list(list_node, target_collection, read_scores=false)
+        read_list(list_node, target_collection, 'tag', read_scores) do |a|
           yield a if block_given?
         end
       end

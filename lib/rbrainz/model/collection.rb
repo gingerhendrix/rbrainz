@@ -42,9 +42,10 @@ module MusicBrainz
         end
       end
       
-      # Add a new element to this collection.
+      # Add a new element to this collection. Returns self.
       def <<(entry)
         @entries << entry
+        self # return self to allow something like collection << a << b
       end
       
       # Delete an element from the collection.
