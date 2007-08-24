@@ -55,6 +55,9 @@ module MusicBrainz
       attr_accessor :direction
       
       # The relation's target object.
+      # 
+      # The target can either be an object of the type Model::Entity
+      # or a URL if the type of the relation is TO_URL.
       attr_reader :target
       
       # The list of attributes describing this relation.
@@ -87,8 +90,8 @@ module MusicBrainz
       
       # Set the target of this relation.
       # 
-      # The _target_ can either be a object of the type Model::Entity
-      # or a URL.
+      # The _target_ can either be an object of the type Model::Entity
+      # or a URL if the type of the relation is TO_URL.
       def target=(target)
         if target.is_a? Entity
           @target = target

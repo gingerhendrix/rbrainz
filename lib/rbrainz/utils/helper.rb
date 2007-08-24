@@ -25,7 +25,7 @@ module MusicBrainz
       # includes the namespace or if _str_ is empty it will be returned unchanged.
       def add_namespace(str, namespace=Model::NS_MMD_1)
         unless str =~ /^#{namespace}/ or str.to_s.empty?
-          return namespace + str
+          return namespace + str.to_s
         else
           return str
         end
