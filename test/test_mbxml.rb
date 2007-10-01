@@ -381,6 +381,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal '07567825672', release.release_events[0].barcode
     assert_equal '50c384a2-0b44-401b-b893-8181173339c7', release.release_events[0].label.id.uuid
     assert_equal 'Atlantic Records', release.release_events[0].label.name
+    assert_equal 'CD', release.release_events[0].format
   end
 
   def test_track_search

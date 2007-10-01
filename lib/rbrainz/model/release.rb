@@ -207,7 +207,7 @@ module MusicBrainz
       # +nil+ is returned.
       # 
       # This method knows about special cases such as Jamendo cover art URIs and
-      # will allways return a URI which can be usded to fetch the image file.
+      # will allways return a URI which can be used to fetch the image file.
       # 
       # In some cases (e.g. Jamendo) the returned URI does not directly point
       # to an image file but will be redirected by the webserver. If you plan to

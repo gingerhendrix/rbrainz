@@ -42,6 +42,9 @@ module MusicBrainz
       # The release date. An instance of IncompleteDate.
       attr_reader :date
       
+      # The media format of the release (e.g. CD or Vinyl).
+      attr_accessor :format
+      
       def initialize(country=nil, date=nil)
         self.country = country
         self.date    = date
