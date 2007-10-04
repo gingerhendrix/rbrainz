@@ -242,10 +242,10 @@ class TestMBXML < Test::Unit::TestCase
     url_rels = release.get_relations(:target_type => Model::Relation::TO_URL)
     assert_equal 2, url_rels.size, release.get_relations.inspect
     assert_equal Model::NS_REL_1 + 'Wikipedia', url_rels[0].type
-    assert_equal nil, url_rels[0].direction
+    assert_equal Model::Relation::DIR_BOTH, url_rels[0].direction
     assert_equal 'http://en.wikipedia.org/wiki/Highway_61_Revisited', url_rels[0].target
     assert_equal Model::NS_REL_1 + 'AmazonAsin', url_rels[1].type
-    assert_equal nil, url_rels[1].direction
+    assert_equal Model::Relation::DIR_BOTH, url_rels[1].direction
     assert_equal 'http://www.amazon.com/gp/product/B0000024SI', url_rels[1].target
   end
   

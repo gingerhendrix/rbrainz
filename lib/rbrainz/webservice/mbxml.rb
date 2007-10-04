@@ -434,6 +434,8 @@ module MusicBrainz
         # Read all defined data fields
         if node.attributes['direction']
           relation.direction = node.attributes['direction'].to_sym
+        else
+          relation.direction = :both
         end
         
         if node.attributes['type']
