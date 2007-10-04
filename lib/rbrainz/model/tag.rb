@@ -13,8 +13,7 @@ module MusicBrainz
     # 
     # Tags are arbitrary labels assigned to entities by the users of MusicBrainz.
     # 
-    # Note:: Tagging is not supported by the current MusicBrainz server but will
-    #        be added in the near future.
+    # See:: http://wiki.musicbrainz.org/FolksonomyTagging
     class Tag
       # The tag text.
       attr_accessor :text
