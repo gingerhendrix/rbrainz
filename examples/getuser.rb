@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 #
-# Example script which queries the database for a
-# User
+# Example script which queries the database for a user.
 # 
 # $Id$
 

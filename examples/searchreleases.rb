@@ -16,7 +16,7 @@ include MusicBrainz
 # Define the search parameters: Search for releases with the
 # title "Paradise Lost" and return a maximum of 10 releases.
 release_filter = Webservice::ReleaseFilter.new(
-  :title  => 'Draconian Times',
+  :artistid => '10bf95b6-30e3-44f1-817f-45762cdc0de0',
   :limit => 10
 )
 
@@ -31,5 +31,6 @@ releases = query.get_releases(release_filter)
 # Display the fetched release titles and the score, which
 # indicates how good the release matches the search parameters.
 releases.each do |entry|
-  print "%s (%i%%)\r\n" % [entry.entity.title, entry.score]
+  print "%s: %s (%i%%)\r\n" % [entry.entity.earliest_release_date,
+                               entry.entity.title, entry.score]
 end

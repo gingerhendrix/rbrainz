@@ -168,8 +168,8 @@ module MusicBrainz
       # Returns the earliest release date as an IncompleteDate.
       # 
       # This favours complete dates. For example, '2006-09' is
-	  # returned if there is '2000', too. If there is no release
-	  # event associated with this release, +nil+ is returned.
+      # returned if there is '2000', too. If there is no release
+      # event associated with this release, +nil+ is returned.
       # 
       # See:: earliest_release_date
       def earliest_release_event
@@ -183,7 +183,7 @@ module MusicBrainz
         return earliest_event
       end
       
-      # Returns the earliest release event or +nil+.
+      # Returns the date of the earliest release event or +nil+.
       # 
       # See:: earliest_release_event
       def earliest_release_date
