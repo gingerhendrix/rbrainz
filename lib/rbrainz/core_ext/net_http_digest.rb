@@ -14,11 +14,47 @@ module Net # :nodoc:
   module HTTPHeader # :nodoc:
     @@nonce_count = -1
     CNONCE = Digest::MD5.new.update("%x" % (Time.now.to_i + rand(65535))).hexdigest
-    def digest_auth(user, password, response)
-      @@nonce_count += 1
-
+    
+    def select_auth(user,password,response)
       response['www-authenticate'] =~ /^(\w+) (.*)/
-
+      auth_type = $1
+      case auth_type
+        when 'Digest'
+          digest_auth(user,password,response)
+          return true
+        when 'Basic'
+          basic_auth(user,password)
+          return true
+      end
+      return false
+    end
+    
+    def proxy_select_auth(user, password, response)
+      response['proxy-authenticate'] =~ /^(\w+) (.*)/
+      auth_type = $1
+      case auth_type
+        when 'Digest'
+          proxy_digest_auth(user,password,response)
+          return true
+        when 'Basic'
+          proxy_basic_auth(user,password)
+          return true
+      end
+      return false
+    end
+    
+    def digest_auth(user, password, response)
+      @header['Authorization'] = digest_encode(response['www-authenticate'], user, password)
+    end
+    
+    def proxy_digest_auth(user, password, response)
+      @header['Proxy-Authorization'] = digest_encode(response['proxy-authenticate'], user, password)
+    end
+    
+    def digest_encode(authenticate, user, password)
+      @@nonce_count += 1
+      authenticate =~ /^(\w+) (.*)/
+      
       params = {}
       $2.gsub(/(\w+)="(.*?)"/) { params[$1] = $2 }
 
@@ -46,7 +82,8 @@ module Net # :nodoc:
       header << "nc=#{'%08x' % @@nonce_count}" if params['qop']
       header << "cnonce=\"#{CNONCE}\"" if params['qop']
       header << "response=\"#{Digest::MD5.new.update(request_digest).hexdigest}\""
-      @header['Authorization'] = header
+      
+      return header
     end
   end
 end

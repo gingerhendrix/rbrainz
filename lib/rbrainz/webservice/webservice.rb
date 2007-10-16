@@ -72,8 +72,9 @@ module MusicBrainz
       # [:username] The username to authenticate with.
       # [:password] The password to authenticate with.
       # [:user_agent] Value sent in the User-Agent HTTP header. Defaults to "rbrainz/#{RBRAINZ_VERSION}"
-      def initialize(options={ :host=>nil, :port=>nil, :path_prefix=>'/ws', :username=>nil, :password=>nil, :user_agent=>"rbrainz/#{RBRAINZ_VERSION}" })
-        Utils.check_options options, :host, :port, :path_prefix, :username, :password, :user_agent
+      # [:proxy] URL for the proxy server to connect through
+      def initialize(options={ :host=>nil, :port=>nil, :path_prefix=>'/ws', :username=>nil, :password=>nil, :user_agent=>"rbrainz/#{RBRAINZ_VERSION}", :proxy=>nil })
+        Utils.check_options options, :host, :port, :path_prefix, :username, :password, :user_agent, :proxy
         @host = options[:host] ? options[:host] : 'musicbrainz.org'
         @port = options[:port] ? options[:port] : 80
         @path_prefix = options[:path_prefix] ? options[:path_prefix] : '/ws'
@@ -82,6 +83,14 @@ module MusicBrainz
         @user_agent = options[:user_agent] ? options[:user_agent] : "rbrainz/#{RBRAINZ_VERSION}"
         @open_timeout = nil
         @read_timeout = nil
+        @proxy = {}
+        unless options[:proxy].nil?
+          uri = URI.parse( options[:proxy] )
+          @proxy[:host], @proxy[:port] = uri.host, uri.port
+          if uri.userinfo
+            @proxy[:username], @proxy[:password] = uri.userinfo.split(/:/)
+          end
+        end
       end
     
       # Query the Webservice with HTTP GET.
@@ -102,7 +111,7 @@ module MusicBrainz
         url = URI.parse(create_uri(entity_type, options))
         request = Net::HTTP::Get.new(url.request_uri)
         request['User-Agent'] = @user_agent
-        connection = Net::HTTP.new(url.host, url.port)
+        connection = Net::HTTP.new(url.host, url.port, @proxy[:host], @proxy[:port])
         
         # Set timeouts
         connection.open_timeout = @open_timeout if @open_timeout
@@ -112,10 +121,18 @@ module MusicBrainz
         begin
           response = connection.start do |http|
             response = http.request(request)
+            if response.is_a?(Net::HTTPProxyAuthenticationRequired) && @proxy[:user] && @proxy[:password]
+              request = Net::HTTP::Post.new(url.request_uri)
+              request['User-Agent'] = @user_agent
+              request.proxy_select_auth( @username, @password, response)
+              request.set_form_data(options[:params])
+              response = http.request(request)
+            end
+
             if response.is_a?(Net::HTTPUnauthorized) && @username && @password
               request = Net::HTTP::Get.new(url.request_uri)
               request['User-Agent'] = @user_agent
-              request.digest_auth @username, @password, response
+              request.select_auth @username, @password, response
               response = http.request(request)
             end
             response
@@ -162,7 +179,7 @@ module MusicBrainz
         request = Net::HTTP::Post.new(url.request_uri)
         request['User-Agent'] = @user_agent
         request.set_form_data(options[:params])
-        connection = Net::HTTP.new(url.host, url.port)
+        connection = Net::HTTP.new(url.host, url.port, @proxy[:host], @proxy[:port])
         
         # Set timeouts
         connection.open_timeout = @open_timeout if @open_timeout
@@ -173,10 +190,17 @@ module MusicBrainz
           response = connection.start do |http|
             response = http.request(request)
             
+            if response.is_a?(Net::HTTPProxyAuthenticationRequired) && @proxy[:user] && @proxy[:password]
+              request = Net::HTTP::Post.new(url.request_uri)
+              request['User-Agent'] = @user_agent
+              request.proxy_select_auth( @username, @password, response)
+              request.set_form_data(options[:params])
+              response = http.request(request)
+            end
             if response.is_a?(Net::HTTPUnauthorized) && @username && @password
               request = Net::HTTP::Post.new(url.request_uri)
               request['User-Agent'] = @user_agent
-              request.digest_auth @username, @password, response
+              request.select_auth( @username, @password, response)
               request.set_form_data(options[:params])
               response = http.request(request)
             end
