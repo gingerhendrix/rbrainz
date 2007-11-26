@@ -15,12 +15,12 @@ include MusicBrainz
 # We test against the official test files supplied by
 # MusicBrainz. See http://bugs.musicbrainz.org/browser/mmd-schema/trunk/test-data
 class TestMBXML < Test::Unit::TestCase
-
+  
   DATA_PATH = 'test/test-data/valid/'
-
+  
   def setup
   end
-
+  
   def teardown
   end
   
@@ -54,7 +54,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
     assert_equal nil, mbxml.get_entity(:label)
-
+    
     artist_list = mbxml.get_entity_list(:artist)
     assert_equal 0, artist_list.offset
     assert_equal 47, artist_list.count
@@ -100,7 +100,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'composer', artist.tags[3].text
     assert_equal 120, artist.tags[3].count
   end
- 
+  
   def test_artist_tori_amos_1
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_1.xml')
     artist = mbxml.get_entity(:artist)
@@ -111,7 +111,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'Amos, Tori', artist.sort_name
     assert_equal '1963-08-22', artist.begin_date.to_s
   end
-
+  
   def test_artist_tori_amos_2
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_2.xml')
     artist = mbxml.get_entity(:artist)
@@ -132,7 +132,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal artist, artist.releases[2].artist
     assert_equal 4, artist.releases[2].discs.count
   end
-
+  
   def test_artist_tori_amos_3
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_3.xml')
     artist = mbxml.get_entity(:artist)
@@ -157,7 +157,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal Model::NS_REL_1 + 'Wikipedia', url_rels[1].type
     assert_equal 'http://en.wikipedia.org/wiki/Tori_Amos', url_rels[1].target
   end
-
+  
   def test_artist_tori_amos_4
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_4.xml')
     artist = mbxml.get_entity(:artist)
@@ -175,7 +175,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'Latn', artist.aliases[2].script
     assert_equal Model::NS_MMD_1 + 'Misspelling', artist.aliases[2].type
   end
-
+  
   def test_artist_tori_amos_5
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'artist/Tori_Amos_5.xml')
     artist = mbxml.get_entity(:artist)
@@ -193,14 +193,14 @@ class TestMBXML < Test::Unit::TestCase
     assert artist.releases[0].types.include?(Model::Release::TYPE_ALBUM)
     assert artist.releases[0].types.include?(Model::Release::TYPE_OFFICIAL)
   end
-
+  
   def test_release_search
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/search_result_1.xml')
     assert_equal nil, mbxml.get_entity(:artist)
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
     assert_equal nil, mbxml.get_entity(:label)
-
+    
     release_list = mbxml.get_entity_list(:release)
     assert_equal 0, release_list.offset
     assert_equal 234, release_list.count
@@ -238,7 +238,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 9, release.tracks.size
     assert_equal '430aa3d3-3dac-4bd5-857d-eb10212ffefb', release.tracks[0].id.uuid
     assert_equal 'd315625a-3976-41b4-b2e0-43336b0f67bc', release.tracks[8].id.uuid
-  
+    
     url_rels = release.get_relations(:target_type => Model::Relation::TO_URL)
     assert_equal 2, url_rels.size, release.get_relations.inspect
     assert_equal Model::NS_REL_1 + 'Wikipedia', url_rels[0].type
@@ -286,7 +286,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 3, release.discs.size
     assert_equal 'ILKp3.bZmvoMO7wSrq1cw7WatfA-', release.discs[0].id
   end
-
+  
   def test_release_little_earthquakes_2
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Little_Earthquakes_2.xml')
     release = mbxml.get_entity(:release)
@@ -309,7 +309,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'Crucify', release.tracks[0].title
     assert_equal 301186, release.tracks[0].duration
   end
-
+  
   # This is a various artist release.
   def test_release_mission_impossible_2
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Mission_Impossible_2.xml')
@@ -330,7 +330,7 @@ class TestMBXML < Test::Unit::TestCase
       assert_not_equal release.artist, track.artist
     }
   end
-
+  
   def test_release_under_the_pink_1
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Under_the_Pink_1.xml')
     release = mbxml.get_entity(:release)
@@ -349,7 +349,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 4, release.discs.count
     assert_equal 12, release.tracks.count
   end
-
+  
   def test_release_under_the_pink_2
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Under_the_Pink_2.xml')
     release = mbxml.get_entity(:release)
@@ -364,7 +364,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal '0a984e3b-e38a-4b86-80be-f3a3eb1114ca', release.tracks[0].id.uuid
     assert_equal 'God', release.tracks[0].title
   end
-
+  
   def test_release_under_the_pink_3
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'release/Under_the_Pink_3.xml')
     release = mbxml.get_entity(:release)
@@ -381,16 +381,16 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal '07567825672', release.release_events[0].barcode
     assert_equal '50c384a2-0b44-401b-b893-8181173339c7', release.release_events[0].label.id.uuid
     assert_equal 'Atlantic Records', release.release_events[0].label.name
-    assert_equal 'CD', release.release_events[0].format
+    assert_equal Model::ReleaseEvent::FORMAT_CD, release.release_events[0].format
   end
-
+  
   def test_track_search
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/search_result_1.xml')
     assert_equal nil, mbxml.get_entity(:artist)
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
     assert_equal nil, mbxml.get_entity(:label)
-
+    
     track_list = mbxml.get_entity_list(:track)
     assert_equal 7, track_list.offset
     assert_equal 100, track_list.count
@@ -415,7 +415,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'Silent All These Years', track.title
     assert_equal 253466, track.duration
   end
-
+  
   def test_track_silent_all_these_years_2
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/Silent_All_These_Years_2.xml')
     track = mbxml.get_entity(:track)
@@ -432,7 +432,7 @@ class TestMBXML < Test::Unit::TestCase
     assert track_rels[0].target.is_a?(Model::Track)
     assert_equal '5bcd4eaa-fae7-465f-9f03-d005b959ed02', track_rels[0].target.artist.id.uuid
   end
-
+  
   def test_track_silent_all_these_years_3
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/Silent_All_These_Years_3.xml')
     track = mbxml.get_entity(:track)
@@ -444,7 +444,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'c2a2cee5-a8ca-4f89-a092-c3e1e65ab7e6', track.puids[0]
     assert_equal '42ab76ea-5d42-4259-85d7-e7f2c69e4485', track.puids[6]
   end
-
+  
   def test_track_silent_all_these_years_4
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'track/Silent_All_These_Years_4.xml')
     track = mbxml.get_entity(:track)
@@ -459,7 +459,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'c2a2cee5-a8ca-4f89-a092-c3e1e65ab7e6', track.puids[0]
     assert_equal '42ab76ea-5d42-4259-85d7-e7f2c69e4485', track.puids[6]
   end
-
+  
   # This test is similiar to silent_all_these_years_3, but it includes an
   # schema exctension which mustn't disturb the parsing.
   def test_track_silent_all_these_years_5
@@ -483,14 +483,14 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 253466, track.duration
     assert_equal 0, track.tags.size
   end
-
+  
   def test_label_search
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'label/search_result_1.xml')
     assert_equal nil, mbxml.get_entity(:artist)
     assert_equal nil, mbxml.get_entity(:release)
     assert_equal nil, mbxml.get_entity(:track)
     assert_equal nil, mbxml.get_entity(:label)
-
+    
     label_list = mbxml.get_entity_list(:label)
     assert_equal 0, label_list.offset
     assert_equal 2, label_list.count
@@ -519,7 +519,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 'US', label.country
     assert_equal '1947', label.begin_date.to_s
   end
-
+  
   def test_label_atlantic_records_2
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'label/Atlantic_Records_2.xml')
     label = mbxml.get_entity(:label)
@@ -535,7 +535,7 @@ class TestMBXML < Test::Unit::TestCase
     assert_equal 1, label.aliases.size
     assert_equal 'Atlantic Rec.', label.aliases[0].name
   end
-
+  
   def test_label_atlantic_records_3
     mbxml = Webservice::MBXML.new File.new(DATA_PATH + 'label/Atlantic_Records_3.xml')
     label = mbxml.get_entity(:label)

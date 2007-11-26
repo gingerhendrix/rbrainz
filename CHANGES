@@ -5,6 +5,7 @@
 * NEW: Model::Release#cover_art_uri
 * NEW: Support release event format.
 * NEW: Support for HTTP proxies
+* NEW: Constants for release format
 
 == 0.3.0 (2007-08-11)
 * BUG: Relation end date was not set correctly in MBXML.

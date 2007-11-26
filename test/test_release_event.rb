@@ -66,6 +66,14 @@ class TestReleaseEvent < Test::Unit::TestCase
     assert_equal '5051099761506', event.barcode
   end
 
+  def test_format
+    event = Model::ReleaseEvent.new
+    assert_nothing_raised {event.format}
+    assert_equal nil, event.format
+    assert_nothing_raised {event.format = Model::ReleaseEvent::FORMAT_VINYL}
+    assert_equal Model::ReleaseEvent::FORMAT_VINYL, event.format
+  end
+
   def test_label
     event = Model::ReleaseEvent.new
     label = Model::Label.new

@@ -381,7 +381,7 @@ module MusicBrainz
         event.catalog_number = node.attributes['catalog-number']
         event.barcode = node.attributes['barcode']
         event.label   = create_label(node.elements['label']) if node.elements['label']
-        event.format  = node.attributes['format']
+        event.format  = Utils.add_namespace(node.attributes['format'])
         
         return event
       end
