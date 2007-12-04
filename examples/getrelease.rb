@@ -28,8 +28,7 @@ mbid = Model::MBID.parse(id, :release)
 release_includes = Webservice::ReleaseIncludes.new(
   :artist => true,
   :tracks => true,
-  :release_events => true,
-  :url_rels => true
+  :release_events => true
 )
 
 # Create a new Query object which will provide
@@ -48,7 +47,6 @@ print <<EOF
 ID            : #{release.id.uuid}
 Title         : #{release.title}
 Artist        : #{release.artist.unique_name}
-Cover art URL : #{release.cover_art_uri}
 Tracks        : #{release.tracks.to_a.join("\r\n                ")}
 Release Events:
 EOF

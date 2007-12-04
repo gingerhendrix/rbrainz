@@ -78,13 +78,6 @@ module MusicBrainz
       # See Entity::ENTITY_TYPE.
       ENTITY_TYPE = :release # :nodoc:
       
-      module PATTERN # :nodoc:
-        JAMENDO_COVER_ART_REGEX = /^http:\/\/(?:www.)?jamendo.com\/(?:[a-z]+\/)?album\/([0-9]+)/
-        JAMENDO_COVER_ART_URI   = "http://www.jamendo.com/get/album/id/album/artworkurl/redirect/%s/"
-        AMAZON_COVER_ART_REGEX  = /^http:\/\/.*\/gp\/product\/([A-Za-z0-9]+)/
-        AMAZON_COVER_ART_URI    = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg"
-      end
-      
       # The title of this release.
       attr_accessor :title
 
@@ -197,48 +190,7 @@ module MusicBrainz
       def to_s
         title.to_s
       end
-      
-      # Returns a URI pointing to cover art for this release.
-      # 
-      # The cover art link relationships of the release will be used to 
-      # create the URI. If no cover art link relationship is present Amazon ASIN
-      # relationships will be used instead. If more than one relationship is
-      # available the first one will be used. If no relationship can be found
-      # +nil+ is returned.
-      # 
-      # This method knows about special cases such as Jamendo cover art URIs and
-      # will allways return a URI which can be used to fetch the image file.
-      # 
-      # In some cases (e.g. Jamendo) the returned URI does not directly point
-      # to an image file but will be redirected by the webserver. If you plan to
-      # fetch the file from the server you must take care of the redirections.
-      def cover_art_uri
-        uri = nil
-        
-        # First try CoverArtLink relationships
-        cover_art_rels = get_relations(:target_type => Relation::TO_URL,
-                                       :relation_type => :CoverArtLink)
-        if cover_art_rels.size > 0
-          # Take the first available URL
-          uri = cover_art_rels.first.target
-          
-          # check for Jamendo cover art
-          if uri =~ PATTERN::JAMENDO_COVER_ART_REGEX
-            uri = PATTERN::JAMENDO_COVER_ART_URI % $1
-          end
-        else
-          # No CoverArtLink found, try AmazonAsin
-          cover_art_rels = get_relations(:target_type => Relation::TO_URL,
-                                         :relation_type => :AmazonAsin)
-          if cover_art_rels.size > 0
-            cover_art_rels.first.target =~ PATTERN::AMAZON_COVER_ART_REGEX
-            uri = PATTERN::AMAZON_COVER_ART_URI % $1
-          end
-        end
-        
-        return uri
-      end
-      
+            
     end
     
   end    
