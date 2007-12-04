@@ -71,6 +71,12 @@ should make the usage clear:
  Releases      : #{artist.releases.map{|r| r.title}.uniq.join("\r\n                ")}
  EOF
 
+== Unicode support
+The MusicBrainz webservice returns all data in UTF-8 encoding. RBrainz does
+not change or modify the encoding. So if you are using RBrainz you should be
+aware that all strings returned by RBrainz are UTF-8 encoded as well.
+Furthermore all strings you pass to RBrainz need to be UTF-8 encoded as well.
+
 == The MusicBrainz webservice
 For more information about the MusicBrainz webservice visit the
 following resources:
