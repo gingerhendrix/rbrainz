@@ -1,6 +1,6 @@
 = Changelog
 
-== 0.4.0 (not yet released)
+== 0.4.0 (2007-12-16)
 * NEW: Complete tagging (folksonomy) support.
 * NEW: Support release event format.
 * NEW: Support for HTTP proxies
