@@ -352,7 +352,7 @@ module MusicBrainz
       #  query = Webservice::Query.new(ws)
       #
       #  mbid = Model::MBID.new('http://musicbrainz.org/artist/10bf95b6-30e3-44f1-817f-45762cdc0de0')
-      #  query.set_tags(mbid, 'doom metal, british')
+      #  query.submit_user_tags(mbid, 'doom metal, british')
       # 
       # See:: Model::Tag
       # Raises:: ConnectionError, RequestError, AuthenticationError
@@ -382,7 +382,7 @@ module MusicBrainz
       #  query = Webservice::Query.new(ws)
       #
       #  mbid = Model::MBID.new('http://musicbrainz.org/artist/10bf95b6-30e3-44f1-817f-45762cdc0de0')
-      #  query.get_tags(mbid)
+      #  query.get_user_tags(mbid)
       # 
       # See:: Model::Tag
       # Raises:: ConnectionError, RequestError, ResponseError, AuthenticationError
