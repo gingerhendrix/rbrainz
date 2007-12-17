@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 config     = $(shell ruby -rrbconfig -e 'puts Config::CONFIG["$(1)"]')
-site_ruby := $(call config,rubylibdir)
+#site_ruby := $(call config,rubylibdir)
 ruby      := $(call config,ruby_install_name)
 
 clean:
@@ -14,7 +14,7 @@ clean:
 
 build-stamp:
 	dh_testdir
-	ruby setup.rb config --prefix=/usr --site-ruby=$(site_ruby)
+	ruby setup.rb config --prefix=/usr
 	ruby setup.rb setup
 	rake rdoc
 	touch build-stamp
