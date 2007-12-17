@@ -1,0 +1,5 @@
+rbrainz (0.4.0-1) gutsy; urgency=low
+
+   * Initial packaging
+
+ -- Philipp Wolfer <phw@rubyforge.org>  Sun, 16 Dec 2007 13:26:16 +0100

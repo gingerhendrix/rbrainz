@@ -1,0 +1,13 @@
+Source: rbrainz
+Section: libs
+Priority: optional
+Maintainer: Philipp Wolfer <phw@rubyforge.org>
+Build-Depends: debhelper (>= 5), ruby (>= 1.8), rdoc (>= 1.8), rake (>= 0.7), rubygems
+Standards-Version: 3.7.3
+
+Package: rbrainz
+Architecture: all
+Depends: ruby (>= 1.8)
+Description: Ruby MusicBrainz library
+ RBrainz is a Ruby client library to access the MusicBrainz XML web
+ service, which can be used to query the MusicBrainz database.

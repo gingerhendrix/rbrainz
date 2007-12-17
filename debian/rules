@@ -1,0 +1,48 @@
+#!/usr/bin/make -f
+
+config     = $(shell ruby -rrbconfig -e 'puts Config::CONFIG["$(1)"]')
+site_ruby := $(call config,rubylibdir)
+ruby      := $(call config,ruby_install_name)
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -rf *-stamp
+	ruby setup.rb clean
+	rake clobber_rdoc
+	dh_clean
+
+build-stamp:
+	dh_testdir
+	ruby setup.rb config --prefix=/usr --site-ruby=$(site_ruby)
+	ruby setup.rb setup
+	rake rdoc
+	touch build-stamp
+
+build: build-stamp
+
+install: build
+	dh_testdir
+	dh_testroot
+	ruby setup.rb install --prefix=debian/rbrainz
+
+binary-indep: install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs CHANGES
+	dh_installdocs README TODO
+	dh_install doc/api/* usr/share/doc/rbrainz/api
+	dh_installexamples examples/*
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_md5sums
+	dh_gencontrol
+	dh_builddeb
+
+binary-arch: install
+
+binary: binary-indep binary-arch
+
+.PHONY: clean build install binary-indep binary-arch binary
+

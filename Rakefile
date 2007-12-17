@@ -5,7 +5,6 @@
  
 # Rakefile for RBrainz
 
-require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/testtask'
 require 'rake/rdoctask'
@@ -20,12 +19,13 @@ end
 PKG_NAME = 'rbrainz'
 PKG_VERSION = MusicBrainz::RBRAINZ_VERSION
 PKG_FILES = FileList[
-  "Rakefile", "LICENSE", "README", "TODO", "CHANGES",
+  "Rakefile", "LICENSE", "README", "TODO", "CHANGES", "setup.rb",
   "doc/README.rdoc",
   "examples/**/*.rb",
   "lib/**/*.rb",
   "test/**/*.rb",
-  "test/test-data/**/*"
+  "test/test-data/**/*",
+  "debian/*"
 ]
 PKG_EXTRA_RDOC_FILES = ['doc/README.rdoc', 'LICENSE', 'TODO', 'CHANGES']
 
@@ -62,13 +62,8 @@ Rake::GemPackageTask.new(spec) do |pkg|
 end
 
 # Build the RBrainz gem and install it"
-task :install => [:test, :gem] do
-  sh %{gem install pkg/#{PKG_NAME}-#{PKG_VERSION}.gem}
-end
-
-# Uninstall RBrainz"
-task :uninstall => [:gem] do
-  sh %{gem uninstall #{PKG_NAME}}
+task :install => [:test] do
+  sh %{ruby setup.rb}
 end
 
 # Test tasks: ------------------------------------------------------------
