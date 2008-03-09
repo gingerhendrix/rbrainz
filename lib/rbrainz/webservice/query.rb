@@ -342,6 +342,10 @@ module MusicBrainz
       # username and/or password are incorrect, an AuthenticationError is raised.
       # See the example in Query on how to supply authentication data.
       #
+      # Note that all previously existing tags from the authenticated user are
+      # replaced with the ones given to this method. Other users' tags are not
+      # affected.
+      #
       # Example:
       #  ws = Webservice::Webservice.new(
       #         :host     => 'test.musicbrainz.org',
@@ -367,7 +371,7 @@ module MusicBrainz
       # identified by _mbid_.
       # 
       # Note that this method only works if a valid user name and password have
-      # been set. Only the tags the authenticated user apllied to the entity will
+      # been set. Only the tags the authenticated user applied to the entity will
       # be returned. If username and/or password are incorrect, an
       # AuthenticationError is raised. See the example in Query on how to supply
       # authentication data.

@@ -25,6 +25,7 @@ password = ARGV[1] ? ARGV[1] : STDIN.gets.strip
 print 'Enter a MBID: '
 mbid = Model::MBID.new(STDIN.gets.strip)
 
+# Set the authentication for the webservice.
 ws = Webservice::Webservice.new(:username=>username, :password=>password) 
 
 # Create a new Query object which will provide

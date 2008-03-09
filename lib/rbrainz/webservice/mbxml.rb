@@ -435,7 +435,7 @@ module MusicBrainz
         if node.attributes['direction']
           relation.direction = node.attributes['direction'].to_sym
         else
-          relation.direction = :both
+          relation.direction = Model::Relation::DIR_BOTH
         end
         
         if node.attributes['type']
