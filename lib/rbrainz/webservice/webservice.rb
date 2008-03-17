@@ -139,6 +139,8 @@ module MusicBrainz
           end
         rescue Timeout::Error, Errno::ETIMEDOUT
           raise ConnectionError.new('%s timed out' % url.to_s)
+        rescue SocketError => e
+          raise ConnectionError.new('%s (%s)' % [url.to_s, e.to_s])
         end
         
         # Handle response errors.
@@ -208,6 +210,8 @@ module MusicBrainz
           end
         rescue Timeout::Error, Errno::ETIMEDOUT
           raise ConnectionError.new('%s timed out' % url.to_s)
+        rescue SocketError => e
+          raise ConnectionError.new('%s (%s)' % [url.to_s, e.to_s])
         end
         
         # Handle response errors.
@@ -251,7 +255,7 @@ module MusicBrainz
         
         # Append the querystring
         querystring = []
-        querystring << 'type=' + URI.escape(options[:type]) unless options[:type].nil?
+        querystring << 'type=' + CGI.escape(options[:type]) unless options[:type].nil?
         querystring << options[:include].to_s unless options[:include].nil?
         querystring << options[:filter].to_s unless options[:filter].nil?
         uri += '?' + querystring.join('&') unless querystring.empty? 

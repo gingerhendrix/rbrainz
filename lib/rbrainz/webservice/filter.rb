@@ -5,7 +5,7 @@
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
-require 'uri'
+require 'cgi'
 
 module MusicBrainz
   module Webservice
@@ -40,7 +40,7 @@ module MusicBrainz
       # Returns the filter list as a query string (without leading <em>&</em>).
       def to_s
         @filter.to_a.map {|name, value|
-          '%s=%s' % [URI.escape(name.to_s), URI.escape(value.to_s)]
+          '%s=%s' % [CGI.escape(name.to_s), CGI.escape(value.to_s)]
         }.join('&')
       end
       

@@ -5,7 +5,7 @@
 # License::   RBrainz is free software distributed under a BSD style license.
 #             See LICENSE[file:../LICENSE.html] for permissions.
 
-require 'uri'
+require 'cgi'
 
 module MusicBrainz
   module Webservice
@@ -24,7 +24,7 @@ module MusicBrainz
       # XML web service URI.
       def to_s
         if @parameters.size > 0
-          return 'inc=' + URI.escape(@parameters.join(' '))
+          return 'inc=' + CGI.escape(@parameters.join(' '))
         else
           return ''
         end

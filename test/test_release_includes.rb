@@ -37,7 +37,7 @@ class TestReleaseIncludes < Test::Unit::TestCase
     result_string = includes.to_s
     assert_equal 'inc=', result_string[0..3]
     
-    result_array = result_string[4..-1].split('%20')
+    result_array = result_string[4..-1].split(/%20|\+/)
     assert result_array.include?('artist')
     assert result_array.include?('counts')
     assert result_array.include?('release-events')

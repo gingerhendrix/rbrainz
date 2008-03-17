@@ -45,7 +45,7 @@ class TestWebservice < Test::Unit::TestCase
   end
   
   def test_get_connection_error
-    ws = Webservice::Webservice.new(:host => 'example.org')
+    ws = Webservice::Webservice.new(:host => 'invalid.host.tld')
     ws.open_timeout = 0.1
     assert_raise(Webservice::ConnectionError) {
       ws.get(:artist, :id => Model::MBID.parse('10bf95b6-30e3-44f1-817f-45762cdc0de0', :artist))
