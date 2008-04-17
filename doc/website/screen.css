@@ -53,6 +53,12 @@ a[rel="external"] {
   padding-right: 13px;
 }
 
+hr {
+    background-color: #000000;
+    border: 0px solid #000000;
+    height: 1px;
+}
+
 #content {
 	width: 40em;
 }
@@ -112,3 +118,6 @@ code.ruby .string  { color: rgb( 42,   0, 255); }
 code.ruby .symbol  { color: rgb(255,  64,  64); font-weight: bold; }
 code.ruby .comment { color: rgb( 63, 127,  95); }
 
+#footer { font-size: .8em; margin-top: 1.5em; margin-bottom: 1em; }
+#footer hr { margin-bottom: .5em; }
+#footer img { float: left; margin-right: .8em; }
