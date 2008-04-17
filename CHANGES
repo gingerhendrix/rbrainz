@@ -1,5 +1,13 @@
 = Changelog
 
+== 0.4.1 (2008-xx-xx)
+* BUG: Use CGI.escape instead of URI.escape, since URI.escape does not
+  escape URI special characters (?=&)
+* BUG: Handle socket error exceptions in class Webservice (will now raise a
+  ConnectionError)
+* NEW: Control files for building debian packages
+* NEW: Better documentation
+
 == 0.4.0 (2007-12-16)
 * NEW: Complete tagging (folksonomy) support.
 * NEW: Support release event format.
