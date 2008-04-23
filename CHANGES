@@ -1,6 +1,6 @@
 = Changelog
 
-== 0.4.1 (2008-xx-xx)
+== 0.4.1 (2008-04-23)
 * BUG: Use CGI.escape instead of URI.escape, since URI.escape does not
   escape URI special characters (?=&)
 * BUG: Handle socket error exceptions in class Webservice (will now raise a

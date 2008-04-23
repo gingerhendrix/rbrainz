@@ -1,3 +1,9 @@
+rbrainz (0.4.1-1) hardy; urgency=low
+
+  * New minor release
+
+ -- Philipp Wolfer <phw@rubyforge.org>  Wed, 23 Apr 2008 20:02:49 +0200
+
 rbrainz (0.4.0-1) gutsy; urgency=low
 
    * Initial packaging
