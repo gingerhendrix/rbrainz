@@ -121,10 +121,10 @@ module MusicBrainz
         begin
           response = connection.start do |http|
             response = http.request(request)
-            if response.is_a?(Net::HTTPProxyAuthenticationRequired) && @proxy[:user] && @proxy[:password]
+            if response.is_a?(Net::HTTPProxyAuthenticationRequired) && @proxy[:username] && @proxy[:password]
               request = Net::HTTP::Post.new(url.request_uri)
               request['User-Agent'] = @user_agent
-              request.proxy_select_auth( @username, @password, response)
+              request.proxy_select_auth(@proxy[:username], @proxy[:password], response)
               request.set_form_data(options[:params])
               response = http.request(request)
             end
@@ -192,10 +192,10 @@ module MusicBrainz
           response = connection.start do |http|
             response = http.request(request)
             
-            if response.is_a?(Net::HTTPProxyAuthenticationRequired) && @proxy[:user] && @proxy[:password]
+            if response.is_a?(Net::HTTPProxyAuthenticationRequired) && @proxy[:username] && @proxy[:password]
               request = Net::HTTP::Post.new(url.request_uri)
               request['User-Agent'] = @user_agent
-              request.proxy_select_auth( @username, @password, response)
+              request.proxy_select_auth(@proxy[:username], @proxy[:password], response)
               request.set_form_data(options[:params])
               response = http.request(request)
             end
