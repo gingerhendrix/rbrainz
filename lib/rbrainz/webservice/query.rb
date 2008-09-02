@@ -286,7 +286,7 @@ module MusicBrainz
         xml = @webservice.get(:user, :filter => UserFilter.new(name))
         collection = MBXML.new(xml).get_entity_list(:user, Model::NS_EXT_1)
         unless collection and collection.size > 0
-          raise ResponseError("response didn't contain user data")
+          raise ResponseError, "response didn't contain user data"
         else
           return collection[0].entity
         end
@@ -319,7 +319,7 @@ module MusicBrainz
       # an AuthenticationError is raised. See the example in Query on
       # how to supply authentication data.
       #
-      # See:: http://test.musicbrainz.org/doc/PUID
+      # See:: http://musicbrainz.org/doc/PUID
       # Raises:: ConnectionError, RequestError, AuthenticationError
       def submit_puids(tracks2puids)
         raise RequestError, 'Please supply a client ID' unless @client_id
@@ -405,10 +405,10 @@ module MusicBrainz
         begin
           entity = MBXML.new(stream, @factory).get_entity(entity_type)
         rescue MBXML::ParseError => e
-          raise ResponseError.new(e.to_s)
+          raise ResponseError, e.to_s
         end
         unless entity
-          raise ResponseError.new("server didn't return #{entity_type.to_s} with the MBID #{id.to_s}")
+          raise ResponseError, "server didn't return #{entity_type.to_s} with the MBID #{id.to_s}"
         else
           return entity
         end
@@ -422,7 +422,7 @@ module MusicBrainz
         begin
           collection = MBXML.new(stream, @factory).get_entity_list(entity_type)
         rescue MBXML::ParseError => e
-          raise ResponseError.new(e.to_s)
+          raise ResponseError, e.to_s
         end
         return collection
       end

@@ -37,7 +37,7 @@ module MusicBrainz
         begin
           @document = REXML::Document.new(stream)
         rescue REXML::ParseException => e
-          raise ParseError.new(e.to_s)
+          raise ParseError, e.to_s
         end
         
         # Set the model factory

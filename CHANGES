@@ -2,6 +2,7 @@
 
 == 0.4.2 (unreleased)
 * BUG: Fixed proxy authentication
+* BUG: Fixed raising of ResponseError in Query#get_user_by_name
 
 == 0.4.1 (2008-04-23)
 * BUG: Use CGI.escape instead of URI.escape, since URI.escape does not
