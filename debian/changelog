@@ -1,3 +1,9 @@
+rbrainz (0.4.2-1) intrepid; urgency=low
+
+  * Bugfix release
+
+ -- Philipp Wolfer <phw@rubyforge.org>  Thu, 04 Sep 2008 22:00:12 +0200
+
 rbrainz (0.4.1-1) hardy; urgency=low
 
   * New minor release

@@ -35,7 +35,6 @@ spec = Gem::Specification.new do |spec|
   spec.name = PKG_NAME
   spec.version = PKG_VERSION
   spec.requirements << 'Optional: mb-discid >= 0.1.2 (for calculating disc IDs)'
-  spec.autorequire = spec.name
   spec.files = PKG_FILES
   spec.description = <<EOF
     RBrainz is a Ruby client library to access the MusicBrainz XML
@@ -48,7 +47,7 @@ spec = Gem::Specification.new do |spec|
     However, RBrainz differs from python-musicbrainz2 wherever it makes
     the library more Ruby like or easier to use.
 EOF
-  spec.author = ['Philipp Wolfer', 'Nigel Graham']
+  spec.authors = ['Philipp Wolfer', 'Nigel Graham']
   spec.email = 'phw@rubyforge.org'
   spec.homepage = 'http://rbrainz.rubyforge.org'
   spec.rubyforge_project = 'rbrainz'
