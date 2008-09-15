@@ -1,5 +1,8 @@
 = Changelog
 
+== 0.4.3 (not released)
+* BUG: Fixed Release#single_artist_release?
+
 == 0.4.2 (2008-09-04)
 * BUG: Fixed proxy authentication
 * BUG: Fixed raising of ResponseError in Query#get_user_by_name

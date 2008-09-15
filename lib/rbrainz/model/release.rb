@@ -153,9 +153,11 @@ module MusicBrainz
       #
       # Note that the release's artist has to be set (see #artist=)
       # for this. The track artists may be unset.
+      #
+      # Raises:: RuntimeError
       def single_artist_release?
           raise 'Release Artist may not be None!' unless artist
-          tracks.all {|track| !track.artist || track.artist.id == artist.id }
+          tracks.all? {|track| !track.artist || track.artist.id == artist.id }
       end
     
       # Returns the earliest release date as an IncompleteDate.

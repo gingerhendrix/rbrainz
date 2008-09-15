@@ -164,4 +164,22 @@ class TestRelease < Test::Unit::TestCase
     assert_equal 0, release.discs.size
   end
   
+  def test_single_artist_release
+    release = Model::Release.new
+    assert_raise(RuntimeError) {release.single_artist_release?}
+    
+    artist = Model::Artist.new('9d30e408-1559-448b-b491-2f8de1583ccf')
+    release.artist = artist
+    assert release.single_artist_release?
+    
+    @tracks.each {|track| release.tracks << track}
+    assert release.single_artist_release?
+    
+    release.tracks[0].artist = artist
+    assert release.single_artist_release?
+    
+    release.tracks[1].artist = artist
+    assert release.single_artist_release?
+  end
+  
 end
