@@ -178,8 +178,8 @@ class TestRelease < Test::Unit::TestCase
     release.tracks[0].artist = artist
     assert release.single_artist_release?
     
-    release.tracks[1].artist = artist
-    assert release.single_artist_release?
+    release.tracks[1].artist = Model::Artist.new('10bf95b6-30e3-44f1-817f-45762cdc0de0')
+    assert (not release.single_artist_release?)
   end
   
 end
