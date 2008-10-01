@@ -1,4 +1,4 @@
-# $Id$
+# $Id: includes.rb 158 2007-07-25 16:19:19Z phw $
 #
 # Author::    Philipp Wolfer (mailto:phw@rubyforge.org)
 # Copyright:: Copyright (c) 2007, Nigel Graham, Philipp Wolfer
@@ -55,6 +55,7 @@ module MusicBrainz
       # [:track_rels]   Include track relationships (boolean).
       # [:label_rels]   Include label relationships (boolean).
       # [:url_rels]     Include url relationships (boolean).
+      # [:release_events] Include release events (boolean).
       # [:tags]         Include tags (boolean).
       # 
       #--
@@ -63,7 +64,7 @@ module MusicBrainz
       #++
       def initialize(includes)
         Utils.check_options includes, 
-          :aliases, :artist_rels, :release_rels, :track_rels, 
+          :aliases, :artist_rels, :release_rels, :track_rels, :release_events,
           :label_rels, :url_rels, :tags, :releases, :va_releases
         @parameters = Array.new
         @parameters << 'aliases'      if includes[:aliases]
@@ -72,6 +73,7 @@ module MusicBrainz
         @parameters << 'track-rels'   if includes[:track_rels]
         @parameters << 'label-rels'   if includes[:label_rels]
         @parameters << 'url-rels'     if includes[:url_rels]
+        @parameters << 'release-events'   if includes[:release_events]
         @parameters << 'tags'         if includes[:tags]
         
         includes[:releases].each {|release_type|
